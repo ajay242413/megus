@@ -14,7 +14,7 @@ var userSchema = new Schema({
   active: {type: Boolean},
   refName: {type: String},
   refID: {type: Schema.Types.ObjectId,refPath: 'refName',autopopulate: true},
-  authorID: {type: Schema.Types.ObjectId}, 
+  authorID: {type: Schema.Types.ObjectId},
   parentID: {type: Schema.Types.ObjectId}
 },{versionKey: false});
 
@@ -92,7 +92,7 @@ var employeeSchema = new Schema({
 	modifiedBy: {type: Schema.Types.ObjectId}
 }, { versionKey: false});
 
-var permissionMappingSchema = new Schema({  
+var permissionMappingSchema = new Schema({
   permission: {type: Object }
 },{_id: true}, {versionKey: false});
 
@@ -101,13 +101,13 @@ var employeeModel = mongoose.model('employee',employeeSchema,'employee');
 var masterLedgerModel = mongoose.model('master_ledger', masterLedgerSchema, 'master_ledger');
 var permissionModel = mongoose.model('permission_map', permissionMappingSchema, 'permission_map');
 
-var brandAdmin = { 
-	"email": "a@gmail.com", 
-	"password": "a", 
-	"userType": "b", 
+var brandAdmin = {
+	"email": "ushaelectronics@gmail.com",
+	"password": "Aba123$",
+	"userType": "b",
 	"active": true,
 	"refName": "employee"
-} 
+}
 
 var ledgerObj = [{
 	"name": "Current Assets",
@@ -283,10 +283,10 @@ function createBrandUser() {
 				employeeModel.create(hrData, function(aEmployeeErr, aEmployee) {
 					if(aEmployee) {
 						userModel.findByIdAndUpdate(bAdmin._id, {$set: {refID: aEmployee._id, authorID: bAdmin._id, parentID: bAdmin._id}}, {new: true}, function(usrUpdateErr, usrUpdate) {
-							if(usrUpdate) { 
+							if(usrUpdate) {
 								console.log("INFO: User successfully updated");
 								deferred.resolve(bAdmin); //return user details so we can use the authorID to ledger creation
-							} 
+							}
 							if(usrUpdateErr) {
 								console.log('ERROR: Failed to update brand admin account');
 								deferred.reject(usrUpdateErr);
@@ -307,8 +307,8 @@ function createBrandUser() {
 	return deferred.promise;
 }
 
-function createPermissionMap() {	
-	var deferred = Q.defer();		
+function createPermissionMap() {
+	var deferred = Q.defer();
 	permissionModel.create(permissionObj, function(err, resp) {
 		if(resp) {
 			console.log(resp);
@@ -320,7 +320,7 @@ function createPermissionMap() {
 		}
 	});
 	return deferred.promise;
-	
+
 	Promise.all(permissionPromises)
 	.then(function(res) {
 		console.log(">>>>>>>");
@@ -342,4 +342,3 @@ createBrandUser()
 });
 
 createPermissionMap();
-
