@@ -1,0 +1,178 @@
+<div class="container-fluid">
+    <div class="text-right" style="margin-bottom: 5px;">
+        <button class="btn btn-fill btn-wd btn-default" ng-click="back()">Back</button>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label style="margin-bottom: 0px;">Show Fields</label>
+                        </div>
+                        <div class="col-md-6 col-lg-3" style="width: 11%;">
+                            <div class="checkbox">
+                                <input type="checkbox" id="checkbox1" ng-model="payment">
+                                <label for="checkbox1">Payment</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3" style="width: 16%;">
+                            <div class="checkbox">
+                                <input type="checkbox" id="checkbox2" ng-model="prodCat">
+                                <label for="checkbox2">Product Category</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3" style="width: 12%;">
+                            <div class="checkbox">
+                                <input type="checkbox" id="checkbox3" ng-model="purchase">
+                                <label for="checkbox3">Purchase</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3" style="width: 11%;">
+                            <div class="checkbox">
+                                <input type="checkbox" id="checkbox4" ng-model="receipt">
+                                <label for="checkbox4">Receipt</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3" style="width: 8%;">
+                            <div class="checkbox">
+                                <input type="checkbox" id="checkbox5" ng-model="rj">
+                                <label for="checkbox5">RJ</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3" style="width: 11%;">
+                            <div class="checkbox">
+                                <input type="checkbox" id="checkbox6" ng-model="sale">
+                                <label for="checkbox6">Sale</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>From</label>
+                                <input type="text" id="from" class="form-control datepicker" placeholder="FROM DATE" ng-model="from">
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label><b>To</b></label>
+                                <input type="text" id="to" class="form-control datepicker" placeholder="TO DATE" ng-model="to">
+                            </div>
+                        </div>
+                        <!-- <div class="col-sm-3">
+                            <div class="form-group">
+                                <b>
+                                    <label>Field</label>
+                                    <select class="form-control 3col active" multiple="multiple" ng-model="fieldName">
+                                        <option value='pay'>Payment</option>
+                                        <option value='prodCat'>Product Category</option>
+                                        <option value='pur'>Purchase</option>
+                                        <option value='rec'>Receipts</option>
+                                        <option value='rj'>RJ</option>
+                                        <option value='sal'>Sales</option>
+                                    </select>
+                                </b>
+                            </div>
+                        </div> -->
+                        <div class="col-sm-4">
+                            <div class="text-right">
+                                <button class="btn btn-fill btn-wd btn-success" style="margin-top: 21px;" ng-click="search()">Refresh</button>
+                                <button ng-show="showTable" class="btn btn-fill btn-wd btn-primary" style="margin-top: 21px;" ng-click="excelAlert('#ledgerTable')">Export</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-show="showTable" class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-content">
+                    <table id="ledgerTable" class="table table-bordered dataTable dtr-inline" datatable="ng" dt-options="vm.dtOptions" dt-instance="vm.dtInstance"  width="100%" dt-column-defs="vm.dtColumnDefs">
+                        <thead>
+                            <tr>
+                                <th colspan="2">{{ledgerGroup}} => <b>{{ledgerName}}</b></b></th>
+                                <th colspan="2"><b>{{from}}</b> to <b>{{to}}</b></b></th>
+                                <th class="text-right" colspan={{colspan[0]}}><b>Opening Balance : </b></th>
+                                <th class="text-right">{{opening.debit.toFixed(2)}}</th>
+                                <th class="text-right">{{opening.credit.toFixed(2)}}</th>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <th><b>#</b></th>
+                                <th><b>Date</b></th>
+                                <th><b>Particulars</b></th>
+                                <th><b>Doc. Type</b></th>
+                                <th><b>Doc. No</b></th>
+                                <th ng-show="showFields.prodCat"><b>Product Category</b></th>
+                                <th ng-show="showFields.rj"><b>RJ</b></th>
+                                <th ng-show="showFields.pay"><b>Payment</b></th>
+                                <th ng-show="showFields.rec"><b>Receipt</b></th>
+                                <th ng-show="showFields.pur"><b>Purchase</b></th>
+                                <th ng-show="showFields.sal"><b>Sale</b></th>
+                                <th class="text-center"><b>Debit</b></th>
+                                <th class="text-center"><b>Credit</b></th>
+                                <th class="text-center"><b>Balance</b></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="res in result track by $index">
+                                <td>{{$index + 1}}</td>
+                                <td>{{res.date}}</td>
+                                <td>
+                                    <p style="font-size: 13px; margin:0 0 0;" ng-repeat="ptr in res.particular track by $index">{{ptr}}</p>
+                                </td>
+                                <td>{{res.docType}}</td>
+                                <td>{{res.docNo}}</td>
+                                <td ng-show="showFields.prodCat">
+                                    <p style="font-size: 13px; margin:0 0 0;" ng-repeat="pc in res.prodCat track by $index">{{pc}}</p>
+                                </td>
+                                <td ng-show="showFields.rj">
+                                    <p style="font-size: 13px; margin:0 0 0;" ng-repeat="rj in res.refJou track by $index">{{rj}}</p>
+                                </td>
+                                <td ng-show="showFields.pay">
+                                        <p style="font-size: 13px; margin:0 0 0;" ng-repeat="rec in res.pay track by $index">{{pay}}</p>
+                                    </td>
+                                <td ng-show="showFields.rec">
+                                    <p style="font-size: 13px; margin:0 0 0;" ng-repeat="rec in res.rece track by $index">{{rec}}</p>
+                                </td>
+                                <td ng-show="showFields.pur">
+                                    <p style="font-size: 13px; margin:0 0 0;" ng-repeat="purc in res.pur track by $index">{{purc}}</p>
+                                </td>
+                                <td ng-show="showFields.sal">
+                                    <p style="font-size: 13px; margin:0 0 0;" ng-repeat="sal in res.sale track by $index">{{sal}}</p>
+                                </td>
+                                <td class="text-right">{{res.deb.toFixed(2)}}</td>
+                                <td class="text-right">{{res.cred.toFixed(2)}}</td>
+                                <td class="text-right">{{res.bal}}</td>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <tr>
+                                <td class="text-right" colspan="{{colspan[1]}}"><b>Total : </b></td>
+                                <td class="text-right">{{closing.debit.toFixed(2)}}</td>
+                                <td class="text-right">{{closing.credit.toFixed(2)}}</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <tr>
+                                <td class="text-right" colspan="{{colspan[1]}}"><b>Balance : </b></td>
+                                <td class="text-right">{{closing.debitResult}}</td>
+                                <td class="text-right">{{closing.creditResult}}</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <script>
+    $(function(){
+        $('select[multiple].active.3col').multiselect({columns:1, placeholder:'Select Fields', search:false, searchOptions:{default:'Search Fields'}, selectAll:true});
+    });
+</script> -->

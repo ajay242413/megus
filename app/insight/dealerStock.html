@@ -1,0 +1,31 @@
+<div class="container-fluid">
+    <div class="text-right" style="margin-bottom:5px;">
+        <button ng-click="exportToExcel('#dealerTable')" class="btn btn-default btn-fill btn-wd">Export Report</button>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+        	<div class="card">
+				<div class="card-content">
+                    <div style="overflow-x: auto;">
+                        <table id="dealerTable" border="1" class="tableDealer table table-bordered dtr-inline" width="100%">
+                            <thead>
+                                <th><b>State</b></th>
+                                <th><b>Zone</b></th>
+                                <th><b>District</b></th>
+                                <th><b>Sales Person</b></th>
+                                <th><b>RDS Name</b></th>
+                                <th><b>RDS Region</b></th>
+                                <th><b>Dealer Name</b></th>
+                                <th><b>Dealer Category</b></th>
+                                <th><b>Dealer Area</b></th>
+                                <th ng-repeat-start="item in prodItem"><b>{{item.itemName}}</b></th>
+                                <th ng-repeat-end><b>Age</b></th>
+                            </thead>
+                            <tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

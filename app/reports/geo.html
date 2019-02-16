@@ -1,0 +1,69 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+        	<div class="card a_cream">
+				<div class="card-content">
+					<div class="row">
+						<div class="col-md-6 col-md-offset-3">
+					        <select class="selectpicker" ng-model="geoOption" ng-options="opt for opt in geoOptions" data-style="btn btn-success btn-block" data-size="5"></select>
+					    </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div ng-switch="geoOption">
+		<div ng-switch-when="Employee" class="row">
+	    	<div class="col-md-12">
+	    		<div class="card">
+	    			<div class="row">
+		    			<div class="col-md-12">
+		    				<div class="card-content">
+		    					<div class="row">
+									<div ng-init="loadEmpMap()">
+								    	<div id="map" style="width: 99%; height: 470px"></div>
+								    </div>	    					
+	    						</div>
+			    			</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div ng-switch-when="Dealer" class="row">
+	    	<div class="col-md-12">
+	    		<div class="card">
+	    			<div class="row">
+		    			<div class="col-md-12">
+		    				<div class="card-content">
+		    					<div class="row">
+									<div ng-init="loadDealerMap()">
+								    	<!-- <div id="map" style="width: 100%; height: 600px"></div> -->
+								    	<div id="map" style="width: 99%; height: 470px"></div>
+								    </div>	    					
+	    						</div>
+			    			</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div ng-switch-when="Item - Model 1" class="row">
+	    	<div class="col-md-12">
+	    		<div class="card">
+	    			<div class="row">
+		    			<div class="col-md-12">
+		    				<div class="card-content">
+		    					<div class="row">
+		    						<div ng-init="loadItemMap()">
+								    	<div id="map" style="width: 99%; height: 470px"></div>
+								    </div>	    					
+	    						</div>
+			    			</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

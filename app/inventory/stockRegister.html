@@ -1,0 +1,151 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-content">
+                    <form name="registerForm" ng-submit="search()">
+                        <div class="row">
+                            <div class="col-sm-6 col-lg-3">
+                                <div class="form-group">
+                                    <label>From</label>
+                                    <input type="text" id="from" class="form-control datepicker" name="from" placeholder="FROM DATE" ng-model="from" ng-required="true">
+                                    <center><span ng-show="submitted && registerForm.from.$error.required"><font class="text-danger"><b>This is required field</b></font></span></center>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-3">
+                                <div class="form-group">
+                                    <label>To</label>
+                                    <input type="text" id="to" class="form-control datepicker" name="to" placeholder="TO DATE" ng-model="to" ng-required="true">
+                                    <center><span ng-show="submitted && registerForm.to.$error.required"><font class="text-danger"><b>This is required field</b></font></span></center>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-3">
+                                <div class="form-group">
+                                    <label>Model / Item Name</label>
+                                    <select multiple class="selectpicker" name="itemName" title="select model" data-size="5" data-live-search="true" data-actions-box="true"  data-selected-text-format="count" ng-model="itemList" ng-required="true">
+                                        <option ng-repeat="pil in prodItemLists" ng-value="pil._id">{{pil.itemName}} {{pil.name}}</option>
+                                    </select>
+                                    <center><span ng-show="submitted && registerForm.itemName.$error.required"><font class="text-danger"><b>This is required field</b></font></span></center>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-3">
+                                <div class="form-group">
+                                    <label>{{spName[0]}} Name</label>
+                                    <select multiple class="selectpicker" name="spName" title="Select {{spName[0]}}" data-size="5" data-live-search="true" data-actions-box="true"  data-selected-text-format="count" ng-model="salepointList" ng-required="true">
+                                        <option ng-repeat="spl in salePointLists" ng-value="spl._id">{{spl.name}}</option>
+                                    </select>
+                                    <center><span ng-show="submitted && registerForm.spName.$error.required"><font class="text-danger"><b>This is required field</b></font></span></center>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label style="margin-bottom: 0px;">Filters</label>
+                            </div>
+                            <div class="col-sm-6 col-lg-3" style="width: 17%;">
+                                <div class="checkbox">
+                                    <input type="checkbox" id="checkbox2" ng-model="showDescription" ng-click="vm.refreshPicker()">
+                                    <label for="checkbox2">Product Description</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-3" style="width: 17%;">
+                                <div class="checkbox">
+                                    <input type="checkbox" id="checkbox3" ng-model="showCategory" ng-click="vm.refreshPicker()">
+                                    <label for="checkbox3">Product Category</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-3" style="width: 15%;">
+                                <div class="checkbox">
+                                    <input type="checkbox" id="checkbox1" ng-model="showBrand" ng-click="vm.refreshPicker()">
+                                    <label for="checkbox1">Brand</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-3" style="width: 17%;">
+                                <div class="checkbox">
+                                    <input type="checkbox" id="checkbox4" ng-model="showAttribute" ng-click="vm.refreshPicker()">
+                                    <label for="checkbox4">Product Attribute</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div ng-show="showDescription" class="col-sm-6 col-lg-3">
+                                <div class="form-group">
+                                    <label>Product Description</label>
+                                    <select multiple class="selectpicker" title="select product description" data-size="5" data-live-search="true" data-actions-box="true"  data-selected-text-format="count" ng-model="prodDescriptionList" ng-change="prodDescriptionChange()">
+                                        <option ng-repeat="pdl in prodDescriptionLists" ng-value="pdl._id">{{pdl.type}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div ng-show="showCategory" class="col-sm-6 col-lg-3">
+                                <div class="form-group">
+                                    <label>Product Category</label>
+                                    <select multiple class="selectpicker" title="select product category" data-size="5" data-live-search="true" data-actions-box="true"  data-selected-text-format="count" ng-model="prodCategoryList" ng-change="filterChange()">
+                                        <option ng-repeat="pcl in prodCategoryLists" ng-value="pcl._id">{{pcl.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div ng-show="showBrand" class="col-sm-6 col-lg-3">
+                                <div class="form-group">
+                                    <label>Brand</label>
+                                    <select multiple class="selectpicker" title="select brand" data-size="5" data-live-search="true" data-actions-box="true"  data-selected-text-format="count" ng-model="brandList" ng-change="filterChange()">
+                                        <option ng-repeat="bl in brandLists" ng-value="bl._id">{{bl.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div ng-show="showAttribute" class="col-sm-6 col-lg-3">
+                                <div class="form-group">
+                                    <label>Product Attribute</label>
+                                    <select multiple class="selectpicker" title="select product attribute" data-size="5" data-live-search="true" data-actions-box="true"  data-selected-text-format="count" ng-model="prodAttributeList" ng-change="attributeChange()">
+                                        <option ng-repeat="pal in prodAttributeLists" ng-value="pal._id">{{pal.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div ng-repeat="al in attributeLists" class="col-sm-6 col-lg-3">
+                                <div class="form-group">
+                                    <label>{{al.name}}</label>
+                                    <select multiple class="selectpicker" title="select {{al.name}}" data-size="5" data-live-search="true" data-actions-box="true"  data-selected-text-format="count" ng-model="attribute[$index]" ng-change="filterChange()">
+                                        <option ng-if="alv.active == true" ng-repeat="alv in al.value" ng-value="alv._id">{{alv.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-wd btn-success" style="margin-top: 21px;" ng-click="submitted=true"><b>Refresh</b></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-show="showTable" class="text-right" style="margin-bottom:5px;">
+        <button class="btn btn-default btn-wd btn-fill" ng-click="excelAlert('#stockTable')">Export To Excel</button>
+    </div>
+    <div ng-show="showTable" class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-content">
+                    <table id="stockTable" class="table table-striped table-bordered dataTable dtr-inline" datatable="ng" dt-options="vm.dtOptions" dt-instance="vm.dtInstance"  width="100%" dt-column-defs="vm.dtColumnDefs">
+                        <thead>
+                            <th class="text-center"><b>S.NO.</b></th>
+                            <th class="text-center"><b>Item / Model</b></th>
+                            <th class="text-center"><b>OS</b></th>
+                            <th class="text-center"><b>Goods In</b></th>
+                            <th class="text-center"><b>Goods Out</b></th>
+                            <th class="text-center"><b>CS</b></th>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="res in finResult | orderBy:'item'">
+                                <td class="text-right">{{$index + 1}}</td>
+                                <td>{{res.item}}</td>
+                                <td class="text-right">{{res.open}}</td>
+                                <td class="text-right">{{res.in}}</td>
+                                <td class="text-right">{{res.out}}</td>
+                                <td class="text-right">{{res.close}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

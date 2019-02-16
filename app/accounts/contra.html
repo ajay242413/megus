@@ -1,0 +1,134 @@
+<div class="container-fluid">
+    <div class="text-right" style="margin-bottom: 5px;">
+        <button class="btn btn-primary btn-fill" ng-click="showEdit()">Edit / Delete</button>
+        <button class="btn btn-fill btn-default btn-wd" ng-click="addNewContra()">Add New Contra</button>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-content">
+                    <table class="table table-bordered table-stripped dataTable dtr-inline" datatable="ng" dt-options="vm.dtOptions" dt-instance="vm.dtInstance"  width="100%" dt-column-defs="vm.dtColumnDefs">
+                        <thead>
+                            <th><b>#</b></th>
+                            <th><b>Contra Number</b></th>
+                            <th><b>Contra Date</b></th>
+                            <th><b>Ledger From</b></th>
+                            <th><b>Ledger To</b></th>
+                            <th class="text-center"><b>Amount</b></th>
+                            <th ng-show="showDelete"><b>Action</b></th>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="con in contras">
+                                <td>{{$index + 1}}</td>
+                                <td>{{con.invoiceNumber}}</td>
+                                <td>{{con.invoiceDate}}</td>
+                                <td>{{con.ledgerFrom.refId.name}}</td>
+                                <td>{{con.ledgerTo.refId.name}}</td>
+                                <td class="text-right">{{con.amount}}</td>
+                                <td ng-show="showDelete">
+                                    <button class="btn btn-simple btn-rotate btn-danger btn-icon table-action trash" title="Delete Journal" ng-click="deleteAlert(con)">
+                                        <b><i class="fa fa-trash"></i></b>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/ng-template" id="contraModal.html">
+    <style>
+        @media (min-width: 992px){
+            .modal-lg{
+                width: 900px;
+            }
+            .modal-dialog{
+                width: 900px;
+                margin: 30px auto;
+            }
+        }
+        input[list]::-webkit-calendar-picker-indicator {
+            display: none;
+        }
+    </style>
+    <div class="modal-content modal-lg">
+        <div class="modal-header" style="padding: 10px;">
+            <span class="modal-title" style="font-size: 20px;"><b>New Contra</b></span>
+            <button type="button" class="close" data-dismiss="modal" ng-click="close()">Close</button>
+        </div>
+        <div class="modal-body">
+            <form name="contraForm" ng-submit="saveContra()">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="pull-left">
+                            <h5><b>Contra Number</b>&nbsp;:&nbsp;<u>{{contra.invoiceNumber}}</u></h5>
+                        </div>
+                        <div class="pull-right">
+                            <h5><b>Contra Date</b>&nbsp;:&nbsp;<u>{{contra.invoiceDate}}</u></h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Ledger From</label>
+                            <input type="text" class="form-control" id="ledger_list" list="ledgerlist" name="ledFrom" placeholder="select ledger" ng-model="ledFrom" ng-required="true">
+                            <datalist id="ledgerlist">
+                                <option ng-if="ledTo != lg.refId.name" ng-repeat="lg in ledger" id="{{lg._id}}" value="{{lg.refId.name}}"></option>
+                            </datalist>
+                            <center><span ng-show="submitted && contraForm.ledFrom.$error.required"><font class="text-danger">This is required field</font></span></center>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Ledger To</label>
+                            <input type="text" class="form-control" id="ledger_list1" list="ledgerlist1" name="ledTo" placeholder="select ledger" ng-model="ledTo" ng-required="true">
+                            <datalist id="ledgerlist1">
+                                <option ng-if="ledFrom != lg.refId.name" ng-repeat="lg in ledger" id="{{lg._id}}" value="{{lg.refId.name}}"></option>
+                            </datalist>
+                            <center><span ng-show="submitted && contraForm.ledTo.$error.required"><font class="text-danger">This is required field</font></span></center>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Amount</label>
+                            <input type="text" class="form-control" name="amount" placeholder="Enter amount" ng-model="contra.amount"  ng-required="true" awnum>
+                            <center><span ng-show="submitted && contraForm.amount.$error.required"><font class="text-danger">This is required field</font></span></center>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Reference Date</label>
+                            <input type="text" class="form-control datepicker" id="refDate" placeholder="Select Date" ng-model="refDate">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Remarks</label>
+                            <textarea class="form-control" placeholder="Enter the remarks for this contra" rows="3" ng-model="contra.remark"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Product Category</label>
+                            <select multiple class="selectpicker" ng-model="contra.category" title="select product category">
+                                <option ng-repeat="categ in categories | orderBy:'name'" ng-value="categ._id">{{categ.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <button type="button" class="btn btn-fill btn-danger" ng-click="close()">Cancel</button>
+                    <button type="submit" class="btn btn-fill btn-success" ng-click="submitted=true">Save</button>
+                </div>
+                <div class="clearfix"></div>
+            </form>
+        </div>  
+    </div>
+</script>

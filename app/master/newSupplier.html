@@ -1,0 +1,262 @@
+<div class="container-fluid">
+	<div class="text-right" style="margin-bottom: 5px;">
+        <button ng-click="backClick()" class="btn btn-default btn-wd btn-fill">Back</button>
+    </div>
+	<div class="row">
+		<div class="col-lg-12 col-md-12">
+			<div class="card">
+			    <div class="card-content">
+					<form name="supplierForm" ng-submit="this[buttons.method]()">
+						<div class="row">
+							<div class="col-md-6">										
+								<div class="card a_cream">
+									<div class="row">
+										<div class="col-md-12">
+											<div class="card-content">	
+												<div class="form-group">
+													<label>Name</label>
+													<input type="text" class="form-control" ng-model="supplier.name" name="name" placeholder="Enter Name" ng-required="true">
+													<center> 
+														<span ng-show="(submitted && supplierForm.name.$error.required) || (supplierForm.name.$invalid && supplierForm.name.$dirty)">
+															<font class="text-danger">
+																<b>Name Field is Required</b>
+															</font>
+														</span>
+													</center>
+												</div>
+												<div class="row">
+													<div class="col-sm-6">
+														<div class="form-group">
+															<label>Email</label>
+															<input type="email" class="form-control" ng-model="supplier.email" name="email" placeholder="Enter Email" ng-required="true">
+															<center> 
+																<span ng-show="(submitted && supplierForm.email.$error.required) || (supplierForm.email.$invalid && supplierForm.email.$dirty) ||(supplierForm.$error.email)">
+																	<font class="text-danger">
+																		<b>Enter Valid Mail ID</b>
+																	</font>
+																</span>
+															</center>
+														</div>
+													</div>
+													<div class="col-sm-6">
+														<div class="form-group">
+															<label>PAN Number</label>
+															<input class="form-control" type="text" name="panID" placeholder="Enter PAN Number" ng-model="supplier.panID" ng-maxlength="10" ng-minlength="10" ng-pattern="/^[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}$/">
+															<center> 
+																<span ng-show="supplierForm.panID.$invalid && supplierForm.panID.$dirty">
+																	<font class="text-danger">
+																		<b>Enter Valid PAN Number</b>
+																	</font>
+																</span>
+															</center>
+														</div>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-sm-6">
+														<label>Phone</label>
+														<div class="input-group">
+															<input name="multiMobNum" ng-model="mobNo" class="form-control" type="text" placeholder="Click + to add more phone number" awnum>
+															<span class="input-group-btn">
+																<button class="btn btn-default" type="button" ng-click="addPhoneNo()" ng-init="count=0">
+																	<i class="fa fa-plus"></i>
+																</button>
+															</span>
+														</div>
+														<ul ng-repeat="smn in supplier.mobNum" class="input-group">
+															<li>
+																<input class="editable-cell" type="text" ng-model="smn"/>
+																<button class="btn-link" style="text-decoration: none" ng-click="rmPhoneNo($index)">x</button>
+															</li>
+														</ul>	
+													</div>
+													<div class="col-sm-6">
+														<div class="form-group">
+															<label>GSTIN</label>
+															<input type="text" class="form-control" name="gstin" placeholder="Enter GSTIN" ng-model="supplier.gstin" ng-maxlength="15" ng-minlength="15" ng-pattern="/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/" ng-required="true">
+															<center> 
+																<span ng-show="(submitted && supplierForm.gstin.$error.required) || (supplierForm.gstin.$invalid && supplierForm.gstin.$dirty)">
+																	<font class="text-danger">
+																		<b>Enter Valid GSTIN</b>
+																	</font>
+																</span>
+															</center>
+														</div>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-sm-6">
+														<div class="form-group">
+															<label>Group-1</label>
+															<select class="selectpicker" ng-model="supplier.category1" ng-options="category._id as category.name disable when category.disabled for category in categoryList | orderBy:'name'" data-style="btn btn-default btn-block" data-size="7" data-live-search="true">
+																<option value disabled>--choose category--</option>
+															</select>
+														</div>
+													</div>
+													<div class="col-sm-6">
+														<div class="form-group">
+															<label>Group-2</label>
+															<select class="selectpicker" ng-model="supplier.category2" ng-options="category._id as category.name disable when category.disabled for category in categoryList | orderBy:'name'" data-style="btn btn-default btn-block" data-size="7" data-live-search="true">
+																<option value disabled>--choose category--</option>
+															</select>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>	
+							</div>
+							<div class="col-md-6 ">
+								<div class="card a_cream">
+									<div class="row">
+										<div class="col-md-12">
+											<div  class="card-content">
+												<div class="row">
+													<div class="col-sm-6">
+														<div class="form-group">
+															<label>Country</label>
+															<select class="selectpicker" ng-model="supplier.country" ng-options="country._id as country.name for country in countryList | orderBy:'name'" data-style="btn btn-default btn-block" data-size="7" data-live-search="true">
+																<option value disabled>--choose country--</option>
+															</select>
+														</div>
+													</div>
+													<div class="col-sm-6">
+														<div class="form-group">
+															<label>State</label>
+															<select class="selectpicker" name="state" data-style="btn btn-default btn-block" data-size="7" data-live-search="true" ng-model="supplier.state" ng-options="state._id as state.name for state in stateList | orderBy:'name'" ng-required="true">
+																<option value disabled>--choose state--</option>
+															</select>
+															<center> 
+																<span ng-show="(submitted && supplierForm.state.$error.required) || (supplierForm.state.$invalid && supplierForm.state.$dirty)">
+																	<font class="text-danger">
+																		<b>State Field is Required</b>
+																	</font>
+																</span>
+															</center>
+														</div>
+													</div>
+													<div class="col-sm-6">
+														<div class="form-group">
+															<label>City</label>
+															<select class="selectpicker" ng-model="supplier.city" ng-options="city._id as city.name for city in cityList | orderBy:'name'" data-style="btn btn-default btn-block" data-size="7" data-live-search="true">
+																<option value disabled>--choose city--</option>
+															</select>
+														</div>
+													</div>
+													<div class="col-sm-6">
+														<div class="form-group">
+															<label>Area</label>
+															<select class="selectpicker" ng-model="supplier.area" ng-options="area._id as area.name for area in areaList | orderBy:'name'" data-style="btn btn-default btn-block" data-size="7" data-live-search="true">
+																<option value disabled>--choose area--</option>
+															</select>
+														</div>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-sm-6">
+														<div class="form-group">
+															<label>Landmark</label>
+															<textarea class="form-control" rows="5" placeholder="Enter Landmark" ng-model="supplier.landmark"></textarea>
+														</div>
+													</div>
+													<div class="col-sm-6">
+														<div class="form-group">
+															<label>Address</label>
+															<textarea class="form-control" rows="5" placeholder="Enter Address" ng-model="supplier.address"></textarea>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-12">
+								<div class="card a_cream">
+									<div>
+										<div class="col-md-6"><h5 class="card-title">Contact Person Details</h5></div>
+										<div class="col-md-6">
+											<button class="pull-right btn btn-fill btn-xs btn-info top10 " type="button" ng-click="addContacts()">
+												ADD
+											</button>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12">
+											<div class="card-content">
+												<div class="row">
+													<div class="col-sm-4">
+														<div class="form-group">
+															<label>Name</label>
+															<input type="text" ng-model="contact.name" placeholder="Enter Name" class="form-control">
+														</div>
+													</div>
+													<div class="col-sm-3">
+														<div class="form-group">
+															<label>Phone</label>
+															<input type="text" ng-model="contact.phone" placeholder="Enter Phone" class="form-control" awnum>
+														</div>
+													</div>
+													<div class="col-sm-5">
+														<div class="form-group">
+															<label>Department</label>
+															<select class="selectpicker" ng-model="contact.department" ng-options="dept._id as dept.name for dept in departmentList | orderBy:'name'" data-style="btn btn-default btn-block" data-size="7" data-live-search="true">
+																<option value disabled>--choose department--</option>
+															</select>
+														</div>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-sm-7">
+														<div class="form-group">
+															<label>Email</label>
+															<input type="email" ng-model="contact.email" placeholder="Enter Email" class="form-control">
+														</div>
+													</div>
+													<div class="col-sm-5">
+														<div class="form-group"></div>
+															<label>Designation</label>
+															<select class="selectpicker" ng-model="contact.designation" ng-options="desig._id as desig.name for desig in designationList | orderBy:'name'" data-style="btn btn-default btn-block" data-size="7" data-live-search="true">
+																<option value disabled>--choose designation--</option>
+															</select>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-12">
+								<table ng-show="showContactTable" class="table">
+									<tr>
+										<th>Name</th>
+										<th>Designation</th>
+										<th>Department</th>
+										<th>Phone</th>
+										<th>E-mail</th>
+										<th>Actions</th>
+									</tr>
+									<tr ng-repeat="item in contactObj">
+										<td>{{item.name}}</td>
+										<td>{{item.designName}}</td>
+										<td>{{item.departName}}</td>
+										<td>{{item.phone}}</td>
+										<td>{{item.email}}</td>
+										<td><button ng-click="rmContact($index)">x</button></td>
+									</tr>
+								</table>
+							</div>
+							<div class="row">
+								<div class="col-md-12">
+									<button type="submit" class="btn btn-fill btn-wd btn-success pull-right" ng-click="submitted=true">{{buttons.title}}</button>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>		
+</div>

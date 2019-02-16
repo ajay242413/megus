@@ -1,0 +1,122 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-3">
+                            <div class="form-group">
+                                <select class="selectpicker" ng-model="client" ng-change="clientChange()">
+                                    <option value>--choose client--</option>
+                                    <option ng-repeat="cli in clients" ng-value="cli._id">{{cli.refId.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-show="showtable" class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-content">
+                    <table class="table table-bordered dataTable dtr-inline" datatable="ng" dt-options="vm.dtOptions" dt-instance="vm.dtInstance"  width="100%" dt-column-defs="vm.dtColumnDefs">
+                        <thead>
+                            <th><b>Date</b></th>
+                            <th><b>Invoice No.</b></th>
+                            <th><b>Invoice Value</b></th>
+                            <th><b>Amt. Realised</b></th>
+                            <th><b>Product Category</b></th>
+                            <th><b>Credit Period</b></th>
+                            <th><b>Due Date</b></th>
+                            <th><b>Age / Overdue</b></th>
+                            <th><b>Actual OS Amt.</b></th>
+                            <th><b>Virtual OS Amt.</b></th>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="result in results">
+                                <td>{{result.date}}</td>
+                                <td>{{result.invoice}}</td>
+                                <td class="text-right">{{result.amount.toFixed(2)}}</td>
+                                <td class="text-right">{{result.pending.toFixed(2)}}</td>
+                                <td>
+                                    <p ng-repeat="cat in result.category" style="font-size:13px; display:inline;">{{cat}}</p>
+                                </td>
+                                <td>{{result.period}}</td>
+                                <td>{{result.due}}</td>
+                                <td>{{result.age}}</td>
+                                <td class="text-right">{{result.received.toFixed(2)}}</td>
+                                <td class="text-right">{{result.received.toFixed(2)}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <style>
+    .cover {
+        background-size: cover;
+        display: table;
+        width: 100%;
+        height: 100%; /* For at least Firefox */
+        min-height: 100%;
+        text-align: center;
+    }
+    .cover-inner {
+        display: table-cell;
+        vertical-align: middle;
+    }
+    .inner {
+        padding: 30px;
+    }
+    header {
+        margin: 0 auto;
+        max-width: 800px;
+    }
+    .twisted{
+        transform: skew(-16deg, 1deg) ;
+        -webkit-transform: skew(-16deg, 1deg) ;
+        -moz-transform: skew(-16deg, 1deg) ;
+        -o-transform: skew(-16deg, 1deg) ;
+        -ms-transform: skew(-16deg, 1deg) ;
+    }
+    .headline {
+        font: 500 100px 'Megrim';
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+    .p1{
+        font: 200 48px 'Raleway';
+        letter-spacing: 1px;
+    }
+    .border-line {
+        border-top: 2px solid #262626;
+        margin: 15px auto;
+        max-width: 350px;
+    }
+    @media (max-width: 450px) {
+        .headline {
+            font-size: 70px;
+        }
+        .inner {
+            padding: 20px;
+        }
+        .cover {
+            background: rgba(235, 235, 220, 0.8);
+        }
+    }
+</style>
+<div class="cover">
+    <div class="cover-inner">      
+        <div class="twisted">
+            <div class="border-line"></div>
+            <h1 class="headline">coming soon</h1>
+            <div class="border-line"></div>
+        </div>
+        <div class="inner"></div>
+        <p class="p1">Stay Tuned For Updates.</p>
+    </div>
+</div> -->

@@ -1,0 +1,233 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-1">
+            <div class="form-group">
+                <label>Ledger Group</label>
+                <select class="selectpicker" data-style="btn btn-default btn-block" data-size="7" ng-model="groupName" ng-change="groupChange()">
+                    <option value disabled>-- Select Ledger Group --</option>
+                    <option ng-repeat="lgl in ledgerGroupList">{{lgl}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-4 col-md-offset-2">
+            <button ng-click="addNewLedger()" class="btn btn-default btn-fill pull-right" style="margin-top: 21px;">New Ledger</button>
+            <button ng-click="showEdit()" class="btn btn-primary btn-fill pull-right" style="margin-top: 21px;margin-right: 10px;">Edit / Delete</button>
+            <button ng-click="excelAlert('#ledgerTable')" class="btn btn-primary btn-fill pull-right" style="margin-top: 21px;margin-right: 10px;">Export</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-content">
+                    <table id="ledgerTable" class="table table-bordered table-striped dataTable dtr-inline" datatable="ng" dt-options="vm.dtOptions" dt-instance="vm.dtInstance"  width="100%" dt-column-defs="vm.dtColumnDefs">
+                        <thead>
+                            <th><b>#</b></th>
+                            <th><b>Ledger Name</b></th>
+                            <th><b>Ledger Group</b></th>
+                            <th class="text-center"><b>Ledger Balance</b></th>
+                            <th ng-show="showDelete"><b>Action</b></th>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="res in result">
+                                <td>{{$index + 1}}</td>
+                                <td ng-click="viewLedgerEntry(res)">{{res.refId.name}}</td>
+                                <td ng-init="ret = viewLedger(res.ledgerGroup)">{{ret}}</td>
+                                <td class="text-right">{{res.credit - res.debit}}</td>
+                                <td ng-show="showDelete" class="text-center">
+                                    <button ng-click="editLedger(res)" class="btn btn-simple btn-rotate btn-warning btn-icon table-action edit" title="Edit Ledger">
+                                        <b><i class="fa fa-pencil"></i></b>
+                                    </button>
+                                    <button ng-click="removeLedger(res)" class="btn btn-simple btn-rotate btn-danger btn-icon table-action trash" title="Delete Ledger">
+                                        <b><i class="fa fa-trash"></i></b>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="newLedgerModal.html">
+    <style>
+         @media (min-width: 992px){
+            .modal-lg{
+                width: 900px;
+            }
+            .modal-dialog{
+                width: 900px;
+                margin: 30px auto;
+            }
+        }
+    </style>
+	<div class="modal-content modal-lg">
+		<div class="modal-header" style="padding: 10px;">
+			<span class="modal-title" style="font-size: 20px;"><b>Add New Ledger</b></span>
+			<button type="button" class="close" data-dismiss="modal" ng-click="close()">Close</button>
+		</div>
+		<div class="modal-body">
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="form-group">
+                        <label><b>Ledger Name</b></label>
+                        <input type="text" class="form-control" ng-model="ledger.name" placeholder="Enter ledger name">
+                    </div>
+				</div>
+				<div class="col-sm-6">
+					<div class="form-group">
+		    			<label><b>Ledger Group</b></label>
+                        <select class="selectpicker" ng-model="ledger.ledgerGroup" data-size="5" data-live-Search="true" data-style="btn btn-default btn-block">
+                            <option value disabled>--choose ledger group--</option>
+                            <option ng-repeat-start="lg in ledgerGroups track by $index" ng-value="ln._id">{{lg.name}}</option>
+                            <option ng-repeat="lg1 in lg.subName track by $index" ng-value="lg1._id">--{{lg1.name}}--</option>
+                            <!-- <option ng-if="!ln.under" ng-repeat-start="ln in ledgerGroups track by $index" value="{{ln._id}}">{{ln.name}}</option>
+                            <option ng-if="ln1.under._id === ln._id" ng-repeat="ln1 in ledgerGroups track by $index" value="{{ln1._id}}">--{{ln1.name}}--</option> -->
+                            <option ng-if="0" ng-repeat-end></option>
+                        </select>
+		    		</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label><b>GSTIN</b></label>
+                        <input type="text" class="form-control" ng-model="ledger.gstin" placeholder="Enter GSTIN">
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                	<div class="form-group">
+                        <label><b>Pan Number</b></label>
+                        <input type="text" class="form-control" ng-model="ledger.panID" placeholder="Enter pan number">
+                    </div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="form-group">
+                        <label><b>Opening Balance(Credit)</b></label>
+                        <input type="text" class="form-control" ng-model="ledger.credit" ng-keyup="setDebit()" awnum>
+                    </div>
+				</div>
+				
+				<div class="col-sm-6">
+					<div class="form-group">
+                        <label><b>Opening Balance(Debit)</b></label>
+                        <input type="text" class="form-control" ng-model="ledger.debit" ng-keyup="setCredit()" awnum>
+                    </div>
+				</div>
+			</div>
+			<div class="row">
+                <div class="col-sm-8">
+					<div class="form-group">
+                        <label><b>Remarks</b></label>
+                        <textarea class="form-control" rows="3" ng-model="ledger.remark" placeholder="Enter remark"></textarea>
+                    </div>
+				</div>
+				<!-- <div class="col-sm-6">
+					<div class="form-group">
+                        <label><b>Financial Year</b></label>
+                        <select class="selectpicker" ng-model="ledger.finYear" data-size="5" data-style="btn btn-default btn-block">
+                            <option value disabled>--choose financial year--</option>
+                            <option ng-repeat="fy in actFinYear" value="{{fy._id}}">{{fy.finyear}}</option>
+                        </select>
+                    </div>
+                </div> -->
+			</div>
+			<div class="text-center">
+				<button class="btn btn-info btn-fill btn-wd" ng-click="saveLedger()">Create</button>
+			</div>
+			 <div class="clearfix"></div>
+		</div>  
+	</div>
+</script>
+
+<script type="text/ng-template" id="editLedgerModal.html">
+    <style>
+         @media (min-width: 992px){
+            .modal-lg{
+                width: 900px;
+            }
+            .modal-dialog{
+                width: 900px;
+                margin: 30px auto;
+            }
+        }
+    </style>
+    <div class="modal-content modal-lg">
+        <div class="modal-header" style="padding: 10px;">
+            <span class="modal-title" style="font-size: 20px;"><b>Edit Ledger</b></span>
+            <button type="button" class="close" data-dismiss="modal" ng-click="close()">Close</button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label><b>Ledger Name</b></label>
+                        <input type="text" class="form-control" ng-model="ledger.name" placeholder="Enter ledger name">
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label><b>Ledger Group</b></label>
+                        <select class="selectpicker" ng-model="ledger.ledgerGroup" data-size="5" data-style="btn btn-default btn-block">
+                            <option value disabled>--choose ledger group--</option>
+                            <option ng-if="!ln.under" ng-repeat-start="ln in ledgerGroups track by $index" value="{{ln._id}}">{{ln.name}}</option>
+                            <option ng-if="ln1.under._id === ln._id" ng-repeat="ln1 in ledgerGroups track by $index" value="{{ln1._id}}">--{{ln1.name}}--</option>
+                            <option ng-if="0" ng-repeat-end></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label><b>GSTIN</b></label>
+                        <input type="text" class="form-control" ng-model="ledger.gstin" placeholder="Enter GSTIN">
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label><b>Pan Number</b></label>
+                        <input type="text" class="form-control" ng-model="ledger.panID" placeholder="Enter pan number">
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label><b>Credit</b></label>
+                        <input type="text" class="form-control" ng-model="ledger.credit" awnum>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label><b>Debit</b></label>
+                        <input type="text" class="form-control" ng-model="ledger.debit" awnum>
+                    </div>
+                </div>
+            </div> -->
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="form-group">
+                        <label><b>Remarks</b></label>
+                        <textarea class="form-control" rows="3" ng-model="ledger.address" placeholder="Enter remark"></textarea>
+                    </div>
+                </div>
+                <!-- <div class="col-sm-6">
+                    <div class="form-group">
+                        <label><b>Financial Year</b></label>
+                        <select class="selectpicker" ng-model="ledger.finYear" data-size="5" data-style="btn btn-default btn-block">
+                            <option ng-repeat="fy in finYears" value="{{fy._id}}">{{fy.finyear}}</option>
+                        </select>
+                    </div>
+                </div> -->
+            </div>
+            <div class="text-center">
+                <button class="btn btn-info btn-fill btn-wd" ng-click="updateLedger()">Update</button>
+            </div>
+             <div class="clearfix"></div>
+        </div>  
+    </div>
+</script>

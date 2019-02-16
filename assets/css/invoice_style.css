@@ -1,0 +1,138 @@
+.model-large .modal-dialog {
+	width: 90% !important;
+  }
+	 
+	  table {
+		border-collapse: collapse;
+			}
+	  td.tb_head
+	  {
+	   font-size:13px;
+	   font-weight: bold;
+	   background-color: #007eae;
+	   color:white;
+	   padding: 5px;
+	   height: 15px;
+	   border-right: 1px solid  black;
+	   border-bottom: 1px solid black;
+	   align:center;
+	   }
+	 td
+	  {
+	  font-size:12px;
+	  }
+	body
+	{
+	font-family: "Trebuchet MS";
+	}
+	.container
+	{
+	border:1px solid black;
+	}
+	td.b_bottom
+	{
+	border-bottom:1px solid;
+	padding:5px;
+	}
+	td.i_header
+	{
+	border-bottom: 1px solid;
+	border-right: 1px solid;
+	border-left: 1px solid;
+	padding:2px;
+	width:5%;
+	}
+	td.i_header_r
+	{
+	border-bottom: 1px solid;
+	padding:2px;
+	width:35%;
+	}
+	td.i_header_l
+	{
+	border-bottom: 1px solid;
+	border-right: 1px solid;
+	padding:10px;
+	width:70%;
+	}
+	td.i_content
+	{
+	width:25%;
+	padding:3px;
+	}
+	td.i_content_r
+	{
+	width:25%;
+	padding:3px;
+	}
+	td.bottom
+	{
+	border-bottom: 1px solid;
+	}
+	td.right
+	{
+	border-right: 1px solid;
+	}
+	td.left
+	{
+	border-left: 1px solid;
+	}
+	td.top
+	{
+	border-top: 1px solid;
+	}
+	td.width50
+	{
+	width:50%;
+	}
+	td.width20
+	{
+	width:20%;
+	}
+	td.width60
+	{
+	width:60%;
+	}
+	td.width35
+	{
+	width:35%;
+	}
+	td.width4
+	{
+	width:4%;
+	}
+	td.font14
+	{
+	font-size:14px;
+	}
+	td.font14
+	{
+	font-size:14px;
+	}
+	td.align_c
+	{
+	align:center;
+	}
+	td.align_l
+	{
+	align:left;
+	}
+	td.align_r
+	{
+	align:right;
+	}
+	td.tb_data
+	{
+	padding-top: 6px;
+	border-right: 1px solid;
+	border-bottom: 1px solid;
+	}
+	td.signatory
+	{
+	padding-top:45px;
+	}
+	.invoice_container{
+		width:95%;
+		margin: auto;
+		border: 1px solid black;
+	}

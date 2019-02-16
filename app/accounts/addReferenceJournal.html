@@ -1,0 +1,233 @@
+<link rel="stylesheet" type="text/css" href="../custom/customInputList.css">
+<style>
+    input[list]::-webkit-calendar-picker-indicator {
+        display: none;
+    }
+</style>
+<div class="container-fluid">
+    <div class="text-right" style="margin-bottom: 5px;">
+        <button class="btn btn-default btn-wd btn-fill" ng-click="back()">Back</button>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="nav-tabs-navigation" style="margin-bottom: 10px;">
+                        <div class="nav-tabs-wrapper" style="margin-left: -12px;">
+                            <ul id="tabs" class="nav nav-tabs" style="font-size: 17px;" data-tabs="tabs">
+                                <li class="menu active">
+                                    <a href="#clientTab" data-toggle="tab" style="padding-bottom: 12px;">
+                                        <b>Client</b>
+                                    </a>
+                                </li>
+                                <li class="menu">
+                                    <a href="#supplierTab" data-toggle="tab" style="padding-bottom: 12px;">
+                                        <b>Supplier</b>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="clientTab">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="pull-left">
+                                        <h5><b>Voucher Number</b>&nbsp;:&nbsp;<u>{{refJournal.invoiceNumber}}</u></h5>
+                                    </div>
+                                    <div class="pull-right">
+                                        <h5><b>Voucher Date</b>&nbsp;:&nbsp;<u>{{refJournal.invoiceDate}}</u></h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-md-offset-3">
+                                    <div class="form-group">
+                                        <select class="selectpicker" data-size="auto" data-style="btn btn-default btn-block" data-live-search="true" ng-model="client" ng-change="search()">
+                                            <option value>--select client--</option>
+                                            <option ng-if="ledger.refType == 'client'" ng-repeat="ledger in ledgers track by $index" ng-value="ledger._id">{{ledger.refId.name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-left">
+                                <h5>Total&nbsp;:&nbsp;{{voucherAmount}}</h5>
+                            </div>
+                            <table class="table table-bordered dataTable" datatable="ng" dt-options="vm.dtOptions" dt-instance="vm.dtInstance"  width="100%" dt-column-defs="vm.dtColumnDefs">
+                                <thead>
+                                    <th><b>#</b></th>
+                                    <th><b>Product Category</b></th>
+                                    <th><b>Voucher Date</b></th>
+                                    <th><b>Voucher Type</b></th>
+                                    <th><b>Voucher No</b></th>
+                                    <th><b>Particulars</b></th>
+                                    <th><b>Voucher Amount</b></th>
+                                    <th><b>Adjustable Amount</b></th>
+                                    <th><b>Amount to Adjust</b></th>
+                                    <th><b>Use</b></th>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="voucher in vouchers">
+                                        <td>{{$index + 1}}</td>
+                                        <td>
+                                            <p ng-repeat="categ in invoice.refId.category" style="font-size:13px; display:inline;">{{categ.name}}</p>
+                                        </td>
+                                        <td>{{voucher.refId.invoiceDate}}</td>
+                                        <td ng-if="voucher.type == 'r'">Receipt</td>
+                                        <td ng-if="voucher.type == 'j'">Journal</td>
+                                        <td ng-if="voucher.type == 'e'">Credit</td>
+                                        <td ng-if="voucher.type == 'd'">Debit</td>
+                                        <td>{{voucher.refId.invoiceNumber}}</td>
+                                        <td>{{voucher.refId.remark}}</td>
+                                        <td class="text-right">{{voucher.credit}}</td>
+                                        <td class="text-right">{{voucher.pending}}</td>
+                                        <td><input type="text" class="editable-cell" ng-model="vouAmount[$index]" ng-keyup="voucherAmountChange()" placeholder="Enter Amount" awnum></td>
+                                        <td><input type="checkbox" ng-model="voucherCheck[$index]" ng-click="voucherAmountChange()"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="text-left">
+                                <h5>Balance Amount&nbsp;:&nbsp;{{invoiceAmount}}</h5>
+                            </div>
+                            <table class="table table-bordered dataTable" datatable="ng" dt-options="vm.dtOptions1" dt-instance="vm.dtInstance1"  width="100%" dt-column-defs="vm.dtColumnDefs1">
+                                <thead>
+                                    <th><b>#</b></th>
+                                    <th><b>Product Category</b></th>
+                                    <th><b>Invoice Date</b></th>
+                                    <th><b>Invoice Type</b></th>
+                                    <th><b>Invoice Number</b></th>
+                                    <th><b>Particulars</b></th>
+                                    <th><b>Invoice Amount</b></th>
+                                    <th><b>Amount Realised</b></th>
+                                    <th><b>Pending Amount</b></th>
+                                    <th><b>Current Payment</b></th>
+                                    <th><b>Use</b></th>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="invoice in invoices">
+                                        <td>{{$index + 1}}</td>
+                                        <td>
+                                            <p ng-repeat="categ in invoice.refId.category" style="font-size:13px; display:inline;">{{categ.name}}</p>
+                                        </td>
+                                        <td>{{invoice.refId.invoiceDate}}</td>
+                                        <td ng-if="invoice.type == 's'">Sales</td>
+                                        <td ng-if="invoice.type == 'j'">Journal</td>
+                                        <td ng-if="invoice.type == 'e'">Credit</td>
+                                        <td ng-if="invoice.type == 'd'">Debit</td>
+                                        <td>{{invoice.refId.invoiceNumber}}</td>
+                                        <td>{{invoice.refId.remark}}</td>
+                                        <td class="text-right">{{invoice.debit}}</td>
+                                        <td class="text-right">{{invoice.received}}</td>
+                                        <td class="text-right">{{invoice.pending}}</td>
+                                        <td><input type="text" class="editable-cell" ng-model="invAmount[$index]" ng-keyup="invoiceAmountChange()" placeholder="Enter Amount" awnum></td>
+                                        <td><input type="checkbox" ng-model="invoiceCheck[$index]" ng-click="invoiceAmountChange()"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="text-right">
+                                <button type="button" class="btn btn-wd btn-danger btn-fill" ng-click="cancel()">Cancel</button>
+                                <button type="button" class="btn btn-wd btn-success btn-fill" ng-click="save()">Save</button>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="supplierTab">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="pull-left">
+                                        <h5><b>Voucher Number</b>&nbsp;:&nbsp;<u>{{refJournal1.invoiceNumber}}</u></h5>
+                                    </div>
+                                    <div class="pull-right">
+                                        <h5><b>Voucher Date</b>&nbsp;:&nbsp;<u>{{refJournal1.invoiceDate}}</u></h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-md-offset-3">
+                                    <div class="form-group">
+                                        <select class="selectpicker" data-size="auto" data-style="btn btn-default btn-block" data-live-search="true" ng-model="supplier" ng-change="supplierChange()">
+                                            <option value>--select supplier--</option>
+                                            <option ng-if="ledger.refType == 'master_supplier'" ng-repeat="ledger in ledgers track by $index" ng-value="ledger._id">{{ledger.refId.name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-left">
+                                <h5>Total&nbsp;:&nbsp;{{invoiceAmount1}}</h5>
+                            </div>
+                            <table class="table table-bordered dataTable" datatable="ng" dt-options="vm.dtOptions2" dt-instance="vm.dtInstance2"  width="100%" dt-column-defs="vm.dtColumnDefs2">
+                                <thead>
+                                    <th><b>#</b></th>
+                                    <th><b>Product Category</b></th>
+                                    <th><b>Invoice Date</b></th>
+                                    <th><b>Invoice Type</b></th>
+                                    <th><b>Invoice Number</b></th>
+                                    <th><b>Particulars</b></th>
+                                    <th><b>Invoice Amount</b></th>
+                                    <th><b>Amount Realised</b></th>
+                                    <th><b>Pending Amount</b></th>
+                                    <th><b>Current Payment</b></th>
+                                    <th><b>Use</b></th>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="invoice in invoices1">
+                                        <td>{{$index + 1}}</td>
+                                        <td>
+                                            <p ng-repeat="categ in invoice.refId.category" style="font-size:13px; display:inline;">{{categ.name}}</p>
+                                        </td>
+                                        <td>{{invoice.refId.invoiceDate}}</td>
+                                        <td ng-if="invoice.type == 'p'">Purchase</td>
+                                        <td ng-if="invoice.type == 'j'">Journal</td>
+                                        <td ng-if="invoice.type == 'e'">Credit</td>
+                                        <td ng-if="invoice.type == 'd'">Debit</td>
+                                        <td>{{invoice.refId.invoiceNumber}}</td>
+                                        <td>{{invoice.refId.remark}}</td>
+                                        <td class="text-right">{{invoice.credit}}</td>
+                                        <td class="text-right">{{invoice.received}}</td>
+                                        <td class="text-right">{{invoice.pending}}</td>
+                                        <td><input type="text" class="editable-cell" ng-model="invAmount1[$index]" ng-keyup="invoiceAmountChange1()" placeholder="Enter Amount" awnum></td>
+                                        <td><input type="checkbox" ng-model="invoiceCheck1[$index]" ng-click="invoiceAmountChange1()"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="text-left">
+                                <h5>Balance Amount&nbsp;:&nbsp;{{voucherAmount1}}</h5>
+                            </div>
+                            <table class="table table-bordered dataTable" datatable="ng" dt-options="vm.dtOptions3" dt-instance="vm.dtInstance3"  width="100%" dt-column-defs="vm.dtColumnDefs3">
+                                <thead>
+                                    <th><b>#</b></th>
+                                    <th><b>Voucher Date</b></th>
+                                    <th><b>Voucher Type</b></th>
+                                    <th><b>Voucher No</b></th>
+                                    <th><b>Particulars</b></th>
+                                    <th><b>Voucher Amount</b></th>
+                                    <th><b>Adjustable Amount</b></th>
+                                    <th><b>Amount to Adjust</b></th>
+                                    <th><b>Use</b></th>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="voucher in vouchers1">
+                                        <td>{{$index + 1}}</td>
+                                        <td>{{voucher.refId.invoiceDate}}</td>
+                                        <td ng-if="voucher.type == 'y'">Payment</td>
+                                        <td ng-if="voucher.type == 'j'">Journal</td>
+                                        <td ng-if="voucher.type == 'e'">Credit</td>
+                                        <td ng-if="voucher.type == 'd'">Debit</td>
+                                        <td>{{voucher.refId.invoiceNumber}}</td>
+                                        <td>{{voucher.refId.remark}}</td>
+                                        <td class="text-right">{{voucher.debit}}</td>
+                                        <td class="text-right">{{voucher.pending}}</td>
+                                        <td><input type="text" class="editable-cell" ng-model="vouAmount1[$index]" ng-keyup="voucherAmountChange1()" placeholder="Enter Amount" awnum></td>
+                                        <td><input type="checkbox" ng-model="voucherCheck1[$index]" ng-click="voucherAmountChange1()"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="text-right">
+                                <button type="button" class="btn btn-wd btn-danger btn-fill" ng-click="cancel()">Cancel</button>
+                                <button type="button" class="btn btn-wd btn-success btn-fill" ng-click="save1()">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

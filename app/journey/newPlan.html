@@ -1,0 +1,126 @@
+<div class="container-fluid">
+    <div class="text-right" style="margin-bottom: 5px;">
+        <button class="btn btn-primary btn-fill" ng-click="back()">Back</button>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="row">
+                        <div class="pull-left">
+                            <p style="font-size: 15px;">&nbsp;&nbsp;&nbsp;<b>Plan No.</b>&nbsp;:&nbsp;<u>{{plan.invoiceNumber}}</u></p>
+                        </div>
+                        <div class="pull-right">
+                            <p style="font-size: 15px;"><b>DATE</b>&nbsp;:&nbsp;<u>{{plan.invoiceDate}}</u>&nbsp;&nbsp;</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Plan Name</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" ng-model="plan.name" placeholder="Enter Plan Name">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Visit Type</label>
+                                <div class="col-sm-9">
+                                    <select class="selectpicker" ng-model="plan.visitType">
+                                        <option value selected disabled>--choose visit type--</option>
+                                        <option ng-repeat="vt in visitTypes" value="{{vt._id}}">{{vt.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <p class="card-title" style="margin: 5px 0 8px 15px;font-size: 14px;">Dealers</p>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">State</label>
+                                        <div class="col-sm-9">
+                                            <select class="selectpicker" multiple title="--choose state--" data-live-search="true"  ng-model="stateFilter" data-actions-box="true" data-selected-text-format="count" data-size="5" ng-change="stateChange()">
+                                                <option ng-repeat="ste in states | orderBy:'name'" value="{{ste._id}}">{{ste.name}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><br>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">District</label>
+                                        <div class="col-sm-9">
+                                            <select class="selectpicker" multiple title="--choose district--" data-live-search="true"  ng-model="districtFilter" data-actions-box="true" data-selected-text-format="count" data-size="5" ng-change="districtChange()">
+                                                <option ng-repeat="district in districts | orderBy:'name'" value="{{district._id}}">{{district.name}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><br>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Area</label>
+                                        <div class="col-sm-9">
+                                            <select class="selectpicker" multiple title="--choose area--" data-live-search="true"  ng-model="areaFilter" data-actions-box="true" data-selected-text-format="count" data-size="5" ng-change="filterDealer()">
+                                                <option ng-repeat="area in areas" value="{{area._id}}">{{area.name}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><br>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Dealer Category</label>
+                                        <div class="col-sm-9">
+                                            <select class="selectpicker" multiple title="--choose dealer category--" data-live-search="true"  ng-model="categoryFilter" data-actions-box="true" data-selected-text-format="count" ng-change="filterDealer()" data-size="5">
+                                                <option ng-repeat="category in categories | orderBy:'name'" value="{{category._id}}">{{category.name}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><br>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Dealers</label>
+                                        <div class="col-sm-9">
+                                            <select class="selectpicker" multiple title="--choose dealer--" data-live-search="true"  ng-model="plan.dealer" data-actions-box="true" data-selected-text-format="count" data-size="5">
+                                                <option ng-repeat="dr in dealers | orderBy:'name'" value="{{dr._id}}">{{dr.name}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="col-sm-12">
+                                <div class="checkbox">
+                                    <input id="photo" type="checkbox" ng-model="plan.photo" ng-init="photo == false">
+                                    <label for="photo">Take Photo</label>
+                                </div>
+                                <div class="checkbox">
+                                    <input id="checkin" type="checkbox" ng-model="plan.checkin" ng-init="checkin == false">
+                                    <label for="checkin">Check IN</label>
+                                </div>
+                                <div class="checkbox">
+                                    <input id="label1" type="checkbox" ng-model="plan.label1" ng-init="label1 == false">
+                                    <label for="label1">{{customLabel1}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <button class="btn btn-success btn-wd btn-fill" ng-click="this[buttons.method]()">{{buttons.title}}</button>
+                    </div><br>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

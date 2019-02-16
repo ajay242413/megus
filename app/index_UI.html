@@ -1,0 +1,759 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <style>
+        /* Paste this css to your style sheet file or under head tag */
+        /* This only works with JavaScript, if it's not present, don't show loader */
+        .no-js #loader { display: none;  }
+        .js #loader { display: block; position: absolute; left: 100px; top: 0; }
+        .se-pre-con {
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background: url(../images/network.svg) center no-repeat #fff;
+        }
+    </style>
+    <!-- fonts.googleapis.com/css?family=Open+Sans -->
+    <link href="../css/fonts/Open+Sans.css" rel="stylesheet">
+    <!-- fonts.googleapis.com/css?family=Montserrat -->
+    <link href="../css/fonts/Montserrat.css" rel="stylesheet">
+    <meta charset="utf-8"/>
+    <link rel="apple-touch-icon" sizes="76x76" href="../img/unosales_final.jpg">
+    <link rel="icon" type="image/jpg" sizes="96x96" href="../img/unosales_final.jpg">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>Unosales</title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="viewport" content="width=device-width" />
+    <!-- Bootstrap core CSS     -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet" />
+    <!--  Paper Dashboard core CSS    -->
+    <link href="../css/paper-dashboard.css" rel="stylesheet"/>
+ 
+    <link href="../css/c3.min.css" rel="stylesheet"/>
+   
+    <!--  CSS for Demo Purpose, don't include it in your project     -->
+    <!-- <link href="../css/demo.css" rel="stylesheet" /> -->
+     <!-- Fonts and icons  -->
+    <link href="../css/font-awesome/font-awesome.min.css" rel="stylesheet"/>
+    <!-- fonts.googleapis.com/css?family=Muli:400,300 -->
+    <link href="../css/fonts/400,300.css" rel="stylesheet">
+    <link href="../css/themify-icons.css" rel="stylesheet">
+    <!-- jasny-bootstrap -->
+    <link rel="stylesheet" href="../jasny-bootstrap/css/jasny-bootstrap.min.css">
+    <!-- datatable css -->
+    <link rel="stylesheet" href="app-content/datatable/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="app-content/datatable/buttons/buttons.dataTables.css">
+    <link rel="stylesheet" href="app-content/datatable/colvis/dataTables.colVis.css">
+    <link rel="stylesheet" href="app-content/datatable/responsive/responsive.dataTables.min.css">
+    <link rel="stylesheet" href="app-content/datatable/bootstrap/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="app-content/datatable/css/angular-datatables.css">
+    <!-- angucomplete-alt css -->
+    <link rel="stylesheet" href="app-content/css/angucomplete-alt.css">
+    <!-- MULTISELCT WITH CHECKBOX -->
+    <link href="app-content/jquery/jquery-ui.css" rel="stylesheet" />
+    <link href="app-content/multiselect/style/jquery.multiselect.css" rel="stylesheet"/>
+    <script src="app-content/jquery/jquery-3.2.1.min.js"></script>
+    <script src="app-content/jquery/modernizr.js"></script>
+    <script>
+        //paste this code under head tag or in a seperate js file.
+        // Wait for window load
+        $(window).on('load', function () {
+            // Animate loader off screen
+            $(".se-pre-con").fadeOut("slow");
+        });
+    </script>
+    <!-- angular-ui calendar scripts -->
+    <script src="app-content/ui_calendar/moment.js"></script>
+    <script src="app-content/ui_calendar/moment-timezone.min.js"></script>
+    <!--  Full Calendar Plugin    -->
+    <script src="../js/fullcalendar.min.js"></script>
+    <!-- angular scripts -->
+    <script src="app-content/angular/angular.min.js"></script>
+    <script src="app-content/ui-router/angular-ui-router.js"></script>
+    <script src="app-content/bootstrap/ui-bootstrap-tpls-1.1.2.min.js"></script>
+    <script src="app-content/angular/angular-filter.min.js"></script>
+    <!-- Kathir P API code -->
+    <!-- <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyDWrScY45AG-9GeHvvZVvJM96JmnLCFacY&libraries=places"></script> -->
+    <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyBIFxDZqelbjKnipWpjsKks65jiZ6Szpfs&libraries=places""></script>
+    <!-- <script src="app-content/angularjs-google-maps-master/dist/angularjs-google-maps.js"></script> -->
+    <!-- Customerly Integration Code -->
+    <script>
+       window.customerlySettings = {
+           app_id: "ed6da4a6"
+       };
+       !function(){function e(){var e=t.createElement("script");
+       e.type="text/javascript",e.async=!0,
+       e.src="https://widget.customerly.io/widget/ed6da4a6";
+       var r=t.getElementsByTagName("script")[0];r.parentNode.insertBefore(e,r)}
+       var r=window,t=document,n=function(){n.c(arguments)};
+       r.customerly_queue=[],n.c=function(e){r.customerly_queue.push(e)},
+       r.customerly=n,r.attachEvent?r.attachEvent("onload",e):r.addEventListener("load",e,!1)}();
+    </script>
+	<script>
+        $(document).ready(function () {
+            $("ul li a p ").click(function(event) {               
+                $(".collapse").collapse('hide');
+            });
+        });
+    </script>
+</head>
+<body>
+    <!-- loading page animation -->
+	<div class="se-pre-con"></div>
+	<!-- loading ends -->
+    <div class="wrapper">
+        <div class="sidebar" data-background-color="brown" data-active-color="danger">
+        <!--
+            Tip 1: you can change the color of the sidebar's background using: data-background-color="white | brown"
+            Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
+        -->
+            <div class="logo" style="padding: 5px 25px;height: 98px;">
+                <a style="opacity: 1;" href="https://unosales.com" class="simple-text logo-mini">
+                    <div class="logo-image-small">
+                        <img src="../img/faces/rsz_unosales_final.png"><br>
+                    </div>
+                </a>
+                <!-- <a href="" class="simple-text logo-normal">
+                    Unosales
+                </a> -->
+            </div>
+            <div class="sidebar-wrapper">
+                <div class="user" style="padding-bottom: 10px;margin-top: 8px;">
+                    <div class="info">
+                        <div class="photo">
+                            <img ng-src="{{logoUrl}}" />
+                        </div>
+
+                        <a data-toggle="collapse" href="#collapseExample" class="collapsed">
+                            <span>
+                                {{rootProfile.name}}
+                                <b class="caret"></b>
+                            </span>
+                        </a>
+                        <div class="clearfix"></div>
+
+                        <div class="collapse" id="collapseExample">
+                            <ul class="nav">
+                                <li ng-class="{active : stateObj.menu1  === 'myProfile'}">
+                                    <a ui-sref="myProfile">
+                                        <span class="sidebar-mini"><i class="ti-id-badge"></i></span>
+                                        <span class="sidebar-normal">My Profile</span>
+                                    </a>
+                                </li>
+                                <li ng-class="{active : stateObj.menu1  === 'settings'}">
+                                    <a ui-sref="settings">
+                                        <span class="sidebar-mini"><i class="ti-settings"></i></span>
+                                        <span class="sidebar-normal">Settings</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <ul class="nav">
+                    <li ng-class="{active : stateObj.menu1  === 'dashboard'}">
+                        <a ui-sref="dashboard">
+                            <i style="margin-right:10px;" class="ti-home"></i>
+                            <p>Dashboard</p>
+                        </a>
+                    </li>
+
+                    <!-- INVOICES -->
+                    <li ng-class="{active : stateObj.menu1  === 'invoice'}">
+                        <a data-toggle="collapse" href="#invoiceComponent">
+                            <i style="margin-right:10px;" class="ti-clipboard"></i>
+                            <p>Invoice<b class="caret"></b></p>
+                        </a>
+                        <div class="collapse" id="invoiceComponent">
+                            <ul class="nav">
+                                <li ng-if="rootUser.userType == 'b'" ng-class="{active : stateObj.menu2  === 'purchaseDc'}">
+                                    <a ui-sref="invoice.purchaseDc">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-shopping-cart"></i></span>
+                                        <span class="sidebar-normal">Purchase DC</span>
+                                    </a>
+                                </li>
+                                <li ng-class="{active : stateObj.menu2  === 'purchase'}">
+                                    <a ui-sref="invoice.purchase">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-shopping-cart"></i></span>
+                                        <span class="sidebar-normal">Purchase</span>
+                                    </a>
+                                </li>
+                                <li ng-if="rootUser.userType == 'd'" ng-class="{active : stateObj.menu2  === 'saleDc'}">
+                                    <a ui-sref="invoice.saleDc">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-shopping-cart"></i></span>
+                                        <span class="sidebar-normal">Sale DC</span>
+                                    </a>
+                                </li>
+                                <li ng-class="{active : stateObj.menu2  === 'sales'}">
+                                    <a ui-sref="invoice.sales">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-bag"></i></span>
+                                        <span class="sidebar-normal">Sales</span>
+                                    </a>
+                                </li>
+                                <li ng-class="{active : stateObj.menu2  === 'stockTransfer'}">
+                                    <a ui-sref="invoice.stockTransfer">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-share"></i></span>
+                                        <span class="sidebar-normal">Stock Transfer</span>
+                                    </a>
+                                </li>
+                                <li ng-class="{active : stateObj.menu2  === 'saleReturn'}">
+                                    <a ui-sref="invoice.saleReturn">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-reload"></i></span>
+                                        <span class="sidebar-normal">Sale Return</span>
+                                    </a>
+                                </li>
+                                <li ng-class="{active : stateObj.menu2  === 'purchaseReturn'}">
+                                    <a ui-sref="invoice.purchaseReturn">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-loop"></i></span>
+                                        <span class="sidebar-normal">Purchase Return</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <!-- INVENTORY -->
+                    <li ng-class="{active : stateObj.menu1  === 'inventory'}">
+                        <a data-toggle="collapse" href="#inventoryComponent">
+                            <i style="margin-right:10px;" class="ti-book"></i>
+                            <p>Inventory<b class="caret"></b></p>
+                        </a>
+                        <div class="collapse" id="inventoryComponent">
+                            <ul class="nav">
+                                <li ng-class="{active : stateObj.menu2  === 'stockStatus'}">
+                                    <a ui-sref="inventory.stockStatus">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-file"></i></span>
+                                        <span class="sidebar-normal">Stock Status</span>
+                                    </a>
+                                </li>
+                                <li ng-class="{active : stateObj.menu2  === 'stockRegister'}">
+                                    <a ui-sref="inventory.stockRegister">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-files"></i></span>
+                                        <span class="sidebar-normal">Stock Register</span>
+                                    </a>
+                                </li>
+                                <li ng-class="{active : stateObj.menu2  === 'imeiLookup'}">
+                                    <a ui-sref="inventory.imeiLookup">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-reload"></i></span>
+                                        <span class="sidebar-normal">IMEI Lookup</span>
+                                    </a>
+                                </li>
+                                <li ng-if="rootUser.userType == 'b'" ng-class="{active : stateObj.menu2  === 'imeiActivation'}">
+                                    <a ui-sref="inventory.imeiActivation">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-flag-alt"></i></span>
+                                        <span class="sidebar-normal">IMEI Activation</span>
+                                    </a>
+                                </li>
+                                <li ng-if="rootUser.userType == 'd'" ng-class="{active : stateObj.menu2  === 'dcStatus'}">
+                                    <a ui-sref="inventory.dcStatus">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-flag-alt"></i></span>
+                                        <span class="sidebar-normal">DC Status</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <!-- IN-SIGHTS -->
+                    <li ng-class="{active : stateObj.menu1  === 'insight'}">
+                        <a data-toggle="collapse" href="#insightComponent">
+                            <i style="margin-right:10px;" class="ti-comments"></i>
+                            <p>In-Sights<b class="caret"></b></p>
+                        </a>
+                        <div class="collapse" id="insightComponent">
+                            <ul class="nav">
+                                <li ng-if="rootUser.userType == 'b'" ng-class="{active : stateObj.menu2  === 'rdsStock'}">
+                                    <a ui-sref="insight.rdsStock">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-view-list"></i></span>
+                                        <span class="sidebar-normal">Overview</span>
+                                    </a>
+                                </li>
+                                <li ng-class="{active : stateObj.menu2  === 'rdsPrimary'}">
+                                    <a ui-sref="insight.rdsPrimary">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-view-list"></i></span>
+                                        <span class="sidebar-normal">Models</span>
+                                    </a>
+                                </li>
+                                <li ng-class="{active : stateObj.menu2  === 'rdsSecondary'}">
+                                    <a ui-sref="insight.rdsSecondary">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-view-list"></i></span>
+                                        <span class="sidebar-normal">Dealers</span>
+                                    </a>
+                                </li>
+                                <li ng-if="rootUser.userType == 'b'" ng-class="{active : stateObj.menu2  === 'rdsTertiary'}">
+                                    <a ui-sref="insight.rdsTertiary">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-view-list"></i></span>
+                                        <span class="sidebar-normal">RDS</span>
+                                    </a>
+                                </li>
+                                <!-- <li ng-if="rootUser.userType == 'b'" ng-class="{active : stateObj.menu2  === 'rdsStock'}">
+                                    <a ui-sref="insight.rdsStock">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-view-list"></i></span>
+                                        <span class="sidebar-normal">RDS Stock</span>
+                                    </a>
+                                </li>
+                                <li ng-if="rootUser.userType == 'b'" ng-class="{active : stateObj.menu2  === 'dealerStock'}">
+                                    <a ui-sref="insight.dealerStock">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-view-list"></i></span>
+                                        <span class="sidebar-normal">Dealer Stock</span>
+                                    </a>
+                                </li>
+                                <li ng-if="rootUser.userType == 'b'" ng-class="{active : stateObj.menu2  === 'dealerTertiary'}">
+                                    <a ui-sref="insight.dealerTertiary">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-view-list"></i></span>
+                                        <span class="sidebar-normal">Dealer Tertiary</span>
+                                    </a>
+                                </li> -->
+                            </ul>
+                        </div>
+                    </li>
+
+                    <!-- ACCOUNTS -->
+                    <li ng-class="{active : stateObj.menu1  === 'accounts'}">
+                        <a data-toggle="collapse" href="#accountsComponents">
+                            <i style="margin-right:10px;" class="ti-agenda"></i>
+                            <p>Accounts
+                                <b class="caret"></b>
+                            </p>
+                        </a>
+                        <div class="collapse" id="accountsComponents">
+                            <ul class="nav">
+                                <li ng-class="{active : stateObj.menu2  === 'ledger'}">
+                                    <a ui-sref="accounts.ledger">
+                                       <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-wallet"></i></span>
+                                       <span class="sidebar-normal">Ledger</span>
+                                    </a>
+                                </li>
+                                <li ng-class="{active : stateObj.menu2  === 'receipt'}">
+                                    <a ui-sref="accounts.receipt">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-receipt" ></i></span>
+                                        <span class="sidebar-normal">Receipt</span>
+                                    </a>
+                                </li>
+                                <li ng-class="{active : stateObj.menu2  === 'payment'}">
+                                    <a ui-sref="accounts.payment">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-receipt"></i></span>
+                                        <span class="sidebar-normal">Payment</span>
+                                    </a>
+                                </li>
+                                <li ng-class="{active : stateObj.menu2  === 'journal'}">
+                                    <a ui-sref="accounts.journal">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-receipt"></i></span>
+                                        <span class="sidebar-normal">Journal</span>
+                                    </a>
+                                </li>
+                                <li ng-class="{active : stateObj.menu2  === 'contra'}">
+                                    <a ui-sref="accounts.contra">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-receipt" ></i></span>
+                                        <span class="sidebar-normal">Contra</span>
+                                    </a>
+                                </li>
+                                <li ng-class="{active : stateObj.menu2  === 'debit'}">
+                                    <a ui-sref="accounts.debit">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-receipt" ></i></span>
+                                        <span class="sidebar-normal">Debit Note</span>
+                                    </a>
+                                </li>
+                                <li ng-class="{active : stateObj.menu2  === 'credit'}">
+                                    <a ui-sref="accounts.credit">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-receipt"></i></span>
+                                        <span class="sidebar-normal">Credit Note</span>
+                                    </a>
+                                </li>
+                                <li ng-class="{active : stateObj.menu2  === 'referenceJournal'}">
+                                    <a ui-sref="accounts.referenceJournal">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-receipt"></i></span>
+                                        <span class="sidebar-normal">Reference Journal</span>
+                                    </a>
+                                </li>
+                                <li ng-class="{active : stateObj.menu2  === 'cheque'}">
+                                    <a ui-sref="accounts.cheque">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-receipt"></i></span>
+                                        <span class="sidebar-normal">Cheque</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <!-- HR -->
+                    <li ng-class="{active : stateObj.menu1  === 'HR'}">
+                        <a data-toggle="collapse" href="#hrComponents">
+                            <i style="margin-right:10px;" class="ti-user"></i>
+                            <p>HR<b class="caret"></b></p>
+                        </a>
+                        <div class="collapse" id="hrComponents">
+                            <ul class="nav">
+                                <li ng-class="{active : stateObj.menu2  === 'employee'}">
+                                    <a ui-sref="HR.employee">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-user"></i></span>
+                                        <span class="sidebar-normal">Employees</span>
+                                    </a>
+                                </li>
+                                <li ng-class="{active : stateObj.menu2  === 'expenses'}">
+                                    <a ui-sref="HR.expenses">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-envelope"></i></span>
+                                        <span class="sidebar-normal">Expenses</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <!-- JOURNEY -->
+                    <li ng-class="{active : stateObj.menu1  === 'journey'}">
+                        <a data-toggle="collapse" href="#journeyComponents">
+                            <i style="margin-right:10px;" class="ti-direction-alt"></i>
+                            <p>Journey<b class="caret"></b></p>
+                        </a>
+                        <div class="collapse" id="journeyComponents">
+                            <ul class="nav">
+                                <li ng-class="{active : stateObj.menu2  === 'liveTracking'}">
+                                    <a ui-sref="journey.liveTracking">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-map-alt" ></i></span>
+                                        <span class="sidebar-normal">Live Tracking</span>
+                                    </a>
+                                </li>
+                                <li ng-class="{active : stateObj.menu2  === 'journeyPlan'}">
+                                    <a ui-sref="journey.journeyPlan">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-calendar"></i></span>
+                                        <span class="sidebar-normal">Journey Plan</span>
+                                    </a>
+                                </li>
+                                <li ng-class="{active : stateObj.menu2  === 'journeyReports'}">
+                                    <a ui-sref="journey.journeyReports">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-bar-chart-alt" ></i></span>
+                                        <span class="sidebar-normal">Reports</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <!-- MASTERS -->
+                    <li ng-class="{active : stateObj.menu1  === 'master'}">
+                        <a data-toggle="collapse" href="#masterComponents">
+                           <i style="margin-right:10px;" class="ti-package"></i><p>Master<b class="caret"></b></p>
+                        </a>
+                        <div class="collapse" id="masterComponents">
+                            <ul class="nav">
+                                <li ng-if="rootUser.userType == 'b'" ng-class="{active : stateObj.menu2  === 'client'}">
+                                    <a ui-sref="master.client">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-user"></i></span>
+                                        <span class="sidebar-normal">Client</span>
+                                    </a>
+                                </li>
+                                <li ng-if="rootUser.userType == 'd'" ng-class="{active : stateObj.menu2  === 'dealer'}">
+                                    <a ui-sref="master.dealer">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-user" ></i></span>
+                                        <span class="sidebar-normal">Dealer</span>
+                                    </a>
+                                </li>
+                                <li ng-class="{active : stateObj.menu2  === 'supplier'}">
+                                    <a ui-sref="master.supplier">
+                                       <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-user"></i></span>
+                                       <span class="sidebar-normal">Supplier</span>
+                                    </a>
+                                </li>
+                                <li ng-class="{active : stateObj.menu2  === 'generalMaster'}">
+                                    <a ui-sref="master.generalMaster">
+                                       <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-write"></i></span>
+                                       <span class="sidebar-normal">General Master</span>
+                                    </a>
+                                </li>
+                                <li ng-class="{active : stateObj.menu2  === 'product'}">
+                                    <a ui-sref="master.product">
+                                       <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-mobile"></i></span>
+                                       <span class="sidebar-normal">Products</span>
+                                    </a>
+                                </li>
+                                <li ng-class="{active : stateObj.menu2  === 'accounts'}">
+                                    <a ui-sref="master.accounts">
+                                       <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-write"></i></span>
+                                       <span class="sidebar-normal">Accounts</span>
+                                    </a>
+                                </li>
+                                <li ng-class="{active : stateObj.menu2  === 'hr'}">
+                                   <a ui-sref="master.hr">
+                                       <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-write"></i></span>
+                                       <span class="sidebar-normal">HR</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <!--- REPORTS -->
+                    <li ng-class="{active : stateObj.menu1  === 'reports'}">
+                        <a data-toggle="collapse" href="#reportComponents">
+                            <i style="margin-right:10px;" class="ti-panel"></i>
+                            <p>Reports<b class="caret"></b></p>
+                        </a>
+                        <div class="collapse" id="reportComponents">
+                            <ul class="nav">
+                                <li ng-class="{active : stateObj.menu2  === 'rdsPrimaryReport'}">
+                                    <a ui-sref="reports.rdsPrimaryReport">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-shopping-cart"></i></span>
+                                        <span class="sidebar-normal">RDS</span>
+                                    </a>
+                                </li>
+                                <li ng-class="{active : stateObj.menu2  === 'dealerStockReport'}">
+                                    <a ui-sref="reports.dealerStockReport">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-shopping-cart"></i></span>
+                                        <span class="sidebar-normal">Dealer</span>
+                                    </a>
+                                </li>
+                                <li ng-class="{active : stateObj.menu2  === 'geo'}">
+                                    <a ui-sref="reports.geo">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-shopping-cart"></i></span>
+                                        <span class="sidebar-normal">GEO</span>
+                                    </a>
+                                </li>
+                                <li ng-class="{active : stateObj.menu2  === 'scheme'}">
+                                    <a ui-sref="reports.scheme">
+                                        <span class="sidebar-mini" style="margin-left: 12px; margin-right: 3px;"><i class="ti-shopping-cart"></i></span>
+                                        <span class="sidebar-normal">Scheme</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="main-panel">
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-minimize">
+                        <button id="minimizeSidebar" class="btn btn-fill btn-icon"><i class="ti-more-alt"></i></button>
+                    </div>
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar bar1"></span>
+                            <span class="icon-bar bar2"></span>
+                            <span class="icon-bar bar3"></span>
+                        </button>
+                        <a class="navbar-brand">{{stateObj.headerName}}</a>
+                    </div>
+                    <div class="collapse navbar-collapse">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="dropdown">
+                              <a href="/login" class="btn-rotate">
+                                    <i class="ti-power-off"></i>
+                                    <p class="hidden-md hidden-lg">
+                                        Sign out
+                                    </p>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="content">
+                <ui-view layout="row" flex> </ui-view>
+            </div>
+
+            <footer class="footer">
+                <div class="container-fluid">
+                    <nav class="pull-left">
+
+                    </nav>
+                    <div class="copyright pull-right">
+                        &copy; <script>document.write()</script>, made with <i class="ti-heart heart"></i> by <a>Ionstar</a>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+</body>
+<script src="app.js"></script>
+<!-- SERVICES -->
+<script src="app-services/user.service.js"></script>
+<script src="app-services/flash.service.js"></script>
+<script src="app-services/hr.service.js"></script>
+<script src="app-services/expenses.service.js"></script>
+<script src="app-services/client.service.js"></script>
+<script src="app-services/inventory.service.js"></script>
+<script src="app-services/voucher.service.js"></script>
+<script src="app-services/master.service.js"></script>
+<script src="app-services/setting.service.js"></script>
+<script src="app-services/excel.service.js"></script>
+<!-- DASHBOARD CONTROLLERS-->
+<script src="dashboard/dashboard.controller.js"></script>
+<script src="dashboard/myProfile.controller.js"></script>
+<script src="dashboard/settings.controller.js"></script>
+<!-- INVOICE CONTROLLERS-->
+<script src="invoice/purchaseDc.controller.js"></script>
+<script src="invoice/addPurchaseDc.controller.js"></script>
+<script src="invoice/dcPurchaseBill.controller.js"></script>
+<script src="invoice/saleDc.controller.js"></script>
+<script src="invoice/addSaleDc.controller.js"></script>
+<script src="invoice/dcSaleBill.controller.js"></script>
+<script src="invoice/sales.controller.js"></script>
+<script src="invoice/addSales.controller.js"></script>
+<script src="invoice/rdsSales.controller.js"></script>
+<script src="invoice/editInvoiceController.js"></script>
+<script src="invoice/viewInvoice.controller.js"></script>
+<script src="invoice/purchase.controller.js"></script>
+<script src="invoice/addPurchase.controller.js"></script>
+<script src="invoice/importSalesBill.controller.js"></script>
+<script src="invoice/stockTransfer.controller.js"></script>
+<script src="invoice/addStockTransfer.controller.js"></script>
+<script src="invoice/viewTransfer.controller.js"></script>
+<script src="invoice/purchaseAck.controller.js"></script>
+<script src="invoice/ackPurchase.controller.js"></script>
+<script src="invoice/saleReturn.controller.js"></script>
+<script src="invoice/addSaleReturn.controller.js"></script>
+<script src="invoice/purchaseReturn.controller.js"></script>
+<!-- INVENTORY CONTROLLERS-->
+<script src="inventory/stockStatus.controller.js"></script>
+<script src="inventory/stockRegister.controller.js"></script>
+<script src="inventory/IMEIlookup.controller.js"></script>
+<script src="inventory/IMEIactivation.controller.js"></script>
+<script src="inventory/dcStatus.controller.js"></script>
+<!-- IN-SIGHTS CONTROLLERS-->
+<script src="insight/rdsPrimary.controller.js"></script>
+<script src="insight/rdsSecondary.controller.js"></script>
+<script src="insight/rdsTertiary.controller.js"></script>
+<script src="insight/rdsStock.controller.js"></script>
+<script src="insight/dealerStock.controller.js"></script>
+<script src="insight/dealerTertiary.controller.js"></script>
+<!-- ACCOUNTS CONTROLLERS-->
+<script src="accounts/receipt.controller.js"></script>
+<script src="accounts/addReceipt.controller.js"></script>
+<script src="accounts/payment.controller.js"></script>
+<script src="accounts/addPayment.controller.js"></script>
+<script src="accounts/ledger.controller.js"></script>
+<script src="accounts/ledgerStatement.controller.js"></script>
+<script src="accounts/journal.controller.js"></script>
+<script src="accounts/contra.controller.js"></script>
+<script src="accounts/debit.controller.js"></script>
+<script src="accounts/credit.controller.js"></script>
+<script src="accounts/referenceJournal.controller.js"></script>
+<script src="accounts/addReferenceJournal.controller.js"></script>
+<script src="accounts/viewReferenceJournal.controller.js"></script>
+<script src="accounts/cheque.controller.js"></script>
+<!-- HR CONTROLLERS-->
+<script src="HR/employee.controller.js"></script>
+<script src="HR/addEmployee.controller.js"></script>
+<script src="HR/expenses.controller.js"></script>
+<!-- JOURNEY CONTROLLERS -->
+<script src="journey/liveTracking.controller.js"></script>
+<script src="journey/journeyPlan.controller.js"></script>
+<script src="journey/journeyReports.controller.js"></script>
+<script src="journey/newPlan.controller.js"></script>
+<script src="journey/bulkAssign.controller.js"></script>
+<!-- MASTER CONTROLLERS-->
+<script src="master/general.controller.js"></script>
+<script src="master/product.controller.js"></script>
+<script src="master/supplier.controller.js"></script>
+<script src="master/newSupplier.controller.js"></script>
+<script src="master/hr.controller.js"></script>
+<script src="master/client.controller.js"></script>
+<script src="master/dealer.controller.js"></script>
+<script src="master/addClient.controller.js"></script>
+<script src="master/addDealer.controller.js"></script>
+<script src="master/importDealer.controller.js"></script>
+<script src="master/accounts.controller.js"></script>
+<!-- REPORT CONTROLLERS-->
+<!-- <script src="reports/report.controller.js"></script> -->
+<script src="reports/geo.controller.js"></script>
+<script src="report/rdsPrimaryReport.controller.js"></script>
+<script src="report/rdsSecondaryReport.controller.js"></script>
+<script src="report/rdsActivationReport.controller.js"></script>
+<script src="report/rdsStockReport.controller.js"></script>
+<script src="report/dealerStockReport.controller.js"></script>
+<script src="report/performance.controller.js"></script>
+<script src="report/schema.controller.js"></script>
+<!-- DIRECTIVES -->
+<script src="app-directives/monthDirective.js"></script>
+<script src="app-directives/dynamic-number.js"></script>
+<script src="app-directives/fileModel.js"></script>
+<script src="app-content/ui_calendar/calendar.js"></script>
+<script src="app-directives/vs-google-autocomplete.js"></script>
+<script src="app-directives/angucomplete-alt.min.js"></script>
+<!-- <script arc="app-directives/googleplaces.js"></script> -->
+<!--   Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js   -->
+<script src="../js/perfect-scrollbar.min.js" type="text/javascript"></script>
+<script src="../js/bootstrap.min.js" type="text/javascript"></script>
+<!--  Forms Validations Plugin -->
+<script src="../js/jquery.validate.min.js"></script>
+<!-- Promise Library for SweetAlert2 working on IE -->
+<script src="../js/es6-promise-auto.min.js"></script>
+<!--  Date Time Picker Plugin is included in this js file -->
+<script src="../js/bootstrap-datetimepicker.js"></script>
+<!--  Select Picker Plugin -->
+<script src="../js/bootstrap-selectpicker.js"></script>
+<!--  Switch and Tags Input Plugins -->
+<script src="../js/bootstrap-switch-tags.js"></script>
+<!-- Circle Percentage-chart -->
+<!-- <script src="../js/jquery.easypiechart.min.js"></script> -->
+<!--  Charts Plugin -->
+<script src="../js/c3.min.js"></script> 
+<script src="../js/d3-5.4.0.min.js" charset="utf-8"></script>
+<script src="../js/jquery-jvectormap.js"></script>
+
+<!-- angular ui calendar scripts -->
+<script src="app-content/ui_calendar/gcal.js"></script>
+<!--  Notifications Plugin    -->
+<script src="../js/bootstrap-notify.js"></script>
+<!-- Sweet Alert 2 plugin -->
+<script src="../js/sweetalert2.js"></script>
+<!-- Vector Map plugin -->
+<!-- <script src="../js/jquery-jvectormap.js"></script> -->
+<!-- Wizard Plugin    -->
+<script src="../js/jquery.bootstrap.wizard.min.js"></script>
+<!-- datatable script -->
+<!-- <script src="../js/jquery.datatables.js"></script> -->
+<script src="app-content/datatable/js/jquery.dataTables.min.js"></script>
+<script src="app-content/datatable/buttons/dataTables.buttons.js"></script>
+<script src="app-content/datatable/buttons/buttons.colVis.js"></script>
+<script src="app-content/datatable/buttons/buttons.flash.js"></script>
+<script src="app-content/datatable/buttons/buttons.html5.js"></script>
+<script src="app-content/datatable/buttons/buttons.print.js"></script>
+<script src="app-content/datatable/colvis/dataTables.colVis.js"></script>
+<script src="app-content/datatable/lightColumnFilter/dataTables.lightColumnFilter.min.js"></script>
+<script src="app-content/datatable/responsive/dataTables.responsive.min.js"></script>
+<!-- angular datatable scripts -->
+<script src="app-content/datatable/angular/angular-datatables.min.js"></script>
+<script src="app-content/datatable/buttons/angular-datatables.buttons.min.js"></script>
+<script src="app-content/datatable/colvis/angular-datatables.colvis.min.js"></script>
+<script src="app-content/datatable/lightColumnFilter/angular-datatables.light-columnfilter.min.js"></script>
+<script src="app-content/datatable/bootstrap/angular-datatables.bootstrap.min.js"></script>
+<!-- MULTISELCT WITH CHECKBOX -->
+<script src="app-content/multiselect/jquery.multiselect.js"></script>
+<script src="app-content/jquery/jquery-ui.js"></script>
+<!-- File saver -->
+<script src="app-content/fileSaver/FileSaver.js"></script>
+<script src="app-content/fileSaver/xlsx.full.min.js"></script>
+<!-- <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script> -->
+<script src="app-content/fileSaver/jszip.min.js"></script>
+<!-- Paper Dashboard PRO Core javascript and methods for Demo purpose -->
+<!-- jasny-bootstrap -->
+<script src="../jasny-bootstrap/js/jasny-bootstrap.min.js"></script>
+<script src="../js/paper-dashboard.js"></script>
+<!-- Paper Dashboard PRO DEMO methods, don't include it in your project! -->
+<script src="../js/demo.js"></script>
+<!-- <script type="text/javascript">
+    $(document).ready(function() {
+       /* demo.initOverviewDashboard();*/
+        demo.initCirclePercentage();
+    });
+</script> -->
+</html>
+<!-- <script>
+    window.addEventListener("beforeunload", function(e){
+        var confirmationMessage = 'It looks like you have been editing something. ' + 'If you leave before saving, your changes will be lost.';
+        //Gecko + IE
+        (e || window.event).returnValue = confirmationMessage;
+        //Gecko + Webkit, Safari, Chrome etc.
+        return confirmationMessage;
+    });
+</script> -->

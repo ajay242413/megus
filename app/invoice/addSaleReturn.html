@@ -1,0 +1,336 @@
+<style>
+    .btn-sq-xs {
+        width: 25px !important;
+        height: 25px !important;
+        padding:2px;
+    }
+    input[list]::-webkit-calendar-picker-indicator {
+        display: none;
+    }
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        margin: 0; 
+    }
+</style>
+<link rel="stylesheet" type="text/css" href="../custom/customInputList.css">
+<div class="container-fluid">
+    <div class="text-right" style="margin-bottom: 5px;">
+        <button class="btn btn-primary btn-fill btn-wd" ng-click="back()">Back</button>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="row">
+                        <div class="pull-left">
+                            <h5>&nbsp;&nbsp;<b>INVOICE #</b>&nbsp;:&nbsp;<u>{{salesReturn.invoiceNumber}}</u></h5>
+                        </div>
+                        <div class="pull-right">
+                            <h5><b>DATE</b>&nbsp;:&nbsp;</b><u>{{salesReturn.invoiceDate}}</u>&nbsp;&nbsp;</h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="form-group" style="margin-bottom: 5px;">
+                                <label>Dealer</label>
+                                <select class="selectpicker" ng-model="salesReturn.party" ng-change="clientChange()" data-size="5" ng-disabled="disableInput" data-live-search="true" data-style="btn btn-default btn-block">
+                                    <option value>--choose dealer--</option>
+                                    <option ng-repeat="cli in clients | orderBy:'name'" value="{{cli._id}}">{{cli.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group" style="margin-bottom: 5px;">
+                                <label>{{vm.spName[0]}}</label>
+                                <select class="selectpicker" ng-model="salesReturn.salePoint" data-style="btn btn-default btn-block">
+                                    <option value disabled>--Choose {{vm.spName[0]}}--</option>
+                                    <option ng-repeat="sp in salePoints | orderBy:'name'" value="{{sp._id}}">{{sp.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label>Product Category</label>
+                                <select multiple class="selectpicker" ng-model="category" title="--select product category" ng-change="categoryChange()">
+                                    <option ng-repeat="categ in categories | orderBy:'name'" ng-value="categ._id">{{categ.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="col-sm-4">
+                                <div class="radio">
+                                    <input type="radio" id="radio1" ng-model="salesReturn.paymentType" value="cash" ng-init="salesReturn.paymentType = 'cash'">
+                                    <label for="radio1">Cash</label>
+                                </div>
+                                <div class="radio">
+                                    <input type="radio" id="radio2" ng-model="salesReturn.paymentType" value="credit">
+                                    <label for="radio2">Credit</label>
+                                </div>
+                            </div>
+                            <div ng-if="salesReturn.paymentType == 'credit'" class="col-sm-6">
+                                <label>Credit Days</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" ng-model="salesReturn.creditDays" placeholder="Enter" awnum>
+                                    <span class="input-group-addon">days</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-bordered table-hover" width="100%">
+                        <thead>
+                            <th>#</th>
+                            <th>Model / Item Name</th>
+                            <th>Rate</th>
+                            <th>Quantity</th>
+                            <th>Taxable</th>
+                            <th ng-show="showSCGST" class="text-center">SGST</th>
+                            <th ng-show="showSCGST" class="text-center">CGST</th>
+                            <th ng-show="showIGST" class="text-center">IGST</th>
+                            <th>Total</th>
+                            <th>{{vm.spName[1]}}</th>
+                            <th>Action</th>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="prod in vm.products" ng-include="getProduct(prod)"></tr>
+                            <tr>
+                                <td class="text-right">{{vm.products.length + 1}}</td>
+                                <td>
+                                    <input type="text" class="editable-cell" list="itemSearch" ng-model="product.nameId" placeholder="search" ng-change="itemChange()">
+                                    <datalist id="itemSearch">
+                                        <option ng-if="0" ng-repeat-start="pi in purchaseItems track by $index">
+                                            <option ng-if="pi.name.itemName == item.itemName" ng-repeat="item in prodItemClone | orderBy:'itemName' track by $index">{{item.itemName}}</option>
+                                        <option ng-if="0" ng-repeat-end></option>
+                                    </datalist>
+                                </td>
+                                <td class="text-right">
+                                    <input type="text" class="editable-cell" style="text-align: right;" ng-model="product.cost" ng-keyup="valueChange()" awnum>
+                                </td>
+                                <td class="text-right">
+                                    <input type="text" class="editable-cell" style="text-align: right;" ng-model="product.quantity" ng-keyup="valueChange()" awnum>
+                                </td>
+                                <td class="text-right">{{product.quantity * product.cost}}</td>
+                                <td ng-show="showSCGST">
+                                    <input type="text" class="editable-cell" style="text-align: right;" ng-model="product.sgst" ng-keyup="valueChange()" awnum>
+                                </td>
+                                <td ng-show="showSCGST" class="text-right">
+                                    <input type="text" class="editable-cell" style="text-align: right;" ng-model="product.sgst" ng-keyup="valueChange()" awnum>
+                                </td>
+                                <td ng-show="showIGST" class="text-right">
+                                    <input type="text" class="editable-cell" style="text-align: right;" ng-model="product.igst" ng-keyup="valueChange()" awnum>
+                                </td>
+                                <td class="text-right">{{product.total}}</td>
+                                <td class="text-right">{{prod.IMEINumber.length}}</td>
+                                <td class="text-center">
+                                    <button ng-click="openIMEInoDialog(product)" class="btn btn-simple btn-warning btn-icon" title="Select {{vm.spName[1]}}">
+                                        <i class="fa fa-list"></i>
+                                    </button>
+                                    <button ng-click="addProduct()" class="btn btn-simple btn-success btn-icon" title="Add Item">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- Display -->
+                    <script type="text/ng-template" id="display">
+                        <td class="text-right">{{$index + 1}}</td>
+                        <td>{{prod.nameId}}</td>
+                        <td class="text-right">{{prod.cost}}</td>
+                        <td class="text-right">{{prod.quantity}}</td>
+                        <td class="text-right">{{prod.quantity * prod.cost}}</td>
+                        <td ng-show="showSCGST" class="text-right">{{prod.sgst}}</td>
+                        <td ng-show="showSCGST" class="text-right">{{prod.sgst}}</td>
+                        <td ng-show="showIGST" class="text-right">{{prod.igst}}</td>
+                        <td class="text-right">{{prod.total}}</td>
+                        <td class="text-right">{{prod.IMEINumber.length}}</td>
+                        <td class="text-center">
+                            <button ng-click="deleteProduct($index)" class="btn btn-simple btn-danger btn-icon btn-lg btn-rotate">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </script>
+                    <div class="form-horizontal">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Remarks : </label>
+                                    <div class="col-sm-10">
+                                        <textarea class="form-control" placeholder="Enter the remarks for this purchase" rows="4" ng-model="salesReturn.remark"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <center>
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td style="font-size: 18px;">Total Quantity</td>
+                                                <td style="font-size: 18px;padding-left: 10px;padding-right: 10px;">:</td>
+                                                <td style="font-size: 18px;padding-left: 10px;padding-right: 10px;text-align: right;">{{salesReturn.totalQuantity}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-size: 18px;">Gross Amount</td>
+                                                <td style="font-size: 18px;padding-left: 10px;padding-right: 10px;">:</td>
+                                                <td style="font-size: 18px;padding-left: 10px;padding-right: 10px;text-align: right;">{{grossAmount}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-size: 18px;">Adjustments</td>
+                                                <td style="font-size: 18px;padding-left: 10px;padding-right: 10px;">:</td>
+                                                <td style="font-size: 18px;padding-left: 10px;padding-right: 10px;text-align: right;">
+                                                    <input class="form-control" style="width: 80px !important;height: 28px !important;padding:2px;" type="text" ng-model="salesReturn.rndOFF" ng-change="adjusTotal()" awnum>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th style="font-size: 18px;">Net Value</th>
+                                                <th style="font-size: 18px;padding-left: 10px;padding-right: 10px;padding-left: 10px;padding-right: 10px;">:</th>
+                                                <th style="font-size: 18px;padding-left: 10px;padding-right: 10px;text-align: right;">{{salesReturn.netValue}}</th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </center>
+                            </div>
+                        </div>
+                    </div><br>
+                    <div class="text-right">
+                        <button type="button" class="btn btn-wd btn-fill btn-danger" ng-click="cancelSalesReturn()">Cancel</button>
+                        <button type="button" class="btn btn-wd btn-success" ng-click="saveSalesReturn()">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/ng-template" id="IMEInoContent.html">
+    <style>
+        @media (min-width: 992px){
+            .modal-lg{
+                width: 900px;
+            }
+            .modal-dialog{
+                width: 900px;
+                margin: 30px auto;
+            }
+        }
+
+        input[list]::-webkit-calendar-picker-indicator {
+            display: none;
+        }
+        
+        .upload-btn-wrapper {
+          position: relative;
+          overflow: hidden;
+          display: inline-block;
+        }
+
+        .columnError {
+            background-color: #fc9383;
+        }
+
+        .btn1 {
+          border: 2px solid gray;
+          color: gray;
+          background-color: white;
+          padding: 8px 20px;
+          border-radius: 8px;
+          font-size: 10px;
+          font-weight: bold;
+        }
+
+        .upload-btn-wrapper input[type=file] {
+          font-size: 100px;
+          position: absolute;
+          left: 0;
+          top: 0;
+          opacity: 0;
+        }
+
+        .edit-border{
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
+    <div class="modal-content modal-lg">
+        <div class="modal-header" style="padding: 10px;">
+            <span class="modal-title" style="font-size: 20px;"><b>Select({{prodIte.itemName}}) {{spName[1]}}</b></span>
+            <button type="button" class="close" data-dismiss="modal" ng-click="close()">Close</button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-4 col-md-offset-1">
+                    <div class="radio">
+                        <input id="select" type="radio" ng-model="imeiInputType" ng-value="true">
+                        <label for="select">Select {{spName[1]}}</label> <br>
+                    </div>
+                </div>
+                <div class="col-md-4 col-md-offset-2">
+                    <div class="radio">
+                        <input id="enter" type="radio" ng-model="imeiInputType" ng-value="false">
+                        <label for="enter">Enter {{spName[1]}}</label>
+                    </div>
+                </div>
+            </div><b></b>
+            <div ng-if="imeiInputType == true" class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <select multiple class="selectpicker" title="--Select {{spName[1]}}--" data-style="btn btn-warning btn-block" data-selected-text-format="count" data-size="10" data-live-search="true" ng-model="selectedIMEI" ng-change="selectIMEI(selectedIMEI)" data-max-options="{{quantity}}">
+                        <option ng-if="prodIte.prodName.IMEINumCount == 1" ng-repeat="isn in itemIMEIno track by $index" ng-value="$index">{{isn[0]}}</option>
+                        <option ng-if="prodIte.prodName.IMEINumCount != 1" ng-repeat="isn in itemIMEIno track by $index" ng-value="$index">{{isn.join(' / ')}}</option>
+                    </select>
+                </div>
+            </div><br>
+            <div ng-if="imeiInputType == true" class="row">
+                <form name="IMEIForm" ng-submit="IMEIForm.$valid && save()">
+                    <center>
+                        <table style="width:70%" class="edit-border">
+                            <thead>
+                                <th class="edit-border"><center>Quantity</center></th>
+                                <th class="edit-border" ng-repeat="IMEIcount in getNumber(prodIte.prodName.IMEINumCount) track by $index">
+                                    <center>{{spName[1] }}{{$index+1}}</center>
+                                </th>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="gn in getNumber(quantity) track by $index">
+                                    <td class="edit-border"><center>{{$index + 1}}</center></td>
+                                    <td class="edit-border" ng-repeat="IMEIcount in getNumber(prodIte.prodName.IMEINumCount) track by $index" ng-class="{columnError : IMEIForm.IMEINumber_{{$parent.$index}}_{{$index}}.$invalid && IMEIForm.IMEINumber_{{$parent.$index}}_{{$index}}.$dirty}">
+                                        <input type="text" class="editable-cell" style="width: 100%;" name="IMEINumber_{{$parent.$index}}_{{$index}}" ng-model="IMEINumber[$parent.$index][$index]" ng-maxlength="prodIte.IMEINumLen" ng-minlength="prodIte.IMEINumLen" ng-required="true" ng-disabled="true">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </center><br>
+                    <div class="text-right">
+                        <button class="btn">save</button>
+                    </div>
+                </form>
+            </div>
+            <div ng-if="imeiInputType == false" class="row">
+                <form name="IMEIForm" ng-submit="IMEIForm.$valid && saveIMEI()">
+                    <center>
+                        <table style="width:70%" class="edit-border">
+                            <thead>
+                                <th class="edit-border"><center>Quantity</center></th>
+                                <th class="edit-border" ng-repeat="IMEIcount in getNumber(prodIte.prodName.IMEINumCount) track by $index">
+                                    <center>{{spName[1]}}{{$index+1}}</center>
+                                </th>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="gn in getNumber(quantity) track by $index">
+                                    <td class="edit-border"><center>{{$index + 1}}</center></td>
+                                    <td class="edit-border" ng-repeat="IMEIcount in getNumber(prodIte.prodName.IMEINumCount) track by $index" ng-class="{columnError : IMEIForm.IMEINumber1_{{$parent.$index}}_{{$index}}.$invalid && IMEIForm.IMEINumber1_{{$parent.$index}}_{{$index}}.$dirty}">
+                                        <!-- <input type="text" class="editable-cell" style="width: 100%;" name="IMEINumber1_{{$parent.$index}}_{{$index}}" ng-model="IMEINumber1[$parent.$index][$index]" ng-maxlength="prodIte.IMEINumLen" ng-minlength="prodIte.IMEINumLen" ng-required="true" ng-keyup="searchIMEI(IMEINumber1[$parent.$index][$index],$parent.$index,$index)" ng-disabled="$index != 0"> -->
+                                        <input type="text" class="editable-cell" style="width: 100%;" name="IMEINumber1_{{$parent.$index}}_{{$index}}" ng-model="IMEINumber1[$parent.$index][$index]" ng-required="true" ng-keyup="searchIMEI(IMEINumber1[$parent.$index][$index],$parent.$index,$index)" ng-disabled="$index != 0">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </center><br>
+                    <div class="text-right">
+                        <button class="btn">save</button>
+                    </div>
+                </form>
+            </div>
+        </div>  
+    </div>
+</script>

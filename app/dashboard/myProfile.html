@@ -1,0 +1,154 @@
+<style>
+    .p-image {
+        position: absolute;
+        top: 5%;
+        color: #666666;
+        transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+    }
+    .p-image:hover {
+        transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+    }
+    .upload-button {
+        font-size: 1.2em;
+    }
+    .upload-button:hover {
+        transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+        color: #999;
+    }
+    @media (min-width: 992px){
+        .p-image {
+            right: 35%;
+        }
+    }
+    @media (max-width: 992px){
+        .p-image {
+            right: 45%;
+        }
+    }
+</style>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-4 col-md-5">
+            <div class="card card-user">
+                <div class="image">
+                    <img src="../img/background.jpg" alt="..."/>
+                </div>
+                <div class="card-content">
+                    <div class="author">
+                        <img class="avatar border-white profile-pic" style="margin-bottom: 0px;" src="{{defaultPhoto}}" alt="..."/>
+                        <div class="p-image">
+                            <i class="fa fa-camera upload-button"></i>
+                            <input type="file" class="upload-file" style="display: none;" ng-model="photo" file-model="photo" accept="image/*"/>
+                        </div>
+                        <h4 class="card-title" style="margin-top: 0px;">{{companyName}}<br />
+                      </h4>
+                    </div>
+                    <div class="form-group">
+                        <label>Login Email</label>
+                        <input type="email" ng-model="user.email" class="form-control" placeholder="Email" disabled value="{{user.email}}">
+                    </div>
+                    <label>Password</label>
+                    <div class="input-group">
+                        <input type="password" ng-model="user.password" class="form-control" placeholder="Password" value="{{user.password}}">
+                        <span class="input-group-btn">
+                            <button class="btn btn-fill btn-primary" ng-click="updatePasswd()">Change</button>
+                        </span>
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
+        <div class="col-lg-8 col-md-7">
+            <div class="card">
+                <div class="card-content">
+                    <form name="profileForm" ng-submit="updateProfile()">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Name</label>
+                                    <input type="text" class="form-control" name="name" placeholder="NAME" ng-model="profile.name" ng-required="true">
+                                    <center><span ng-show="submitted && profileForm.name.$error.required">This is required field</span></center>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Country</label>
+                                    <select class="selectpicker" data-live-search="true" data-style="btn btn-default btn-block" data-size="5" ng-model="profile.country">
+                                        <option value disabled>COUNTRY</option>
+                                        <option ng-repeat="country in countryList" ng-value="country._id">{{country.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">  
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>State</label>
+                                    <select class="selectpicker" data-live-search="true" data-style="btn btn-default btn-block" data-size="5" ng-model="profile.state">
+                                        <option value disabled>STATE</option>
+                                        <option ng-repeat="state in stateList" ng-value="state._id">{{state.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>City</label>
+                                    <select class="selectpicker" data-live-search="true" data-style="btn btn-default btn-block" data-size="5" ng-model="profile.city">
+                                        <option value disabled>CITY</option>
+                                        <option ng-repeat="city in cityList" ng-value="city._id">{{city.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Area</label>
+                                    <select class="selectpicker" data-live-search="true" data-style="btn btn-default btn-block" data-size="5" ng-model="profile.area">
+                                        <option value disabled>AREA</option>
+                                        <option ng-repeat="area in areaList" ng-value="area._id">{{area.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Pincode</label>
+                                    <input type="text" class="form-control" placeholder="PINCODE" ng-model="profile.pincode">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>Address</label>
+                                <textarea class="form-control" rows="4" placeholder="ADDRESS" ng-model="profile.address"></textarea>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-info btn-fill btn-wd" ng-click="submitted=true">Update</button>
+                        </div>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+$(document).ready(function() { 
+    var readURL = function(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('.profile-pic').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    $(".upload-file").on('change', function(){
+        readURL(this);
+    });
+    $(".upload-button").on('click', function() {
+        $(".upload-file").click();
+    });
+});
+</script>

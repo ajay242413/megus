@@ -1,0 +1,88 @@
+<div class="container-fluid">
+    <div class="text-right" style="margin-bottom: 5px;">
+        <button class="btn btn-info btn-fill btn-wd" ng-click="back()">Back</button>
+        <button class="btn btn-primary btn-fill btn-wd" ng-click="excelAlert()">Export To Excel</button>
+    </div>
+    <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="row">
+                            <div class="col-md-4 col-md-offset-1">
+                                <h5><b>Invoice Number</b>&nbsp;:&nbsp;<u>{{data.invoiceNumber}}</u></h5>
+                            </div>
+                            <div class="col-md-4 col-md-offset-2">
+                                <h5><b>Invoice Date</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;<u>{{data.invoiceDate}}</u></h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-md-offset-1">
+                                <h5><b>Ref. Bill Number</b>:&nbsp;&nbsp;{{data.billno}}</h5>
+                            </div>
+                            <div class="col-md-4 col-md-offset-2">
+                                <h5><b>Ref. Bill Date</b>&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;{{data.billDate}}</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div ng-if="partyName == 'Supplier'" class="col-md-4 col-md-offset-1">
+                                <h5><b>Supplier</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;{{data.party.name}}</h5>
+                            </div>
+                            <div ng-if="partyName == 'Client'" class="col-md-4 col-md-offset-1">
+                                <h5><b>Client</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;{{data.party.name}}</h5>
+                            </div>
+                            <div class="col-md-4 col-md-offset-2">
+                                <h5><b>{{spName[0]}}</b>&nbsp;&nbsp;:&nbsp;&nbsp;{{data.salePoint.name}}</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-md-offset-1">
+                                <h5><b>Remarks</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;{{data.remark}}</h5>
+                            </div>
+                            <div class="col-md-4 col-md-offset-2">
+                                <h5><b>Total Quantity</b>&nbsp;&nbsp;:&nbsp;&nbsp;{{data.totalQuantity}}</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-md-offset-1">
+                                <h5></h5>
+                            </div>
+                            <div class="col-md-4 col-md-offset-2">
+                                <h5><b>Net Value</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;{{data.netValue}}</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-bordered table-hover dtr-inline" width="100%" >
+                                    <thead>
+                                        <th class="text-center"><b>#</b></th>
+                                        <th class="text-center"><b>Item Name</b></th>
+                                        <th class="text-center"><b>Quantity</b></th>
+                                        <th class="text-center"><b>Rate</b></th>
+                                        <th class="text-center"><b>Taxable</b></th>
+                                        <th ng-show="showSCGST" class="text-center"><b>SGST</b></th>
+                                        <th ng-show="showSCGST" class="text-center"><b>CGST</b></th>
+                                        <th ng-show="showIGST" class="text-center"><b>IGST</b></th>
+                                        <th class="text-center"><b>Total</b></th>
+                                    </thead>
+                                    <tbody>
+                                        <tr  ng-repeat="item in data.item">
+                                            <td>{{$index + 1}}</td>
+                                            <td>{{item.name.itemName}}</td>
+                                            <td class="text-right">{{item.quantity}}</td>
+                                            <td class="text-right">{{item.cost}}</td>
+                                            <td class="text-right">{{item.quantity * item.cost}}</td>
+                                            <td ng-show="showSCGST" class="text-right">{{item.sgst}}</td>
+                                            <td ng-show="showSCGST" class="text-right">{{item.cgst}}</td>
+                                            <td ng-show="showIGST" class="text-right">{{item.igst}}</td>
+                                            <td class="text-right">{{item.total}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

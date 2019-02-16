@@ -1,0 +1,113 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <label>Employee Department</label>
+                            <select multiple class="selectpicker" ng-model="department" ng-change="departmentChange()" title="select department" data-size="5" data-live-search="true" data-actions-box="true"  data-selected-text-format="count">
+                                <option ng-repeat="dl in departmentLists" ng-value="dl._id">{{dl.name}}</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-3">
+                            <label>Employee</label>
+                            <select multiple class="selectpicker" ng-model="employee" title="select employee" data-size="5" data-live-search="true" data-actions-box="true"  data-selected-text-format="count">
+                                <option ng-repeat="el in employeeLists" ng-value="el._id">{{el.name}}</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label>From Date</label>
+                                <input type="text" class="form-control datepicker" id="fromDate" placeholder="select from date">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label>To Date</label>
+                                <input type="text" class="form-control datepicker" id="toDate" placeholder="select to date">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <label>Journey Visit Type</label>
+                            <select multiple class="selectpicker" ng-model="visitType" ng-change="visitTypeChange()" title="select visit type" data-size="5" data-live-search="true" data-actions-box="true"  data-selected-text-format="count">
+                                <option ng-repeat="vl in visitTypeLists" ng-value="vl._id">{{vl.name}}</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="checkbox">
+                                <input id="label1" type="checkbox" ng-model="label1" ng-init="label1 == false">
+                                <label for="label1">{{customLabel1}}</label>
+                            </div>
+                            <div class="checkbox">
+                                <input id="photo" type="checkbox" ng-model="photo" ng-init="photo == false">
+                                <label for="photo" style="margin-right: 15%;">Photo</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="checkbox">
+                                <input id="checkin" type="checkbox" ng-model="checkin" ng-init="checkin == false">
+                                <label for="checkin">Checkin</label>
+                            </div>
+                            <div class="checkbox">
+                                <input id="remark" type="checkbox" ng-model="remark" ng-init="remark == false">
+                                <label for="remark" style="margin-right: 15%;">Remarks</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="checkbox">
+                                <input id="dealer" type="checkbox" ng-model="dealer" ng-init="dealer == false">
+                                <label for="dealer">Show Dealer</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <button class="btn btn-default" ng-click="getPlanEvents()">Refresh</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-content">
+                    <table class="table table-striped table-bordered dataTable dtr-inline" datatable="ng" dt-options="dtOptions" dt-instance="dtInstance"  width="100%" dt-column-defs="dtColumnDefs">
+                        <thead>
+                            <tr>
+                                <th>S.No.</th>
+                                <th>Department</th>
+                                <th>Employee</th>
+                                <th>Date</th>
+                                <th>Visit Type</th>
+                                <th ng-show="checkin">Check In</th>
+                                <th ng-show="dealer">Dealer Name</th>
+                                <th ng-show="label1">{{customLabel1}}</th>
+                                <th ng-show="photo">Photo</th>
+                                <th ng-show="remark">Remarks</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="he in hrEvents">
+                                <td>{{$index + 1}}</td>
+                                <td>{{he.hr.department.name}}</td>
+                                <td>{{he.hr.name}}</td>
+                                <td>{{he.start}}</td>
+                                <td>{{he.plan.visitType.name}}</td>
+                                <td ng-show="checkin"></td>
+                                <td ng-show="dealer">
+                                    <p ng-repeat="dr in he.plan.dealer" style="font-size: 12px;">{{dr.name}}</p>
+                                </td>
+                                <td ng-show="label1"></td>
+                                <td ng-show="photo"></td>
+                                <td ng-show="remark"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

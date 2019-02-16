@@ -1,0 +1,14 @@
+<div class="container-fluid">
+    <div class="text-right" style="margin-bottom: 5px;">
+        <button ng-click="addEmployee()" class="btn btn-default btn-fill btn-wd">Add Employee</button>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-content">
+                    <table ng-if="authorized" datatable="" dt-columns="dtColumns" dt-options="dtOptions" dt-instance="vm.dtInstance" class="table table-striped table-bordered dataTable dtr-inline"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

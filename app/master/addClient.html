@@ -1,0 +1,1043 @@
+<style>
+    input[list]::-webkit-calendar-picker-indicator {
+        display: none;
+    }
+
+    .btn-sq-xs {
+        width: 25px !important;
+        height: 25px !important;
+        padding: 2px;
+    }
+
+    .editable-cell {
+        border: none;
+        background-color: inherit;
+    }
+
+    input.editable-cell {
+        padding-left: 5px;
+        width: 100%;
+        height: 100%;
+    }
+
+    input.editable-cell:focus {
+        outline: 1px solid #777;
+    }
+</style>
+<div class="container-fluid">
+    <div class="text-right" style="margin-bottom: 5px;">
+        <button ng-click="backClient()" class="btn btn-default btn-fill btn-wd">Dashboard</button>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="nav-tabs-navigation" style="margin-bottom: 10px;">
+                        <div class="nav-tabs-wrapper" style="margin-left: -12px;">
+                            <ul id="tabs" class="nav nav-tabs" style="font-size: 17px;" data-tabs="tabs">
+                                <li class="menu active" id="general">
+                                    <a href="#generalTab" data-toggle="tab" style="padding-bottom: 12px;">
+                                        <b>General</b>
+                                    </a>
+                                </li>
+                                <li class="menu" id="business">
+                                    <a href="#businessTab" data-toggle="tab" style="padding-bottom: 12px;">
+                                        <b>Business</b>
+                                    </a>
+                                </li>
+                                <li class="menu" id="proof">
+                                    <a href="#proofTab" data-toggle="tab" style="padding-bottom: 12px;">
+                                        <b>Proof</b>
+                                    </a>
+                                </li>
+                                <li class="menu" id="setting">
+                                    <a href="#settingTab" data-toggle="tab" style="padding-bottom: 12px;">
+                                        <b>Settings</b>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <form name="vm.clientForm" ng-submit="this[buttons.method]()">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="generalTab">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-content" style="padding:5px 5px 0px 5px;">
+                                                <div class="row">
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <label>Name of the Firm</label>
+                                                            <input type="text" class="form-control" ng-model="client.name" name="name" placeholder="Enter Name" ng-required="true">
+                                                            <center> 
+                                                                <span ng-show="(vm.submitted && vm.clientForm.name.$error.required) || (vm.clientForm.name.$invalid && vm.clientForm.name.$dirty)">
+                                                                    <font class="text-danger">
+                                                                        <b>This is required field</b>
+                                                                    </font>
+                                                                </span>
+                                                            </center>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <label>Type</label>
+                                                            <select class="selectpicker" ng-model="client.firmType" name="firmType" data-style="btn btn-default btn-block" ng-change="firmTypeChange()"
+                                                                ng-required="true">
+                                                                <option ng-repeat="ft in firmTypes  | orderBy:'name'" value="{{ft.value}}">{{ft.name}}</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <label>GSTIN</label>
+                                                            <input type="text" class="form-control" name="gstin" placeholder="Enter GST" ng-model="client.gstin" ng-maxlength="15" ng-minlength="15" ng-pattern="/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/" ng-required="true">
+                                                            <center>
+                                                                <span ng-show="(vm.submitted && vm.clientForm.gstin.$error.required) || (vm.clientForm.gstin.$invalid && vm.clientForm.gstin.$dirty)">
+                                                                    <font class="text-danger">
+                                                                        <b>Enter Valid GSTIN</b>
+                                                                    </font>
+                                                                </span>
+                                                            </center>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <label>PAN Number</label>
+                                                            <input type="text" class="form-control" name="panID" placeholder="Enter PAN Number" ng-model="client.panID" ng-maxlength="10" ng-minlength="10" ng-pattern="/^[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}$/" ng-required="true">
+                                                            <center>
+                                                                <span ng-show="(vm.submitted && vm.clientForm.panID.$error.required) || (vm.clientForm.panID.$invalid && vm.clientForm.panID.$dirty)">
+                                                                    <font class="text-danger">
+                                                                        <b>Enter Valid PAN Number</b>
+                                                                    </font>
+                                                                </span>
+                                                            </center>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div>
+                                                <div ng-switch="client.firmType" class="col-md-6">
+                                                    <p ng-switch-when="propertiorship" class="card-title" style="margin-left: -14px;">
+                                                        <b>Propertiorship Company</b>
+                                                    </p>
+                                                    <p ng-switch-when="partnership" class="card-title" style="margin-left: -14px;">
+                                                        <b>Partnership Company</b>
+                                                    </p>
+                                                    <p ng-switch-when="pvtlmdcompany" class="card-title" style="margin-left: -14px;">
+                                                        <b>PVT LTD Company</b>
+                                                    </p>
+                                                </div>
+                                                <div ng-if="client.firmType != 'propertiorship'" class="col-md-6">
+                                                    <button type="button" class="pull-right card-title" ng-click="addFirm()">Add</button>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="card-content" style="padding:5px 5px 0px 5px;">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="row">
+                                                                    <div class="col-sm-6">
+                                                                        <div class="form-group">
+                                                                            <label ng-if="client.firmType == 'propertiorship'">Properitor Name</label>
+                                                                            <label ng-if="client.firmType == 'partnership'">Partner Name</label>
+                                                                            <label ng-if="client.firmType == 'pvtlmdcompany'">Director Name</label>
+                                                                            <input type="text" class="form-control" ng-model="firm.name" name="firmName" placeholder="Enter Name" ng-required="true">
+                                                                            <center>
+                                                                            <span ng-show="vm.submitted && vm.clientForm.firmName.$error.required">
+                                                                                    <font class="text-danger">
+                                                                                        <b>This is required field</b>
+                                                                                    </font>
+                                                                                </span>
+                                                                            </center>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                        <div class="form-group">
+                                                                            <label>Phone Number</label>
+                                                                            <input type="text" class="form-control" ng-model="firm.phone" name="firmPhone" placeholder="Enter Phone" ng-required="true"
+                                                                                awnum>
+                                                                            <center>
+                                                                                <span ng-show="vm.submitted && vm.clientForm.firmPhone.$error.required">
+                                                                                    <font class="text-danger">
+                                                                                        <b>This is required field</b>
+                                                                                    </font>
+                                                                                </span>
+                                                                            </center>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-sm-6">
+                                                                        <div class="form-group">
+                                                                            <label>Email</label>
+                                                                            <input type="email" class="form-control" ng-model="firm.mail" name="firmEmail" placeholder="Enter Mail ID" ng-required="true">
+                                                                            <center>
+                                                                            <span ng-show="(vm.submitted && vm.clientForm.firmEmail.$error.required) || (vm.clientForm.firmEmail.$invalid && vm.clientForm.firmEmail.$dirty) || (vm.clientForm.firmEmail.$error.email)">
+                                                                                    <font class="text-danger">
+                                                                                        <b>Enter Valid Mail</b>
+                                                                                    </font>
+                                                                                </span>
+                                                                            </center>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label>PAN Number</label>
+                                                                            <input type="text" class="form-control" name="firmPanID" placeholder="Enter PAN Number" ng-model="firm.panID" ng-maxlength="10" ng-minlength="10" ng-pattern="/^[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}$/" ng-required="true">
+                                                                            <center>
+                                                                                <span ng-show="(vm.submitted && vm.clientForm.firmPanID.$error.required) || (vm.clientForm.firmPanID.$invalid && vm.clientForm.firmPanID.$dirty)">
+                                                                                    <font class="text-danger">
+                                                                                        <b>Enter Valid PAN Number</b>
+                                                                                    </font>
+                                                                                </span>
+                                                                            </center>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                        <div class="form-group">
+                                                                            <label>Address</label>
+                                                                            <textarea class="form-control" ng-model="firm.address" name="firmAddress" placeholder="Enter Address" ng-required="true"
+                                                                                rows="5"></textarea>
+                                                                            <center>
+                                                                                <span ng-show="vm.submitted && vm.clientForm.firmAddress.$error.required">
+                                                                                    <font class="text-danger">
+                                                                                        <b>This is required field</b>
+                                                                                    </font>
+                                                                                </span>
+                                                                            </center>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div>
+                                                <div class="col-md-6">
+                                                    <p class="card-title" style="margin-left: -14px;">
+                                                        <b>Registered Address</b>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="card-content" style="padding:5px 5px 0px 5px;">
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label>Phone Number</label>
+                                                                    <input type="text" class="form-control" ng-model="client.registerAddress.phoneno" name="registerPhone" placeholder="Enter Phone Number"
+                                                                        ng-required="true" awnum>
+                                                                    <center>
+                                                                        <span ng-show="(vm.submitted && vm.clientForm.registerPhone.$error.required) || (vm.clientForm.registerPhone.$invalid && vm.clientForm.registerPhone.$dirty)">
+                                                                            <font class="text-danger">
+                                                                                <b>This is required field</b>
+                                                                            </font>
+                                                                        </span>
+                                                                    </center>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label>Email</label>
+                                                                    <input type="email" class="form-control" ng-model="client.registerAddress.mail" name="registerEmail" placeholder="Enter Mail ID"
+                                                                        ng-required="true">
+                                                                    <center>
+                                                                        <span ng-show="(vm.submitted && vm.clientForm.registerEmail.$error.required) || (vm.clientForm.registerEmail.$invalid && vm.clientForm.registerEmail.$dirty) || (vm.clientForm.billingEmail.$error.email)">
+                                                                            <font class="text-danger">
+                                                                                <b>Enter valid Mail</b>
+                                                                            </font>
+                                                                        </span>
+                                                                    </center>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label>State</label>
+                                                                    <select class="selectpicker" ng-model="client.registerAddress.state" name="registerState" data-style="btn btn-default btn-block"
+                                                                        ng-change="vm.refreshPicker()" ng-required="true">
+                                                                        <option value disabled>--choose state--</option>
+                                                                        <option ng-repeat="st in states | orderBy:'name'" value="{{st._id}}">{{st.name}}</option>
+                                                                    </select>
+                                                                    <center>
+                                                                    <span ng-show="(vm.submitted && vm.clientForm.registerState.$error.required) || (vm.clientForm.registerState.$invalid && vm.clientForm.registerState.$dirty)">
+                                                                            <font class="text-danger">
+                                                                                <b>This is required field</b>
+                                                                            </font>
+                                                                        </span>
+                                                                    </center>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Pin Code</label>
+                                                                    <input type="text" class="form-control" ng-model="client.registerAddress.pincode" name="registerPincode" placeholder="Enter Pin Code"
+                                                                        ng-required="true" awnum>
+                                                                    <center>
+                                                                        <span ng-show="(vm.submitted && vm.clientForm.registerPincode.$error.required) || (vm.clientForm.registerPincode.$invalid && vm.clientForm.registerPincode.$dirty)">
+                                                                            <font class="text-danger">
+                                                                                <b>This is required field</b>
+                                                                            </font>
+                                                                        </span>
+                                                                    </center>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label>Address</label>
+                                                                    <textarea class="form-control" ng-model="client.registerAddress.address" name="registerAddress" placeholder="Enter Address"
+                                                                        rows="5" ng-required="true"></textarea>
+                                                                    <center>
+                                                                        <span ng-show="(vm.submitted && vm.clientForm.registerAddress.$error.required) || (vm.clientForm.registerAddress.$invalid && vm.clientForm.registerAddress.$dirty)">
+                                                                            <font class="text-danger">
+                                                                                <b>This is required field</b>
+                                                                            </font>
+                                                                        </span>
+                                                                    </center>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div>
+                                                <div class="col-md-6">
+                                                    <p class="card-title" style="margin-left: -14px;">
+                                                        <b>Billing Address</b>
+                                                    </p>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="checkbox pull-right">
+                                                        <input id="billAddress" type="checkbox" ng-model="billingAddress" ng-click="billingClicked(billingAddress)">
+                                                        <label for="billAddress">Same as the registered address</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="card-content" style="padding:5px 5px 0px 5px;">
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label>Phone Number</label>
+                                                                    <input type="text" class="form-control" ng-model="client.billingAddress.phoneno" name="billingPhoneno" placeholder="Enter Phone Number"
+                                                                        ng-required="true" awnum>
+                                                                    <center>
+                                                                        <span ng-show="(vm.submitted && vm.clientForm.billingPhoneno.$error.required) || (vm.clientForm.billingPhoneno.$invalid && vm.clientForm.billingPhoneno.$dirty)">
+                                                                            <font class="text-danger">
+                                                                                <b>This is required field</b>
+                                                                            </font>
+                                                                        </span>
+                                                                    </center>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label>Email</label>
+                                                                    <input type="email" class="form-control" ng-model="client.billingAddress.mail" name="billingEmail" placeholder="Enter Mail ID"
+                                                                        ng-required="true">
+                                                                    <center>
+                                                                        <span ng-show="(vm.submitted && vm.clientForm.billingEmail.$error.required) || (vm.clientForm.billingEmail.$invalid && vm.clientForm.billingEmail.$dirty) || (vm.clientForm.billingEmail.$error.email)">
+                                                                            <font class="text-danger">
+                                                                                <b>Enter valid Mail</b>
+                                                                            </font>
+                                                                        </span>
+                                                                    </center>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label>State</label>
+                                                                    <select class="selectpicker" ng-model="client.billingAddress.state" name="billingState" data-style="btn btn-default btn-block"
+                                                                        ng-required="true">
+                                                                        <option value disabled>--choose state--</option>
+                                                                        <option ng-repeat="st in states | orderBy:'name'" value="{{st._id}}">{{st.name}}</option>
+                                                                    </select>
+                                                                    <center>
+                                                                        <span ng-show="(vm.submitted && vm.clientForm.billingState.$error.required) || (vm.clientForm.billingState.$invalid && vm.clientForm.billingState.$dirty)">
+                                                                            <font class="text-danger">
+                                                                                <b>This is required field</b>
+                                                                            </font>
+                                                                        </span>
+                                                                    </center>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Pin Code</label>
+                                                                    <input type="text" class="form-control" ng-model="client.billingAddress.pincode" name="billingPincode" placeholder="Enter Pin Code"
+                                                                        ng-required="true" awnum>
+                                                                    <center>
+                                                                        <span ng-show="(vm.submitted && vm.clientForm.billingPincode.$error.required) || (vm.clientForm.billingPincode.$invalid && vm.clientForm.billingPincode.$dirty)">
+                                                                            <font class="text-danger">
+                                                                                <b>This is required field</b>
+                                                                            </font>
+                                                                        </span>
+                                                                    </center>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label>Address</label>
+                                                                    <textarea class="form-control" ng-model="client.billingAddress.address" name="billingaddress" placeholder="Enter Address"
+                                                                        rows="5" ng-required="true"></textarea>
+                                                                    <center>
+                                                                        <span ng-show="(vm.submitted && vm.clientForm.billingaddress.$error.required) || (vm.clientForm.billingaddress.$invalid && vm.clientForm.billingaddress.$dirty)">
+                                                                            <font class="text-danger">
+                                                                                <b>This is required field</b>
+                                                                            </font>
+                                                                        </span>
+                                                                    </center>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div>
+                                                <div class="col-md-6">
+                                                    <p class="card-title" style="margin-left: -14px;">
+                                                        <b>Shipping Address</b>
+                                                    </p>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="checkbox pull-right">
+                                                        <input id="shipAddress" type="checkbox" ng-model="shippingAddress" ng-click="shippingClicked(shippingAddress)">
+                                                        <label for="shipAddress">Same as the registered address</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="card-content" style="padding:5px 5px 0px 5px;">
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label>Phone Number</label>
+                                                                    <input type="text" class="form-control" ng-model="client.shippingAddress.phoneno" name="shippingPhoneno" placeholder="Enter Phone Number"
+                                                                        ng-required="true" awnum>
+                                                                    <center>
+                                                                        <span ng-show="(vm.submitted && vm.clientForm.shippingPhoneno.$error.required) || (vm.clientForm.shippingPhoneno.$invalid && vm.clientForm.shippingPhoneno.$dirty)">
+                                                                            <font class="text-danger">
+                                                                                <b>This is required field</b>
+                                                                            </font>
+                                                                        </span>
+                                                                    </center>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label>Email</label>
+                                                                    <input type="email" class="form-control" ng-model="client.shippingAddress.mail" name="shippingEmail" placeholder="Enter Mail ID"
+                                                                        ng-required="true">
+                                                                    <center>
+                                                                        <span ng-show="(vm.submitted && vm.clientForm.shippingEmail.$error.required) || (vm.clientForm.shippingEmail.$invalid && vm.clientForm.shippingEmail.$dirty) || (vm.clientForm.Email.$error.email)">
+                                                                            <font class="text-danger">
+                                                                                <b>Enter valid Mail</b>
+                                                                            </font>
+                                                                        </span>
+                                                                    </center>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label>State</label>
+                                                                    <select class="selectpicker" ng-model="client.shippingAddress.state" name="shippingState" data-style="btn btn-default btn-block"
+                                                                        ng-required="true">
+                                                                        <option value disabled>--choose state--</option>
+                                                                        <option ng-repeat="st in states | orderBy:'name'" value="{{st._id}}">{{st.name}}</option>
+                                                                    </select>
+                                                                    <center>
+                                                                    <span ng-show="(vm.submitted && vm.clientForm.shippingState.$error.required) || (vm.clientForm.shippingState.$invalid && vm.clientForm.shippingState.$dirty)">
+                                                                            <font class="text-danger">
+                                                                                <b>This is required field</b>
+                                                                            </font>
+                                                                        </span>
+                                                                    </center>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Pin Code</label>
+                                                                    <input type="text" class="form-control" ng-model="client.shippingAddress.pincode" name="shippingPincode" placeholder="Enter Pin Code"
+                                                                        ng-required="true" awnum>
+                                                                    <center>
+                                                                        <span ng-show="(vm.submitted && vm.clientForm.shippingaddress.$error.required) || (vm.clientForm.shippingaddress.$invalid && vm.clientForm.shippingaddress.$dirty)">
+                                                                            <font class="text-danger">
+                                                                                <b>This is required field</b>
+                                                                            </font>
+                                                                        </span>
+                                                                    </center>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label>Address</label>
+                                                                    <textarea class="form-control" ng-model="client.shippingAddress.address" name="shippingaddress" placeholder="Enter Address"
+                                                                        rows="5" ng-required="true"></textarea>
+                                                                    <center>
+                                                                        <span ng-show="(vm.submitted && vm.clientForm.shippingaddress.$error.required) || (vm.clientForm.shippingaddress.$invalid && vm.clientForm.shippingaddress.$dirty)">
+                                                                            <font class="text-danger">
+                                                                                <b>This is required field</b>
+                                                                            </font>
+                                                                        </span>
+                                                                    </center>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-show="showFirmTable" class="row">
+                                    <div class="col-md-12">
+                                        <h4 class="card-title">{{client.firmType}} Table</h4>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="bootstrap-table">
+                                                    <div class="fixed-table-container" style="padding-bottom: 0px;">
+                                                        <div class="fixed-table-body">
+                                                            <table class="table">
+                                                                <thead>
+                                                                    <th>
+                                                                        <b>#</b>
+                                                                    </th>
+                                                                    <th>
+                                                                        <b>Name</b>
+                                                                    </th>
+                                                                    <th>
+                                                                        <b>Phone</b>
+                                                                    </th>
+                                                                    <th>
+                                                                        <b>Email</b>
+                                                                    </th>
+                                                                    <th>
+                                                                        <b>Pan Number</b>
+                                                                    </th>
+                                                                    <th>
+                                                                        <b>Address</b>
+                                                                    </th>
+                                                                    <th>
+                                                                        <b>Action</b>
+                                                                    </th>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr ng-repeat="fs in firms" ng-include="getFirm(fs)"></tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <a href="#businessTab" data-value="business" data-toggle="tab" class="menu1 btn btn-info btn-wd btn-fill pull-right">Next</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="businessTab">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-content" style="padding:5px 5px 0px 5px;">
+                                                <div class="row">
+                                                    <div class="col-sm-6 col-lg-3">
+                                                        <div class="form-group">
+                                                            <label>Type of Business Partner</label>
+                                                            <select class="selectpicker" ng-model="client.partnerType" name="partnerType" ng-change="changePartnertype()" data-style="btn btn-default btn-block"
+                                                                ng-required="true">
+                                                                <option value disabled>--choose business partner--</option>
+                                                                <option>KRO</option>
+                                                                <option>LFR</option>
+                                                                <option>RDS</option>
+                                                            </select>
+                                                            <center>
+                                                            <span ng-show="(vm.submitted && vm.clientForm.partnerType.$error.required) || (vm.clientForm.partnerType.$invalid && vm.clientForm.partnerType.$dirty)">
+                                                                    <font class="text-danger">
+                                                                        <b>This is required field</b>
+                                                                    </font>
+                                                                </span>
+                                                            </center>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="client.partnerType == 'RDS'" class="col-sm-6 col-lg-3">
+                                                        <div class="form-group">
+                                                            <label>State</label>
+                                                            <select class="selectpicker" ng-model="client.areaDistribution.state" name="areaDistribution" data-style="btn btn-default btn-block"
+                                                                ng-change="stateChange()" ng-required="requiredAD">
+                                                                <option value disabled>--choose state--</option>
+                                                                <option ng-repeat="st in states | orderBy:'name'" value="{{st._id}}">{{st.name}}</option>
+                                                            </select>
+                                                            <center>
+                                                                <span ng-show="vm.submitted && vm.clientForm.areaDistribution.$error.required">
+                                                                    <font class="text-danger">
+                                                                        <b>This is required field</b>
+                                                                    </font>
+                                                                </span>
+                                                            </center>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="client.partnerType == 'RDS'" class="col-sm-6 col-lg-3">
+                                                        <div class="form-group">
+                                                            <label>District</label>
+                                                            <select class="selectpicker" ng-model="client.areaDistribution.district" name="district" data-style="btn btn-default btn-block" ng-change="districtChange()" ng-required="requiredAD">
+                                                                <option value disabled>--choose district--</option>
+                                                                <option ng-repeat="dt in districts | orderBy:'name'" value="{{dt._id}}">{{dt.name}}</option>
+                                                            </select>
+                                                            <center>
+                                                                <span ng-show="vm.submitted && vm.clientForm.district.$error.required">
+                                                                    <font class="text-danger">
+                                                                        <b>This is required field</b>
+                                                                    </font>
+                                                                </span>
+                                                            </center>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="client.partnerType == 'RDS'" class="col-sm-6 col-lg-3">
+                                                        <div class="form-group">
+                                                            <label>Region</label>
+                                                            <select class="selectpicker" ng-model="client.areaDistribution.region" name="region" data-style="btn btn-default btn-block"
+                                                                ng-required="requiredAD">
+                                                                <option value disabled>--choose region--</option>
+                                                                <option ng-repeat="reg in regions | orderBy:'name'" value="{{reg._id}}">{{reg.name}}</option>
+                                                            </select>
+                                                            <center>
+                                                                <span ng-show="vm.submitted && vm.clientForm.region.$error.required">
+                                                                    <font class="text-danger">
+                                                                        <b>This is required field</b>
+                                                                    </font>
+                                                                </span>
+                                                            </center>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card">
+                                            <div class="col-md-12">
+                                                <p class="card-title" style="margin-left: 0px;">
+                                                    <b>Bank Details</b>
+                                                </p>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="card-content" style="padding:5px 5px 0px 5px;">
+                                                        <div class="row">
+                                                            <div class="col-sm-6 col-lg-3">
+                                                                <div class="form-group">
+                                                                    <label>Account Number</label>
+                                                                    <input type="text" class="form-control" ng-model="client.bankDetails.accountNumber" placeholder="Enter account Number">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6 col-lg-3">
+                                                                <div class="form-group">
+                                                                    <label>Account Name</label>
+                                                                    <input type="text" class="form-control" ng-model="client.bankDetails.accountName" placeholder="Enter Name">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6 col-lg-3">
+                                                                <div class="form-group">
+                                                                    <label>Account Type</label>
+                                                                    <!-- <input type="text" class="form-control" ng-model="client.bankDetails.accountType" placeholder="Enter account type"> -->
+                                                                    <select class="selectpicker" ng-model="client.bankDetails.accountType" data-style="btn btn-default btn-block">
+                                                                        <option value disabled>--choose account type--</option>
+                                                                        <option>Current</option>
+                                                                        <option>OD</option>
+                                                                        <option>Savings</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6 col-lg-3">
+                                                                <div class="form-group">
+                                                                    <label>IFSC Code</label>
+                                                                    <input type="text" class="form-control" ng-model="client.bankDetails.ifsc" placeholder="Enter IFSC Code">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-6 col-lg-3">
+                                                                <div class="form-group">
+                                                                    <label>MICR Number</label>
+                                                                    <input type="text" class="form-control" ng-model="client.bankDetails.micr" placeholder="Enter MICR Number">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6 col-lg-3">
+                                                                <div class="form-group">
+                                                                    <label>Bank Name</label>
+                                                                    <input type="text" class="form-control" ng-model="client.bankDetails.bankName" placeholder="Enter Bank Name">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6 col-lg-3">
+                                                                <div class="form-group">
+                                                                    <label>Branch Name</label>
+                                                                    <input type="text" class="form-control" ng-model="client.bankDetails.branchName" placeholder="Enter Branch Name">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6 col-lg-3">
+                                                                <div class="form-group">
+                                                                    <label>Branch Address</label>
+                                                                    <input type="text" class="form-control" ng-model="client.bankDetails.branchAddress" placeholder="Enter Branch Address">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-6 col-lg-3">
+                                                                <div class="form-group">
+                                                                    <label>Contact Number</label>
+                                                                    <input type="text" class="form-control" ng-model="client.bankDetails.contactNumber" placeholder="Enter Contact Number">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6 col-lg-3">
+                                                                <div class="form-group">
+                                                                    <label>Bank Email ID</label>
+                                                                    <input type="email" class="form-control" ng-model="client.bankDetails.emailId" placeholder="Emter Bank Email ID">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6 col-lg-3">
+                                                                <div class="form-group">
+                                                                    <label>CC Limit</label>
+                                                                    <input type="text" class="form-control" ng-model="client.bankDetails.ccLimit" placeholder="Enter cc limit" awnum>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <a href="#generalTab" data-value="general" data-toggle="tab" class="menu1 btn btn-default btn-wd btn-fill pull-left">Back</a>
+                                        <a href="#proofTab" data-value="proof" data-toggle="tab" class="menu1 btn btn-default btn-wd btn-fill pull-right">Next</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="proofTab">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-content" style="padding:5px 5px 0px 5px;">
+                                                <div class="row">
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>PAN Card</label>
+                                                            <input type="file" class="form-control" file-model="proofs.panProof">
+                                                            <a href="{{'../upload_files/client/' + proofsClone.panProof}}" target="_blank">{{proofsClone.panProof}}</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>GST- Registration</label>
+                                                            <input type="file" class="form-control" file-model="proofs.gstRegProof">
+                                                            <a href="{{'../upload_files/client/' + proofsClone.gstRegProof}}" target="_blank">{{proofsClone.gstRegProof}}</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Partnership Deed</label>
+                                                            <input type="file" class="form-control" file-model="proofs.partnerDeedProof">
+                                                            <a href="{{'../upload_files/client/' + proofsClone.partnerDeedProof}}" target="_blank">{{proofsClone.partnerDeedProof}}</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Firm Address Proof</label>
+                                                            <input type="file" class="form-control" file-model="proofs.firmAddressProof">
+                                                            <a href="{{'../upload_files/client/' + proofsClone.firmAddressProof}}" target="_blank">{{proofsClone.firmAddressProof}}</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Last year audited balance sheet</label>
+                                                            <input type="file" class="form-control" file-model="proofs.auditedBalanceProof">
+                                                            <a href="{{'../upload_files/client/' + proofsClone.auditedBalanceProof}}" target="_blank">{{proofsClone.auditedBalanceProof}}</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>ID Proof of partner / proprietor</label>
+                                                            <input type="file" class="form-control" file-model="proofs.idProof">
+                                                            <a href="{{'../upload_files/client/' + proofsClone.idProof}}" target="_blank">{{proofsClone.idProof}}</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Photo of the Popertior/Director</label>
+                                                            <input type="file" class="form-control" file-model="proofs.firmPhoto">
+                                                            <a href="{{'../upload_files/client/' + proofsClone.firmPhoto}}" target="_blank">{{proofsClone.firmPhoto}}</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Bank Statement- last 3 months</label>
+                                                            <input type="file" class="form-control" file-model="proofs.bankStatementProof">
+                                                            <a href="{{'../upload_files/client/' + proofsClone.bankStatementProof}}" target="_blank">{{proofsClone.bankStatementProof}}</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Aadhar Card</label>
+                                                            <input type="file" class="form-control" file-model="proofs.aadharProof">
+                                                            <a href="{{'../upload_files/client/' + proofsClone.aadharProof}}" target="_blank">{{proofsClone.aadharProof}}</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <a href="#businessTab" data-value="business" data-toggle="tab" class="menu1 btn btn-default btn-wd btn-fill pull-left">Back</a>
+                                        <a href="#settingTab" data-value="setting" data-toggle="tab" class="menu1 btn btn-default btn-wd btn-fill pull-right">Next</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="settingTab">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div>
+                                                <div class="col-sm-6">
+                                                    <p class="card-title" style="margin-left: -14px;">
+                                                        <b>Bank Guarantee</b>
+                                                    </p>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="checkbox">
+                                                        <input id="overDue" type="checkbox" ng-model="client.overDue">
+                                                        <label for="overDue">
+                                                            <b>Allow Overdue</b>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="card-content" style="padding:5px 5px 0px 5px;">
+                                                        <div class="form-horizontal">
+                                                            <div class="form-group">
+                                                                <label class="col-sm-2 control-label">Limit</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" class="form-control" ng-model="client.guaranteeLimit" placeholder="Enter limit" awnum>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group column-sizing">
+                                                                <label class="col-sm-2 control-label">Validity</label>
+                                                                <div class="col-sm-10">
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <input type="text" placeholder="Enter Date" class="form-control datepicker" id="validityStart" ng-model="client.validityStart">
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <input type="text" placeholder="Enter Date" class="form-control datepicker" id="validityEnd" ng-model="client.validityEnd">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="card-content" style="padding:5px 5px 0px 5px;">
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label>Credit Days</label>
+                                                                    <input type="text" class="form-control" ng-model="client.creditDays" name="creditDays" placeholder="Enter Credit Days" ng-required="true"
+                                                                        awnum>
+                                                                    <center>
+                                                                        <span ng-show="(vm.submitted && vm.clientForm.creditDays.$error.required) || (vm.clientForm.creditDays.$invalid && vm.clientForm.creditDays.$dirty)">
+                                                                            <font class="text-danger">
+                                                                                <b>This is required field</b>
+                                                                            </font>
+                                                                        </span>
+                                                                    </center>
+                                                                </div>
+                                                            </div>                              
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label>Credit Limit</label>
+                                                                    <input type="text" class="form-control" ng-model="client.creditLimit" name="creditLimit" placeholder="Enter Credit limit"
+                                                                        ng-required="true" awnum>
+                                                                    <center>
+                                                                        <span ng-show="(vm.submitted && vm.clientForm.creditLimit.$error.required) || (vm.clientForm.creditLimit.$invalid && vm.clientForm.creditLimit.$dirty)">
+                                                                            <font class="text-danger">
+                                                                                <b>This is required field</b>
+                                                                            </font>
+                                                                        </span>
+                                                                    </center>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label>Salesperson</label>
+                                                                    <select class="selectpicker" multiple ng-model="client.salesperson" title="--choose salesperson--" name="salesperson" data-style="btn btn-default btn-block">
+                                                                        <option ng-repeat="hr in hrs | orderBy:'name'" value="{{hr._id}}">{{hr.name}}</option>
+                                                                    </select>
+                                                                    <!-- <center>
+                                                                        <span ng-show="(vm.submitted && vm.clientForm.salesperson.$error.required) || (vm.clientForm.salesperson.$invalid && vm.clientForm.salesperson.$dirty)">
+                                                                            <font class="text-danger">
+                                                                                <b>This is required field</b>
+                                                                            </font>
+                                                                        </span>
+                                                                    </center> -->
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label>Price Template</label>
+                                                                    <select class="selectpicker" ng-model="client.priceTemplate" data-style="btn btn-default btn-block">
+                                                                        <option value disabled>--choose price template--</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div>
+                                                <div class="col-sm-6">
+                                                    <p class="card-title" style="margin-left: -14px;">
+                                                        <b>Signup Account</b>
+                                                    </p>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="checkbox">
+                                                        <input id="activateAccount" type="checkbox" ng-model="client.activateAccount">
+                                                        <label for="activateAccount">
+                                                            <b>Activate</b>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="card-content" style="padding:5px 5px 0px 5px;">
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label>Signup Mail</label>
+                                                                    <input type="mail" class="form-control" placeholder="Enter signup Mail ID" ng-model="client.signupMail">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <a href="#proofTab" data-value="proof" data-toggle="tab" class="menu1 btn btn-default btn-wd btn-fill pull-left">Back</a>
+                                        <button type="submit" class="btn btn-success btn-wd btn-fill pull-right" ng-click="vm.submitted=true">{{buttons.title}}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/ng-template" id="display">
+	<td>{{$index + 1}}</td>
+	<td>{{fs.name}}</td>
+	<td>{{fs.phone}}</td>
+	<td>{{fs.mail}}</td>
+	<td>{{fs.panID}}</td>
+	<td>{{fs.address}}</td>
+	<td>
+		<button ng-click="editFirm(fs)" class="btn btn-simple btn-warning btn-icon table-action edit">
+            <i class="ti-pencil-alt"></i>
+        </button>
+		<button type="button" ng-click="deleteFirm($index)" class="btn btn-simple btn-danger btn-icon table-action trash">
+			<i class="ti-trash"></i>
+		</button>
+	</td>
+</script>
+    <script type="text/ng-template" id="edit">
+	<td>{{$index + 1}}</td>
+	<td>
+		<input type="text" class="editable-cell" ng-model="selected.name">
+	</td>
+	<td>
+		<input type="text" class="editable-cell" ng-model="selected.phone" awnum>
+	</td>
+	<td>
+		<input type="email" class="editable-cell" ng-model="selected.mail">
+	</td>
+	<td>
+		<input type="text" class="editable-cell" ng-model="selected.panID">
+	</td>
+	<td>
+		<textarea class="editable-cell" ng-model="selected.address"></textarea>
+	</td>
+	<td>
+		<button type="button" ng-click="reset()" class="btn btn-simple btn-warning btn-icon table-action remove">
+            <i class="ti-close"></i>
+        </button>
+        <button type="button" ng-click="saveFirm($index)" class="btn btn-simple btn-success btn-icon table-action check">
+            <i class="ti-check"></i>
+        </button>
+	</td>
+</script>
+<script>
+    $(document).ready(function () {
+        $('.menu1').on('click', function (e) {
+             var activeTab = "#" + $(this).data("value");
+             $(".menu").removeClass("active");
+             $(activeTab).addClass("active");
+        });
+    });
+</script>

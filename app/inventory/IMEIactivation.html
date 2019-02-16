@@ -1,0 +1,31 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-content">
+                	<div class="row">
+                		<div class="col-md-6 col-md-offset-3">
+                			<label>Upload Excel Sheet</label>
+			                <div class="input-group">
+			                    <input class="form-control" type="file" file-model="excelSheet">
+			                    <span class="input-group-btn">
+			                        <button type="button" class="btn btn-default" type="submit" ng-click="upload('1')" ng-init="count=0">
+			                            Upload
+			                        </button>
+			                    </span>
+			                </div>
+                		</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<a href="{{'../excel_format/IMEI_activate_format.xlsx'}}" class="btn btn-fill btn-sm btn-default pull-left" target="_blank">Excel Format (XLSX)</a>
+							<button class="btn btn-fill btn-wd btn-success pull-right" ng-click="activate()">Activate</button>
+						</div>
+					</div>
+                </div>
+            </div>
+        </div>
+	</div>
+</div>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.1/xlsx.full.min.js"></script>
+<script src="https://oss.sheetjs.com/js-xlsx/jszip.js"></script> -->

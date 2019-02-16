@@ -1,0 +1,83 @@
+<div class="container-fluid">
+    <div class="text-right" style="margin-bottom: 5px;">
+        <button class="btn btn-info btn-fill btn-wd" ng-click="back()">Back</button>
+        <button class="btn btn-primary btn-fill btn-wd" ng-click="excelAlert()">Export To Excel</button>
+    </div>
+    <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="card">
+                    <div class="card-content">
+                        <table border="0" style="width:100%">
+                            <tr>
+                                <td style="font-size:17px;"><b>DC Number</b></td>
+                                <td style="font-size:17px;">:</td>
+                                <td style="font-size:17px;">{{data.invoiceNumber}}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td style="font-size:17px;"><b>DC Date</b></td>
+                                <td style="font-size:17px;">:</td>
+                                <td style="font-size:17px;">{{data.invoiceDate}}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-size:17px;"><b>{{spName[0]}} From</b></td>
+                                <td style="font-size:17px;">:</td>
+                                <td style="font-size:17px;">{{data.source.name}}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td style="font-size:17px;"><b>{{spName[0]}} To</b></td>
+                                <td style="font-size:17px;">:</td>
+                                <td style="font-size:17px;">{{data.salePoint.name}}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-size:17px;"><b>Remark</b></td>
+                                <td style="font-size:17px;">:</td>
+                                <td style="font-size:17px;">{{data.remark}}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td style="font-size:17px;"><b>Total Quantity</b></td>
+                                <td style="font-size:17px;">:</td>
+                                <td style="font-size:17px;">{{data.totalQuantity}}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-size:17px;"><b></b></td>
+                                <td style="font-size:17px;"></td>
+                                <td style="font-size:17px;"></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td style="font-size:17px;"><b>Net value</b></td>
+                                <td style="font-size:17px;">:</td>
+                                <td style="font-size:17px;">{{data.netValue}}</td>
+                            </tr>
+                        </table><br>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-bordered table-hover dtr-inline" width="100%" >
+                                    <thead>
+                                        <th class="text-center"><b>#</b></th>
+                                        <th class="text-center"><b>Item Name</b></th>
+                                        <th class="text-center"><b>Quantity</b></th>
+                                        <th class="text-center"><b>Rate</b></th>
+                                        <th class="text-center"><b>Total</b></th>
+                                    </thead>
+                                    <tbody>
+                                        <tr  ng-repeat="item in data.item">
+                                            <td>{{$index + 1}}</td>
+                                            <td>{{item.name.itemName}}</td>
+                                            <td class="text-right">{{item.quantity}}</td>
+                                            <td class="text-right">{{item.cost}}</td>
+                                            <td class="text-right">{{item.total}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

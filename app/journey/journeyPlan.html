@@ -1,0 +1,174 @@
+<link rel="stylesheet" type="text/css" href="../custom/customCheckBox.css">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="nav-tabs-navigation" style="margin-bottom: 10px;">
+                        <div class="nav-tabs-wrapper" style="margin-left: -12px;">
+                            <ul id="tabs" class="nav nav-tabs" style="font-size: 17px;" data-tabs="tabs">
+                                <li class="active">
+                                    <a href="#planSchedularTab" data-toggle="tab" style="padding-bottom: 12px;" ng-click="changeTab()"><b>Plan Schedular</b></a>
+                                </li>
+                                <li>
+                                    <a href="#journeyPlanTab" data-toggle="tab" style="padding-bottom: 12px;" ng-click="changeTab()"><b>Plan Creation</b></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tab-content">
+                        <!-- PLAN SCHEDULAR -->
+                        <div class="tab-pane active" id="planSchedularTab">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-content" style="padding:10px 10px 10px 10px;">
+                                            <div class="row">
+                                                <div class="col-md-4 col-md-offset-1">
+                                                    <label>Department</label>
+                                                    <select class="selectpicker" ng-model="scheDepatment" data-live-search="true" data-size="5" ng-change="departmentChange()">
+                                                        <option value selected>--Choose Department--</option>
+                                                        <option ng-repeat="hd in hrDepart | orderBy:'name'" value="{{hd._id}}">{{hd.name}}</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4 col-md-offset-2">
+                                                    <label>HR</label>
+                                                    <select class="selectpicker" ng-model="scheEmp" data-live-search="true" data-size="5" ng-change="vm.schedularHRchange()">
+                                                        <option value selected>--Choose HR--</option>
+                                                        <option ng-repeat="emp in schehrs | orderBy:'name'" value="{{emp._id}}">{{emp.name}}</option>
+                                                    </select>
+                                                </div>
+                                            </div><br>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div id="calendar" ui-calendar="uiConfig.calendar" ng-model="hrEvents" calendar="myCalendar"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- JOURNEY PLAN TAB -->
+                        <div class="tab-pane" id="journeyPlanTab">
+                            <div class="text-right">
+                                <button class="btn btn-default btn-fill btn-wd" ng-click="addNewPlan()">Add New</button>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table class="table table-bordered table-stripped dataTable dtr-inline" datatable="ng" dt-options="vm.dtOptions" dt-instance="vm.dtInstance"  width="100%" dt-column-defs="vm.dtColumnDefs">
+                                        <thead>
+                                            <th><b>S.No.</b></th>
+                                            <th><b>Plan Number</b></th>
+                                            <th><b>Plan Name</b></th>
+                                            <th><b>Visit Type</b></th>
+                                            <th><b>Dealer</b></th>
+                                            <th><b>Action</b></th>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="pn in vm.plans">
+                                                <td>{{$index + 1}}</td>
+                                                <td>{{pn.invoiceNumber}}</td>
+                                                <td>{{pn.name}}</td>
+                                                <td>{{pn.visitType.name}}</td>
+                                                <td>{{pn.dealer.length}}</td>
+                                                <td>
+                                                    <a rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs" ng-click="editPlan(pn)"><i class="ti-pencil-alt"></i></a>
+                                                    <a rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs" ng-click="deltePlan(pn._id)"><i class="ti-trash"></i></a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                        
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/ng-template" id="modalContent.html">
+    <div class="modal-content">
+        <div class="modal-body" style="padding-top: 0px;">
+            <div class="row">
+                <center><h4 style="margin: 5px 0 5px;">Choose Journey Plan</h4></center>
+            </div>
+            <div class="row">
+                <div class="pull-left">
+                    <h5 style="margin: 5px 0 5px;">&nbsp;&nbsp;<b>Start : </b>{{NewEvent.start | date:'d/M/yyyy h:mm a' : 'UTC'}}</h5>
+                </div>
+                <div class="pull-right">
+                    <h5 style="margin: 5px 0 5px;"><b>End : </b>{{NewEvent.end | date:'d/M/yyyy h:mm a' : 'UTC'}}&nbsp;&nbsp;</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="form-group" style="margin-bottom: 5px;margin-top: 5px;">
+                        <select class="selectpicker" ng-model="plan" data-live-search="true" data-size="5">
+                            <option value selected>--Choose Plan--</option>
+                            <option ng-repeat="jps in journeyPlans | orderBy:'name'" value="{{jps._id}}">{{jps.name}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="pull-right">
+                    <button class="btn btn-success btn-fill btn-sm" ng-click="this[buttons.method]()">{{buttons.title}}</button>
+                    <button ng-show="hidebtn" class="btn btn-danger btn-fill btn-sm" ng-click="delete()">Delete</button>
+                    <button class="btn btn-warning btn-fill btn-sm" ng-click="cancel()">cancel</button>&nbsp;&nbsp;
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="clearPlanDialog.html">
+    <style>
+       /* @media (min-width: 992px){
+            .modal-lg{
+                width: 900px;
+            }
+            .modal-dialog{
+                width: 900px;
+                margin: 30px auto;
+            }
+        } */
+    </style>
+    <div class="modal-content">
+        <div class="modal-header" style="padding: 10px;">
+            <span class="modal-title" style="font-size: 20px;">Clear Employee JP</span>
+            <button type="button" class="close" data-dismiss="modal" ng-click="close()">Close</button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label>From Date</label>
+                        <input type="text" id="fromDate" name="fromDate" class="form-control datepicker" placeholder="select from date">
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label>To Date</label>
+                        <input type="text" id="toDate" name="toDate" class="form-control datepicker" placeholder="select to date">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label>Employee</label>
+                        <select class="selectpicker" ng-model="employee" data-live-search="true">
+                            <option value selected disabled>--select employee--</option>
+                            <option ng-repeat="emp in employees" value={{emp._id}}>{{emp.name}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="text-right">
+                <button class="btn btn-default" ng-click="clearPlan()">Clear</button>
+            </div>
+        </div>
+    </div>
+</script>

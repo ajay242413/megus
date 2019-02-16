@@ -1,0 +1,147 @@
+<div ng-show="distPage" class="container-fluid">
+    <div class="text-right" style="margin-bottom: 5px;">
+        <button class="btn btn-primary btn-fill" ng-click="showAction()">Edit / Delete</button>
+        <button class="btn btn-default btn-fill" ng-click="addSalesReturn()">New Sale Return</button>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-content">
+                    <table class="table table-striped table-bordered table-hover dataTable dtr-inline" datatable="ng" dt-options="vm.dtOptions" dt-instance="vm.dtInstance"  width="100%" dt-column-defs="vm.dtColumnDefs">
+                        <thead>
+                            <th><b>#</b></th>
+                            <th><b>Client</b></th>
+                            <th><b>Invoice Date</b></th>
+                            <th><b>Invoice Number</b></th>
+                            <th><b>{{spName}}</b></th>
+                            <th><b>Remark</b></th>
+                            <th class="text-center"><b>Total Quantity</b></th>
+                            <th class="text-center"><b>Net Value</b></th>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="res in result | orderBy:'':true">
+                                <td>{{$index + 1}}</td>
+                                <td ng-click="viewItems(res)">{{res.party.name}}</td>
+                                <td>{{res.invoiceDate}}</td>
+                                <td>{{res.invoiceNumber}}</td>
+                                <td>{{res.salePoint.name}}</td>
+                                <td>{{res.remark}}</td>
+                                <td class="text-right">{{res.totalQuantity}}</td>
+                                <td class="text-right">{{res.netValue}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/ng-template" id="viewItemsContent.html">
+    <style>
+        @media (min-width: 992px){
+            .modal-lg{
+                width: 900px;
+            }
+            .modal-dialog{
+                width: 900px;
+                margin: 30px auto;
+            }
+        }
+    </style>
+    <div class="modal-content modal-lg">
+        <div class="modal-header" style="padding: 10px;">
+            <span class="modal-title" style="font-size: 20px;"><b>{{invoice.invoiceNumber}}</b></span>
+            <button type="button" class="close" data-dismiss="modal" ng-click="close()">Close</button>
+        </div>
+        <div class="modal-body">
+            <table class="table table-bordered">
+                <thead>
+                    <th class="text-center">S.NO.</th>
+                    <th class="text-center">Item</th>
+                    <th class="text-center">Quantity</th>
+                    <th ng-show="showgst" class="text-center">SGST</th>
+                    <th ng-show="showgst" class="text-center">CGST</th>
+                    <th ng-show="showigst" class="text-center">IGST</th>
+                    <th class="text-center">IMEI</th>
+                    <th class="text-center">Cost</th>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in invoice.item">
+                        <td class="text-right">{{$index + 1}}</td>
+                        <td>{{item.name.itemName}}</td>
+                        <td class="text-right">{{item.quantity}}</td>
+                        <td ng-show="showgst" class="text-right">{{item.sgst}}</td>
+                        <td ng-show="showgst" class="text-right">{{item.cgst}}</td>
+                        <td ng-show="showigst" class="text-right">{{item.igst}}</td>
+                        <td class="text-right" ng-click="exportIMEI(item.IMEINumber)">{{item.IMEINumber.length}}</td>
+                        <td class="text-right">{{item.total}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</script>
+<style>
+    .cover {
+        background-size: cover;
+        display: table;
+        width: 100%;
+        height: 100%; /* For at least Firefox */
+        min-height: 100%;
+        text-align: center;
+    }
+    .cover-inner {
+        display: table-cell;
+        vertical-align: middle;
+    }
+    .inner {
+        padding: 30px;
+    }
+    header {
+        margin: 0 auto;
+        max-width: 800px;
+    }
+    .twisted{
+        transform: skew(-16deg, 1deg) ;
+        -webkit-transform: skew(-16deg, 1deg) ;
+        -moz-transform: skew(-16deg, 1deg) ;
+        -o-transform: skew(-16deg, 1deg) ;
+        -ms-transform: skew(-16deg, 1deg) ;
+    }
+    .headline {
+        font: 500 100px 'Megrim';
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+    .p1{
+        font: 200 48px 'Raleway';
+        letter-spacing: 1px;
+    }
+    .border-line {
+        border-top: 2px solid #262626;
+        margin: 15px auto;
+        max-width: 350px;
+    }
+    @media (max-width: 450px) {
+        .headline {
+            font-size: 70px;
+        }
+        .inner {
+            padding: 20px;
+        }
+        .cover {
+            background: rgba(235, 235, 220, 0.8);
+        }
+    }
+</style>
+<div ng-show="brandPage" class="cover">
+    <div class="cover-inner">      
+        <div class="twisted">
+            <div class="border-line"></div>
+            <h1 class="headline">coming soon</h1>
+            <div class="border-line"></div>
+        </div>
+        <div class="inner"></div>
+        <p class="p1">Stay Tuned For Updates.</p>
+    </div>
+</div>                     

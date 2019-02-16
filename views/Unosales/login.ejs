@@ -1,0 +1,65 @@
+    <%- include('../decorators/header') %>
+        <div class="wrapper wrapper-full-page">
+            <div class="full-page login-page" data-color="" data-image="/css/background-2.jpg" >
+                <!--   you can change the color of the filter page using: data-color="blue | azure | green | orange | red | purple" -->
+                <div class="content">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-4 col-sm-6 col-md-offset-4 col-sm-offset-3">
+                                <form method="post" action="#">
+                                    <div class="card" data-background="color" data-color="blue">
+                                        <div class="card-header">
+                                            <!-- <h3 class="card-title">Login</h3> -->
+                                        </div>
+                                        <!-- tempate to display invalid credentials error!!! -->
+                                        <% if(locals.error) { %>
+                                            <div class="alert alert-danger"><%= error %></div>
+                                        <% } %>
+                                        <% if(locals.success) { %>
+                                            <div class="alert alert-success"><%= success %></div>
+                                        <% } %>
+                                        <div class="card-content">
+                                            <label><b>Email Address<b></label>
+                                            <div class="input-group">
+                                                <input type="email" class="form-control" name="email" placeholder="Enter email" required="true">
+                                                <span class="input-group-addon"><b><i class="fa fa-user"></i></b></span>
+                                            </div>
+                                            <label><b>Password</b></label>
+                                            <div class="input-group">
+                                                <input name="password" type="password" placeholder="Password" class="form-control" required="true">
+                                                <span class="input-group-addon"><b><i class="fa fa-key"></i></b></span>
+                                            </div>
+                                            <div class="text-center">
+                                                <button type="submit" class="btn btn-fill btn-wd "><b>SIGN IN</b></button>
+                                                <!--<div class="forgot">
+                                                    <a href="#pablo">Forgot your password?</a>
+                                                </div>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <footer class="footer footer-transparent">
+                    <div class="container">
+                        <div class="copyright">
+                            &copy; <script>document.write(new Date().getFullYear())</script>, made with <i class="fa fa-heart heart"></i> by <a>Ionstar</a>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </body>
+    <%- include('../decorators/footer') %>
+	<script type="text/javascript">
+        $().ready(function(){
+            demo.checkFullPageBackgroundImage();
+            setTimeout(function(){
+                // after 1000 ms we add the class animated to the login/register card
+                $('.card').removeClass('card-hidden');
+            }, 700)
+        });
+	</script>
+</html>

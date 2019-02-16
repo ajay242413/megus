@@ -1,0 +1,61 @@
+<div class="container-fluid">
+	<!-- <div class="text-right" style="margin-bottom: 5px;">
+		<button ng-click="exportToExcel('#rdsTable')" class="btn btn-primary btn-fill btn-wd">Export Report</button>
+	</div>
+	<div class="row">
+        <div class="col-lg-12 col-md-12">
+        	<div class="card">
+				<div class="card-content">
+                    <div style="overflow-x: auto;">
+						<table id="rdsTable" border="1" class="tableRDS table table-bordered dtr-inline" width="100%">
+							<thead>
+								<tr >
+									<th><b>State</b></th>
+									<th><b>District</b></th>
+									<th><b>Sales Person</b></th>
+									<th><b>RDS Names</b></th>
+									<th><b>RDS Region</b></th>
+									<th ng-repeat-start="item in prodItem"><b>{{item.itemName}}</b></th>
+									<th ng-repeat-end><b>Avg Age</b></th>
+								</tr>
+							</thead>
+							<tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> -->
+	<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-header">
+						<h4 class="card-title" class="chart">Total Activations</h4>
+					</div>
+					<div class="card-content">
+						<div id="totalActivations" class="chart"></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="card">
+					<div class="card-header">
+						<h4 class="card-title" class="chart">RDS/Dealer Aging</h4>
+					</div>
+					<div class="card-content">
+						<div id="ageDealerVsRds" class="chart"></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="card">
+					<div class="card-header">
+						<h4 class="card-title" class="chart">Brand Aging</h4>
+					</div>
+					<div class="card-content">
+						<div id="ageOverall" class="chart"></div>
+					</div>
+				</div>
+			</div>
+	</div>
+</div>

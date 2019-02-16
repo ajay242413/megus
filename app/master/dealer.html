@@ -1,0 +1,42 @@
+<div class="container-fluid">
+    <div class="text-right" style="margin-bottom: 5px;">
+        <button ng-click="editDelete()" class="btn btn-primary btn-fill">Edit / Delete</button>
+        <button ng-click="bulkImport()" class="btn btn-default btn-fill">Bulk Import</button>
+        <button ng-click="create()" class="btn btn-default btn-fill">New Dealer</button>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-content">
+                    <table class="table table-striped table-bordered dataTable" width="100%" datatable="ng" dt-options="vm.dtOptions" dt-columns="vm.dtColumns" dt-instance="vm.dtInstance">
+                        <thead>
+                            <tr>
+                                <th><b>S.No.</b></th>
+                                <th><b>Dealer Name</b></th>
+                                <th><b>Dealer Area</b></th>
+                                <th><b>Dealer Category</b></th>
+                                <th ng-show="showAction"><b>Action</b></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="dealer in dealers">
+                                <td>{{$index + 1}}</td>
+                                <td>{{dealer.name}}</td>
+                                <td>{{dealer.area.name}}</td>
+                                <td>{{dealer.category.name}}</td>
+                                <td ng-show="showAction">
+                                    <button ng-click="editRow(dealer)" class="btn btn-simple btn-warning btn-icon">
+                                        <b><i class="fa fa-pencil"></i></b>
+                                    </button>
+                                    <!-- <button ng-click="deleteRow(dealer._id)" class="btn btn-simple btn-danger btn-icon" title="Delete Delete">
+                                        <b><i class="fa fa-trash"></i></b>
+                                    </button> -->
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

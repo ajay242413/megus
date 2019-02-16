@@ -1,0 +1,436 @@
+<div class="container-fluid">
+    <div class="row">
+		<div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-content">
+					<div class="row">
+						<div class="col-md-6 col-md-offset-3">
+				        	<select class="selectpicker" ng-model="productSelect" ng-options="item for item in items" data-style="btn btn-info btn-block" data-size="auto" ng-change="productselectChange()"></select>
+				    	</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="text-right" style="margin-bottom: 5px;">
+		<button ng-show="showCreate" ng-click="vm.addNew()" class="btn btn-default btn-fill" >Add New</button>
+		<button ng-click="exportToExcel('#table1')" class="btn btn-primary btn-fill btn-wd">Export Report</button>
+	 </div>
+	<div class="row">
+		<div class="col-md-12">
+	        <div class="card">
+	            <div class="card-content">
+	                <table id="table1" class="table table-striped table-bordered dataTable dtr-inline" ng-if="authorized" datatable="" dt-columns="dtColumns" dt-options="dtOptions" dt-instance="vm.dtInstance"></table>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+</div>	
+
+<script type="text/ng-template" id="productType.html">
+	<div class="modal-content">
+		<div class="modal-header">
+			<span class="modal-title"><b>Product Description</b></span>
+			<button type="button" class="close" data-dismiss="modal" ng-click="close()">Close</button>
+		</div>
+		<div class="modal-body">
+			<form name="productDescriptionForm" ng-submit="this[buttons.method]()">
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Product Type</label>
+							<select class="selectpicker" ng-model="productType.category" ng-change="prodCategoryChange()" data-style="btn btn-default btn-block" data-size="3">
+								<option ng-repeat="pc in prodCategory">{{pc}}</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Product Tax</label>
+							<select class="selectpicker" ng-model="productType.tax" data-style="btn btn-default btn-block" ng-change="taxTypeChange()" data-size="3">
+								<option ng-repeat="pt in prodTax">{{pt}}</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Product Description</label>
+							<input type="text" class="form-control" ng-model="productType.type" name="type" placeholder="Enter product description" ng-required="true">
+							<center> 
+								<span ng-show="(submitted && productDescriptionForm.type.$error.required) || (productDescriptionForm.type.$invalid && productDescriptionForm.type.$dirty)">
+									<font class="text-danger">
+										<b>This is required field</b>
+									</font>
+								</span>
+							</center>
+						</div>
+					</div>							
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>{{categoryVal}} Code</label>
+							<input type="text" class="form-control" ng-model="productType.code" name="code" placeholder="Enter {{categoryVal}} code" ng-required="true">
+							<center> 
+								<span ng-show="(submitted && productDescriptionForm.code.$error.required) || (productDescriptionForm.code.$invalid && productDescriptionForm.code.$dirty)">
+									<font class="text-danger">
+										<b>This is required field</b>
+									</font>
+								</span>
+							</center>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Tax Rate</label>
+							<select class="selectpicker" ng-model="productType.taxRate" name="taxRate" data-style="btn btn-default btn-block" ng-required="true">
+								<option value disabled>--Choose Tax Rate--</option>
+								<option ng-value='0'>NIL</option>
+								<option ng-value='0'>0.1%</option>
+								<option ng-value='025'>0.25%</option>
+								<option ng-value='3'>3%</option>
+								<option ng-value='5'>5%</option>
+								<option ng-value='12'>12%</option>
+								<option ng-value='18'>18%</option>
+								<option ng-value='28'>28%</option>
+							</select>
+							<center> 
+								<span ng-show="submitted && productDescriptionForm.taxRate.$error.required">
+									<font class="text-danger">
+										<b>This is required field</b>
+									</font>
+								</span>
+							</center>
+						</div>
+					</div>
+				</div><br>
+				<div class="text-center">
+					<button type="submit" ng-click="submitted=true" class="btn btn-info btn-fill btn-wd">{{buttons.title}}</button>
+				</div>
+			</form>
+			 <div class="clearfix"></div>
+		</div>  
+	</div>
+</script>
+
+<script type="text/ng-template" id="productName.html">
+	<div class="modal-content">
+		<div class="modal-header">
+			<span class="modal-title"><b>Product Category</b></span>
+			<button type="button" class="close" data-dismiss="modal" ng-click="close()">Close</button>
+		</div>
+		<div class="modal-body">
+			<form name="productNameForm" ng-submit="this[buttons.method]()">
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label>Category Name</label>
+							<input type="text" ng-model="productName.name" name="name" class="form-control" placeholder="Enter category name" ng-required="true">
+							<center> 
+								<span ng-show="(submitted && productNameForm.name.$error.required) || (productNameForm.name.$invalid && productNameForm.name.$dirty)">
+									<font class="text-danger">
+										<b>This is required field</b>
+									</font>
+								</span>
+							</center>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label>Product Attribute</label>
+							<select multiple class="selectpicker" ng-model="productName.attribute" name="attribute" title="--choose product attribute--" data-style="btn btn-default btn-block" data-size="5">
+								<option ng-repeat="pal in productAttributeList | orderBy:'name'" value="{{pal._id}}">{{pal.name}}</option>
+							</select>
+							<!-- <center> 
+								<span ng-show="(submitted && productNameForm.type.$error.required) || (productNameForm.type.$invalid && productNameForm.type.$dirty)">
+									<font class="text-danger">
+										<b>This is required field</b>
+									</font>
+								</span>
+							</center> -->
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label>Product Description</label>
+							<select class="selectpicker" ng-model="productName.type" name="type" data-style="btn btn-default btn-block" data-size="5" ng-change="productTypeChange()" ng-required="true">
+								<option value disabled>--choose product description--</option>
+								<option ng-repeat="ptl in productTypeList | orderBy:'type'" value="{{ptl._id}}">{{ptl.type}}</option>
+							</select>
+							<center> 
+								<span ng-show="(submitted && productNameForm.type.$error.required) || (productNameForm.type.$invalid && productNameForm.type.$dirty)">
+									<font class="text-danger">
+										<b>This is required field</b>
+									</font>
+								</span>
+							</center>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label>HSN / SAC Code</label>
+							<input type="text" class="form-control" value="prepopulated" ng-model="prodNameCode" disabled>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label>Units of Measurement</label>
+							<select class="selectpicker" ng-model="productName.unit" name="unit" data-style="btn btn-default btn-block" data-size="5" ng-required="true">
+								<option value disabled>--choose product unit--</option>
+								<option ng-repeat="pul in productUnitList | orderBy:'name'" value="{{pul._id}}">{{pul.name}}</option>
+							</select>
+							<center> 
+								<span ng-show="(submitted && productNameForm.unit.$error.required) || (productNameForm.unit.$invalid && productNameForm.unit.$dirty)">
+									<font class="text-danger">
+										<b>This is required field</b>
+									</font>
+								</span>
+							</center>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div><label>Maintain {{spName}}?</label></div>
+						<div class="radio radio-inline">
+							<input type="radio" ng-model="disableIMEIVal" ng-value="false">
+							<label>Yes</label>
+						</div>
+						<div class="radio radio-inline">
+							<input type="radio" ng-model="disableIMEIVal" ng-value="true">
+							<label>No</label>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-3">
+						<div class="form-group">
+							<label>{{spName}} Length</label>
+							<input type="number" ng-model="productName.IMEINumLen" name="IMEINumLen" min="0" class="form-control" ng-disabled="disableIMEIVal" ng-required="enableValid">
+							<center> 
+								<span ng-show="(submitted && productNameForm.IMEINumLen.$error.required) || (productNameForm.IMEINumLen.$invalid && productNameForm.IMEINumLen.$dirty)">
+									<font class="text-danger">
+										<b>Required</b>
+									</font>
+								</span>
+							</center>
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<div class="form-group">
+							<label>{{spName}} Count</label>
+							<input type="number" ng-model="productName.IMEINumCount" name="IMEINumCount" min="0" class="form-control" ng-disabled="disableIMEIVal" ng-required="enableValid">
+							<center> 
+								<span ng-show="(submitted && productNameForm.IMEINumCount.$error.required) || (productNameForm.IMEINumCount.$invalid && productNameForm.IMEINumCount.$dirty)">
+									<font class="text-danger">
+										<b>Required</b>
+									</font>
+								</span>
+							</center>
+						</div>
+					</div>
+				</div>
+				<div class="text-center">
+					<button type="submit" class="btn btn-info btn-fill btn-wd" ng-click="submited=true">{{buttons.title}}</button>
+				</div>
+			</form>
+			 <div class="clearfix"></div>
+		</div>  
+	</div>
+</script>
+
+<script type="text/ng-template" id="brand.html">
+	<div class="modal-content">
+		<div class="modal-header">
+			<span class="modal-title"><b>Brand</b></span>
+			<button type="button" class="close" data-dismiss="modal" ng-click="close()">Close</button>
+		</div>
+		<div class="modal-body">
+			<form name="brandForm" ng-submit="this[buttons.method]()">
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label>Brand Code</label>
+							<input type="text" class="form-control" ng-model="brand.code" name="code" placeholder="Enter brand code" ng-required="true">
+							<center> 
+								<span ng-show="(submitted && brandForm.code.$error.required) || (brandForm.code.$invalid && brandForm.code.$dirty)">
+									<font class="text-danger">
+										<b>This is required field</b>
+									</font>
+								</span>
+							</center>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label>Brand Name</label>
+							<input type="text" class="form-control" ng-model="brand.name" name="name" placeholder="Enter brand name" ng-required="true">
+							<center> 
+								<span ng-show="(submitted && brandForm.name.$error.required) || (brandForm.name.$invalid && brandForm.name.$dirty)">
+									<font class="text-danger">
+										<b>This is required field</b>
+									</font>
+								</span>
+							</center>
+						</div>
+					</div>
+				</div><br>
+				<div class="text-center">
+					<button type="submit" class="btn btn-info btn-fill btn-wd" ng-click="submitted=true">{{buttons.title}}</button>
+				</div>
+			</form>
+		</div>  
+	</div>
+</script>
+
+<script type="text/ng-template" id="item.html">
+	<style>
+		@media (min-width: 992px){
+            .modal-lg{
+                width: 900px;
+            }
+            .modal-dialog{
+                width: 900px;
+                margin: 30px auto;
+            }
+        }
+	</style>
+	<div class="modal-content modal-lg">
+		<div class="modal-header" style="padding: 10px;">
+			<span class="modal-title" style="font-size: 20px;"><b>Add New Item</b></span>
+			<button type="button" class="close" data-dismiss="modal" ng-click="close()">Close</button>
+		</div>
+		<div class="modal-body">
+			<form name="itemForm" ng-submit="this[buttons.method]()">
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label>Choose Brand</label>
+							<select class="selectpicker" ng-model="item.brandName" name="brandName" data-style="btn btn-default btn-block" data-size="7" ng-required="true">
+								<option value disabled>-- choose brand name --</option>
+								<option ng-repeat="bnl in brandNameList | orderBy:'name'" value="{{bnl._id}}">{{bnl.name}}</option>
+							</select>
+							<center> 
+								<span ng-show="submitted && itemForm.brandName.$error.required">
+									<font class="text-danger"><b>This is required field</b></font>
+								</span>
+							</center>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label>Product Category</label>
+							<select class="selectpicker" ng-model="item.prodName" name="prodName" data-style="btn btn-default btn-block" data-size="7" ng-change="productNameChange()" ng-required="true">
+								<option value disabled>-- choose product Category --</option>
+								<option ng-repeat="pnl in prodNameList | orderBy:'name'" value="{{pnl._id}}">{{pnl.name}}</option>
+							</select>
+							<center> 
+								<span ng-show="submitted && itemForm.prodName.$error.required">
+									<font class="text-danger"><b>This is required field</b></font>
+								</span>
+							</center>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label>Item Name</label>
+							<input type="text" ng-model="item.itemName" name="itemName" class="form-control" placeholder="Enter Item Name" ng-required="true">
+							<center> 
+								<span ng-show="submitted && itemForm.itemName.$error.required">
+									<font class="text-danger"><b>This is required field</b></font>
+								</span>
+							</center>
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<div class="form-group">
+							<label>Selling Rate</label>
+							<input type="number" ng-model="item.sellPrice" name="sellPrice" min="1" class="form-control" placeholder="Enter selling rate" ng-required="true">
+							<center> 
+								<span ng-show="submitted && itemForm.sellPrice.$error.required">
+									<font class="text-danger"><b>This is required field</b></font>
+								</span>
+							</center>
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<div class="form-group">
+							<label>Cost Rate</label>
+							<input type="number" ng-model="item.costPrice" name="costPrice" min="1" class="form-control" placeholder="Enter cost rate" ng-required="true">
+							<center> 
+								<span ng-show="submitted && itemForm.costPrice.$error.required">
+									<font class="text-danger"><b>This is required field</b></font>
+								</span>
+							</center>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-3" ng-repeat="att in attributes">
+						<div class="form-group">
+							<label style="margin-bottom:0px;">
+								<div class="checkbox">
+									<input type="checkbox" id="{{$index}}" ng-model="attributeStatus[$index]">
+									<label for="{{$index}}" style="margin-bottom:0px;">{{att.name}}</label>
+								</div>
+							</label>
+							<select class="selectpicker" ng-model="attribute[$index]" data-style="btn btn-default btn-block" data-size="7">
+								<option value>--Select {{att.name}} --</option>
+								<option ng-if="aval.active" ng-repeat="aval in att.value" value="{{aval._id}}">{{aval.name}}</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-3">
+						<div class="form-group">
+							<label>Tax Rate</label>
+							<input type="number" name="taxRate" min="1" class="form-control" placeholder="Enter tax rate" ng-model="taxRate">
+							<!-- <center> 
+								<span ng-show="submitted && itemForm.taxRate.$error.required">
+									<font class="text-danger"><b>This is required field</b></font>
+								</span>
+							</center> -->
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<div class="form-group">
+							<label>{{spName}} Length</label>
+							<input type="number" ng-model="item.IMEINumLen" min="1" name="IMEINumLen" class="form-control" placeholder="Enter {{spName}} Length" ng-disabled="disableIMEIVal" ng-required="enableValid">
+							<center> 
+								<span ng-show="submitted && itemForm.IMEINumLen.$error.required">
+									<font class="text-danger"><b>This is required field</b></font>
+								</span>
+							</center>
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<div class="form-group">
+							<label>Item Code</label>
+							<input type="text" class="form-control" ng-model="itemCode" ng-disabled="true">
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<div class="form-group">
+							<label>Inventory Type</label> 
+							<div class="radio" style="margin-bottom: 5px; margin-top: 0px;">
+								<input id="it1" type="radio" ng-model="item.inventType" ng-value="inventTypes[0]">
+								<label for="it1">{{inventTypes[0]}}</label> <br>
+							</div>
+							<div class="radio" style="margin-bottom: 10px; margin-top: 5px;">
+								<input id="it2" type="radio" ng-model="item.inventType" ng-value="inventTypes[1]">
+								<label for="it2">{{inventTypes[1]}}</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="text-center">
+					<button type="submit" ng-click="submitted=true" class="btn btn-info btn-fill btn-wd">{{buttons.title}}</button>
+				</div>
+			</form>
+			 <div class="clearfix"></div>
+		</div>  
+	</div>
+</script>

@@ -1,0 +1,389 @@
+<div class="container-fluid">
+    <div class="row"> 
+		<div class="col-lg-12 col-md-12">
+            <div class="card">
+	            <div class="card-content">
+					<div class="row">
+						<div class="col-md-6 col-md-offset-3">
+				        	<select class="selectpicker" ng-model="hrSelect" ng-options="item for item in items" ng-change="hrSelectChange()" data-style="btn btn-info btn-block" data-size="auto"></select>
+				    	</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div ng-switch="hrSelect">
+		<div ng-switch-when="Department" class="row">
+	    	<div class="col-md-12">
+	    		<div class="card a_cream">		    		 
+		    		<div class="row">
+		    			<div class="col-md-12">
+		    				<div class="card-content">			    				 
+			    				<div class="row">
+									<div class="col-md-12">
+			    						<div class="col-md-5">
+			    							<div class="form-group">
+        					    				<label >Department Name</label>
+        					    			 	<input type="text" class="form-control" ng-model="department.name" placeholder="Enter department name">
+        					    			</div>
+			    						</div>
+			    						<div class="col-md-5">
+			    							<div class="form-group">
+        					    				<label>Department Code</label>
+        					    				<input type="text" class="form-control" ng-model="department.code" placeholder="Enter department code">
+        					    			</div>
+			    						</div>
+			    						<div class="col-md-2 ">
+	    									<button ng-click="this[buttons.method](department)" class=" btn-margin btn btn-success btn-fill">{{buttons.title}}</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div ng-switch-when="Designation" class="text-right" style="margin-bottom: 5px;" ng-hide="hide">
+			<button ng-click="addNew()" class="btn btn-primary btn-fill">Add New</button>
+		</div>
+		<div ng-switch-when="Hierarchy" class="row">
+			<div class="col-md-12">
+				<div class="card a_cream">		    		 
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card-content">			    				 
+								<div class="row">
+									<div class="col-md-12">
+										<div class="col-md-5">
+											<div class="form-group">
+												<label >Level</label>
+													<input type="text" class="form-control" ng-model="hierarchy.level" placeholder="Enter Level No.">
+											</div>
+										</div>
+										<div class="col-md-5">
+											<div class="form-group">
+												<label >Name</label>
+													<input type="text" class="form-control" ng-model="hierarchy.name" placeholder="Enter Level Name">
+											</div>
+										</div>
+										<div class="col-md-2">
+											<button ng-click="this[buttons.method](hierarchy)" class=" btn-margin btn btn-success btn-fill">{{buttons.title}}</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div ng-switch-when="Journey Visit Type" class="row">
+	    	<div class="col-md-12">
+	    		<div class="card a_cream">		    		 
+		    		<div class="row">
+		    			<div class="col-md-12">
+		    				<div class="card-content">			    				 
+			    				<div class="row">
+									<div class="col-md-12">
+			    						<div class="col-md-5">
+			    							<div class="form-group">
+        					    				<label>Visit Type</label>
+        					    			 	<input type="text" class="form-control" ng-model="visitType.name" placeholder="Enter visit type name">
+        					    			</div>
+			    						</div>
+			    						<div class="col-md-5">
+			    							<div class="form-group">
+        					    				<label>Visit Type Code</label>
+        					    				<input type="text" class="form-control" ng-model="visitType.code" placeholder="Enter visit type code">
+        					    			</div>
+			    						</div>
+			    						<div class="col-md-2 ">
+	    									<button ng-click="this[buttons.method](visitType)" class=" btn-margin btn btn-success btn-fill">{{buttons.title}}</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>		
+	<div class="row">
+		<div class="col-md-12">
+	        <div class="card">
+	            <div class="card-content">
+					<table ng-if="authorized" datatable="" dt-options="dtOptions" dt-columns="dtColumns" dt-instance="vm.dtInstance" class="table table-striped table-bordered dataTable dtr-inline"></table>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+</div>
+<script type="text/ng-template" id="hrDesignationModal.html">
+    <style>
+        @media (min-width: 992px){
+            .modal-lg{
+                width: 900px;
+            }
+            .modal-dialog{
+                width: 900px;
+                margin: 30px auto;
+            }
+        }
+    </style>
+    <div class="modal-content modal-lg">
+        <div class="modal-header" style="padding: 10px;">
+            <span class="modal-title" style="font-size: 20px;"><b>Add HR Designation</b></span>
+            <button type="button" class="close" data-dismiss="modal" ng-click="close()">Close</button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-6">
+					<div class="form-group">
+						<label >Designation Name</label>
+						<input type="text" class="form-control" ng-model="designation.name" placeholder="Enter designation name">
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label >Designation Code</label>
+						<input type="text" class="form-control" ng-model="designation.code" placeholder="Enter designation code">
+					</div>
+				</div>
+			</div>
+			<table  class="table table-striped table-no-bordered table-hover" cellspacing="0" width="100%" style="width:100%">
+				<thead>
+					<tr>
+						<th><b>Module</b></th>
+						<th><b>View</b></th>
+						<th><b>New</b></th>
+						<th><b>edit</b></th>
+						<th><b>Delete</b></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><a data-toggle="collapse" href="#Masters"><b>Masters</b></a></td>
+						<td><input type="checkbox" ng-model="permission.master.master.view" ng-click="viewAllClicked($event,'master','view')"></td>
+						<td><input type="checkbox" ng-model="permission.master.master.new" ng-click="viewAllClicked($event,'master','new')"></td>
+						<td><input type="checkbox" ng-model="permission.master.master.edit" ng-click="viewAllClicked($event,'master','edit')"></td>
+						<td><input type="checkbox" ng-model="permission.master.master.delete" ng-click="viewAllClicked($event,'master','delete')"></td>
+					</tr>
+					<tbody  id="Masters" class="collapse">
+						<tr>
+							<td style="padding-left:30px">Clients</td>
+							<td><input type="checkbox" ng-model="permission.master.client.view" ng-init="permission.master.client.view = permission.master.client.view" ng-click="viewClicked('master','view')"></td>
+							<td><input type="checkbox" ng-model="permission.master.client.new" ng-init="permission.master.client.new = permission.master.client.new" ng-click="viewClicked('master','new')"></td>
+							<td><input type="checkbox" ng-model="permission.master.client.edit" ng-init="permission.master.client.edit = permission.master.client.edit" ng-click="viewClicked('master','edit')"></td>
+							<td><input type="checkbox" ng-model="permission.master.client.delete" ng-init="permission.master.client.delete = permission.master.client.delete" ng-click="viewClicked('master','delete')"></td>
+						</tr>
+						<tr>
+							<td  style="padding-left:30px">Products</td>
+							<td><input type="checkbox" ng-model="permission.master.product.view" ng-init="permission.master.product.view = permission.master.product.view" ng-click="viewClicked('master','view')"></td>
+							<td><input type="checkbox" ng-model="permission.master.product.new" ng-init="permission.master.product.new = permission.master.product.new" ng-click="viewClicked('master','new')"></td>
+							<td><input type="checkbox" ng-model="permission.master.product.edit" ng-init="permission.master.product.edit = permission.master.product.edit" ng-click="viewClicked('master','edit')"></td>
+							<td><input type="checkbox" ng-model="permission.master.product.delete" ng-init="permission.master.product.delete = permission.master.product.delete" ng-click="viewClicked('master','delete')"></td>
+						</tr>
+						<tr>
+							<td  style="padding-left:30px">Supplier</td>
+							<td><input type="checkbox" ng-model="permission.master.supplier.view" ng-init="permission.master.supplier.view = permission.master.supplier.view" ng-click="viewClicked('master','view')"></td>
+							<td><input type="checkbox" ng-model="permission.master.supplier.new" ng-init="permission.master.supplier.new = permission.master.supplier.new" ng-click="viewClicked('master','new')"></td>
+							<td><input type="checkbox" ng-model="permission.master.supplier.edit" ng-init="permission.master.supplier.edit = permission.master.supplier.edit" ng-click="viewClicked('master','edit')"></td>
+							<td><input type="checkbox" ng-model="permission.master.supplier.delete" ng-init="permission.master.supplier.delete = permission.master.supplier.delete" ng-click="viewClicked('master','delete')"></td>
+						</tr>
+						<tr>
+							<td  style="padding-left:30px">Accounts</td>
+							<td><input type="checkbox" ng-model="permission.master.accounts.view" ng-init="permission.master.accounts.view = permission.master.accounts.view" ng-click="viewClicked('master','view')"></td>
+							<td><input type="checkbox" ng-model="permission.master.accounts.new" ng-init="permission.master.accounts.new = permission.master.accounts.new" ng-click="viewClicked('master','new')"></td>
+							<td><input type="checkbox" ng-model="permission.master.accounts.edit" ng-init="permission.master.accounts.edit = permission.master.accounts.edit" ng-click="viewClicked('master','edit')"></td>
+							<td><input type="checkbox" ng-model="permission.master.accounts.delete" ng-init="permission.master.accounts.delete = permission.master.accounts.delete" ng-click="viewClicked('master','delete')"></td>
+						</tr>
+						<tr>
+							<td  style="padding-left:30px">HR</td>
+							<td><input type="checkbox" ng-model="permission.master.hr.view" ng-init="permission.master.hr.view = permission.master.hr.view" ng-click="viewClicked('master','view')"></td>
+							<td><input type="checkbox" ng-model="permission.master.hr.new" ng-init="permission.master.hr.new = permission.master.hr.new" ng-click="viewClicked('master','new')"></td>
+							<td><input type="checkbox" ng-model="permission.master.hr.edit" ng-init="permission.master.hr.edit = permission.master.hr.edit" ng-click="viewClicked('master','edit')"></td>
+							<td><input type="checkbox" ng-model="permission.master.hr.delete" ng-init="permission.master.hr.delete = permission.master.hr.delete" ng-click="viewClicked('master','delete')"></td>
+						</tr>
+						<tr >
+							<td  style="padding-left:30px">General Masters</td>
+							<td><input type="checkbox" ng-model="permission.master.generalMaster.view" ng-init="permission.master.generalMaster.view = permission.master.generalMaster.view" ng-click="viewClicked('master','view')"></td>
+							<td><input type="checkbox" ng-model="permission.master.generalMaster.new" ng-init="permission.master.generalMaster.new = permission.master.generalMaster.new" ng-click="viewClicked('master','new')"></td>
+							<td><input type="checkbox" ng-model="permission.master.generalMaster.edit" ng-init="permission.master.generalMaster.edit = permission.master.generalMaster.edit" ng-click="viewClicked('master','edit')"></td>
+							<td><input type="checkbox" ng-model="permission.master.generalMaster.delete" ng-init="permission.master.generalMaster.delete = permission.master.generalMaster.delete" ng-click="viewClicked('master','delete')"></td>
+						</tr>
+					</tbody>
+					<tr>
+						<td> <a data-toggle="collapse" href="#Hr"><b>HR</b></a></td>
+						<td><input type="checkbox" ng-model="permission.hr.hr.view" ng-click="viewAllClicked($event,'hr','view')"></td>
+						<td><input type="checkbox" ng-model="permission.hr.hr.new" ng-click="viewAllClicked($event,'hr','new')"></td>
+						<td><input type="checkbox" ng-model="permission.hr.hr.edit" ng-click="viewAllClicked($event,'hr','edit')"></td>
+						<td><input type="checkbox" ng-model="permission.hr.hr.delete" ng-click="viewAllClicked($event,'hr','delete')"></td>
+					</tr>
+					<tbody id="Hr" class="collapse">
+						<tr >
+							<td  style="padding-left:30px">Employees</td>
+							<td><input type="checkbox" ng-model="permission.hr.employee.view" ng-init="permission.hr.employee.view = permission.hr.employee.view" ng-click="viewClicked('hr','view')"></td>
+							<td><input type="checkbox" ng-model="permission.hr.employee.new" ng-init="permission.hr.employee.new = permission.hr.employee.new" ng-click="viewClicked('hr','new')"></td>
+							<td><input type="checkbox" ng-model="permission.hr.employee.edit" ng-init="permission.hr.employee.edit = permission.hr.employee.edit" ng-click="viewClicked('hr','edit')"></td>
+							<td><input type="checkbox" ng-model="permission.hr.employee.delete" ng-init="permission.hr.employee.delete = permission.hr.employee.delete" ng-click="viewClicked('hr','delete')"></td>
+						</tr>
+						<tr >
+							<td  style="padding-left:30px">Expenses</td>
+							<td><input type="checkbox" ng-model="permission.hr.expense.view" ng-init="permission.hr.expense.view = permission.hr.expense.view" ng-click="viewClicked('hr','view')"></td>
+							<td><input type="checkbox" ng-model="permission.hr.expense.new" ng-init="permission.hr.expense.new = permission.hr.expense.new"  ng-click="viewClicked('hr','new')"></td>
+							<td><input type="checkbox" ng-model="permission.hr.expense.edit" ng-init="permission.hr.expense.edit = permission.hr.expense.edit" ng-click="viewClicked('hr','edit')"></td>
+							<td><input type="checkbox" ng-model="permission.hr.expense.delete" ng-init="permission.hr.expense.delete = permission.hr.expense.delete" ng-click="viewClicked('hr','delete')"></td>
+						</tr>
+					</tbody>
+					<tr>
+						<td> <a data-toggle="collapse" href="#Inventory"><b>Inventory</b></a></td>
+						<td><input type="checkbox" ng-model="permission.inventory.inventory.view" ng-click="viewAllClicked($event,'inventory','view')"></td>
+						<td><input type="checkbox" ng-model="permission.inventory.inventory.new" ng-click="viewAllClicked($event,'inventory','new')"></td>
+						<td><input type="checkbox" ng-model="permission.inventory.inventory.edit" ng-click="viewAllClicked($event,'inventory','edit')"></td>
+						<td><input type="checkbox" ng-model="permission.inventory.inventory.delete" ng-click="viewAllClicked($event,'inventory','delete')"></td>
+					</tr>
+					<tbody id="Inventory" class=collapse>
+						<tr>
+							<td style="padding-left:30px">Purchase Order</td>
+							<td><input type="checkbox" ng-model="permission.inventory.purchaseOrder.view" ng-init="permission.inventory.purchaseOrder.view = permission.inventory.purchaseOrder.view" ng-click="viewClicked('inventory','view')"></td>
+							<td><input type="checkbox" ng-model="permission.inventory.purchaseOrder.new" ng-init="permission.inventory.purchaseOrder.new = permission.inventory.purchaseOrder.new" ng-click="viewClicked('inventory','new')"></td>
+							<td><input type="checkbox" ng-model="permission.inventory.purchaseOrder.edit" ng-init="permission.inventory.purchaseOrder.edit = permission.inventory.purchaseOrder.edit" ng-click="viewClicked('inventory','edit')"></td>
+							<td><input type="checkbox" ng-model="permission.inventory.purchaseOrder.delete" ng-init="permission.inventory.purchaseOrder.delete = permission.inventory.purchaseOrder.delete" ng-click="viewClicked('inventory','delete')"></td>
+						</tr>
+						<tr>
+							<td style="padding-left:30px">Purchase Order Management</td>
+							<td><input type="checkbox" ng-model="permission.inventory.purchaseOrderManagement.view" ng-init="permission.inventory.purchaseOrderManagement.view = permission.inventory.purchaseOrderManagement.view" ng-click="viewClicked('inventory','view')"></td>
+							<td><input type="checkbox" ng-model="permission.inventory.purchaseOrderManagement.new" ng-init="permission.inventory.purchaseOrderManagement.new = permission.inventory.purchaseOrderManagement.new" ng-click="viewClicked('inventory','new')"></td>
+							<td><input type="checkbox" ng-model="permission.inventory.purchaseOrderManagement.edit" ng-init="permission.inventory.purchaseOrderManagement.edit = permission.inventory.purchaseOrderManagement.edit" ng-click="viewClicked('inventory','edit')"></td>
+							<td><input type="checkbox" ng-model="permission.inventory.purchaseOrderManagement.delete" ng-init="permission.inventory.purchaseOrderManagement.delete = permission.inventory.purchaseOrderManagement.delete" ng-click="viewClicked('inventory','delete')"></td>
+						</tr>
+						<tr>
+							<td style="padding-left:30px">Purchase Acknowledgement</td>
+							<td><input type="checkbox" ng-model="permission.inventory.purchaseAck.view" ng-init="permission.inventory.purchaseAck.view = permission.inventory.purchaseAck.view" ng-click="viewClicked('inventory','view')"></td>
+							<td><input type="checkbox" ng-model="permission.inventory.purchaseAck.new" ng-init="permission.inventory.purchaseAck.new = permission.inventory.purchaseAck.new" ng-click="viewClicked('inventory','new')"></td>
+							<td><input type="checkbox" ng-model="permission.inventory.purchaseAck.edit" ng-init="permission.inventory.purchaseAck.edit = permission.inventory.purchaseAck.edit" ng-click="viewClicked('inventory','edit')"></td>
+							<td><input type="checkbox" ng-model="permission.inventory.purchaseAck.delete" ng-init="permission.inventory.purchaseAck.delete = permission.inventory.purchaseAck.delete" ng-click="viewClicked('inventory','delete')"></td>
+						</tr>
+						<tr>
+							<td style="padding-left:30px">Sales</td>
+							<td><input type="checkbox" ng-model="permission.inventory.sales.view" ng-init="permission.inventory.sales.view = permission.inventory.sales.view" ng-click="viewClicked('inventory','view')"></td>
+							<td><input type="checkbox" ng-model="permission.inventory.sales.new" ng-init="permission.inventory.sales.new = permission.inventory.sales.new" ng-click="viewClicked('inventory','new')"></td>
+							<td><input type="checkbox" ng-model="permission.inventory.sales.edit" ng-init="permission.inventory.sales.edit = permission.inventory.sales.edit" ng-click="viewClicked('inventory','edit')"></td>
+							<td><input type="checkbox" ng-model="permission.inventory.sales.delete" ng-init="permission.inventory.sales.delete = permission.inventory.sales.delete" ng-click="viewClicked('inventory','delete')"></td>
+						</tr>
+						<tr>
+							<td style="padding-left:30px">Sales Order</td>
+							<td><input type="checkbox" ng-model="permission.inventory.salesOrder.view" ng-init="permission.inventory.salesOrder.view = permission.inventory.salesOrder.view" ng-click="viewClicked('inventory','view')"></td>
+							<td><input type="checkbox" ng-model="permission.inventory.salesOrder.new" ng-init="permission.inventory.salesOrder.new = permission.inventory.salesOrder.new" ng-click="viewClicked('inventory','new')"></td>
+							<td><input type="checkbox" ng-model="permission.inventory.salesOrder.edit" ng-init="permission.inventory.salesOrder.edit = permission.inventory.salesOrder.edit" ng-click="viewClicked('inventory','edit')"></td>
+							<td><input type="checkbox" ng-model="permission.inventory.salesOrder.delete" ng-init="permission.inventory.salesOrder.delete = permission.inventory.salesOrder.delete" ng-click="viewClicked('inventory','delete')"></td>
+						</tr>
+						<tr>
+							<td style="padding-left:30px">Sales Order Management</td>
+							<td><input type="checkbox" ng-model="permission.inventory.salesOrderManagement.view" ng-init="permission.inventory.salesOrderManagement.view = permission.inventory.salesOrderManagement.view" ng-click="viewClicked('inventory','view')"></td>
+							<td><input type="checkbox" ng-model="permission.inventory.salesOrderManagement.new" ng-init="permission.inventory.salesOrderManagement.new = permission.inventory.salesOrderManagement.new" ng-click="viewClicked('inventory','new')"></td>
+							<td><input type="checkbox" ng-model="permission.inventory.salesOrderManagement.edit" ng-init="permission.inventory.salesOrderManagement.edit = permission.inventory.salesOrderManagement.edit" ng-click="viewClicked('inventory','edit')"></td>
+							<td><input type="checkbox" ng-model="permission.inventory.salesOrderManagement.delete" ng-init="permission.inventory.salesOrderManagement.delete = permission.inventory.salesOrderManagement.delete" ng-click="viewClicked('inventory','delete')"></td>
+						</tr>
+						<tr>
+							<td style="padding-left:30px">Stock Transfer</td>
+							<td><input type="checkbox" ng-model="permission.inventory.stockTransfer.view" ng-init="permission.inventory.stockTransfer.view = permission.inventory.stockTransfer.view" ng-click="viewClicked('inventory','view')"></td>
+							<td><input type="checkbox" ng-model="permission.inventory.stockTransfer.new" ng-init="permission.inventory.stockTransfer.new = permission.inventory.stockTransfer.new" ng-click="viewClicked('inventory','new')"></td>
+							<td><input type="checkbox" ng-model="permission.inventory.stockTransfer.edit" ng-init="permission.inventory.stockTransfer.edit = permission.inventory.stockTransfer.edit" ng-click="viewClicked('inventory','edit')"></td>
+							<td><input type="checkbox" ng-model="permission.inventory.stockTransfer.delete" ng-init="permission.inventory.stockTransfer.delete = permission.inventory.stockTransfer.delete" ng-click="viewClicked('inventory','delete')"></td>
+						</tr>
+						<tr>
+							<td style="padding-left:30px">Stock Status</td>
+							<td><input type="checkbox" ng-model="permission.inventory.stockStatus.view" ng-init="permission.inventory.stockStatus.view = permission.inventory.stockStatus.view" ng-click="viewClicked('inventory','view')"></td>
+							<td><input type="checkbox" ng-model="permission.inventory.stockStatus.new" ng-init="permission.inventory.stockStatus.new = permission.inventory.stockStatus.new" ng-click="viewClicked('inventory','new')"></td>
+							<td><input type="checkbox" ng-model="permission.inventory.stockStatus.edit" ng-init="permission.inventory.stockStatus.edit = permission.inventory.stockStatus.edit" ng-click="viewClicked('inventory','edit')"></td>
+							<td><input type="checkbox" ng-model="permission.inventory.stockStatus.delete" ng-init="permission.inventory.stockStatus.delete = permission.inventory.stockStatus.delete" ng-click="viewClicked('inventory','delete')"></td>
+						</tr>
+						<tr>
+							<td style="padding-left:30px">Stock Register</td>
+							<td><input type="checkbox" ng-model="permission.inventory.stockRegister.view" ng-init="permission.inventory.stockRegister.view = permission.inventory.stockRegister.view" ng-click="viewClicked('inventory','view')"></td>
+							<td><input type="checkbox" ng-model="permission.inventory.stockRegister.new" ng-init="permission.inventory.stockRegister.new = permission.inventory.stockRegister.new" ng-click="viewClicked('inventory','new')"></td>
+							<td><input type="checkbox" ng-model="permission.inventory.stockRegister.edit" ng-init="permission.inventory.stockRegister.edit = permission.inventory.stockRegister.edit" ng-click="viewClicked('inventory','edit')"></td>
+							<td><input type="checkbox" ng-model="permission.inventory.stockRegister.delete" ng-init="permission.inventory.stockRegister.delete = permission.inventory.stockRegister.delete" ng-click="viewClicked('inventory','delete')"></td>
+						</tr>
+					</tbody>
+					<tr>
+						<td> <a data-toggle="collapse" href="#Accounts"><b>Accounts</b></a></td>
+						<td><input type="checkbox" ng-model="permission.accounts.accounts.view" ng-click="viewAllClicked($event,'accounts','view')"></td>
+						<td><input type="checkbox" ng-model="permission.accounts.accounts.new" ng-click="viewAllClicked($event,'accounts','new')"></td>
+						<td><input type="checkbox" ng-model="permission.accounts.accounts.edit" ng-click="viewAllClicked($event,'accounts','edit')"></td>
+						<td><input type="checkbox" ng-model="permission.accounts.accounts.delete" ng-click="viewAllClicked($event,'accounts','delete')"></td>
+					</tr>
+					<tbody id="Accounts" class="collapse">
+						<tr>
+							<td style="padding-left:30px">Ledger</td>
+							<td><input type="checkbox" ng-model="permission.accounts.ledger.view" ng-init="permission.accounts.ledger.view = permission.accounts.ledger.view" ng-click="viewClicked('accounts','view')"></td>
+							<td><input type="checkbox" ng-model="permission.accounts.ledger.new" ng-init="permission.accounts.ledger.new = permission.accounts.ledger.new" ng-click="viewClicked('accounts','new')"></td>
+							<td><input type="checkbox" ng-model="permission.accounts.ledger.edit" ng-init="permission.accounts.ledger.edit = permission.accounts.ledger.edit" ng-click="viewClicked('accounts','edit')"></td>
+							<td><input type="checkbox" ng-model="permission.accounts.ledger.delete" ng-init="permission.accounts.ledger.delete = permission.accounts.ledger.delete" ng-click="viewClicked('accounts','delete')"></td>
+						</tr>
+						<tr>
+							<td style="padding-left:30px">Account Statement</td>
+							<td><input type="checkbox" ng-model="permission.accounts.accountStatement.view" ng-init="permission.accounts.accountStatement.view = permission.accounts.accountStatement.view" ng-click="viewClicked('accounts','view')"></td>
+							<td><input type="checkbox" ng-model="permission.accounts.accountStatement.new" ng-init="permission.accounts.accountStatement.new = permission.accounts.accountStatement.new" ng-click="viewClicked('accounts','new')"></td>
+							<td><input type="checkbox" ng-model="permission.accounts.accountStatement.edit" ng-init="permission.accounts.accountStatement.edit = permission.accounts.accountStatement.edit" ng-click="viewClicked('accounts','edit')"></td>
+							<td><input type="checkbox" ng-model="permission.accounts.accountStatement.delete" ng-init="permission.accounts.accountStatement.delete = permission.accounts.accountStatement.delete" ng-click="viewClicked('accounts','delete')"></td>
+						</tr>
+						<tr>
+							<td style="padding-left:30px">Receipt Voucher</td>
+							<td><input type="checkbox" ng-model="permission.accounts.receiptVoucher.view" ng-init="permission.accounts.receiptVoucher.view = permission.accounts.receiptVoucher.view" ng-click="viewClicked('accounts','view')"></td>
+							<td><input type="checkbox" ng-model="permission.accounts.receiptVoucher.new" ng-init="permission.accounts.receiptVoucher.new = permission.accounts.receiptVoucher.new" ng-click="viewClicked('accounts','new')"></td>
+							<td><input type="checkbox" ng-model="permission.accounts.receiptVoucher.edit" ng-init="permission.accounts.receiptVoucher.edit = permission.accounts.receiptVoucher.edit" ng-click="viewClicked('accounts','edit')"></td>
+							<td><input type="checkbox" ng-model="permission.accounts.receiptVoucher.delete" ng-init="permission.accounts.ledger.delete = permission.accounts.receiptVoucher.delete" ng-click="viewClicked('accounts','delete')"></td>
+						</tr>
+						<tr>
+							<td style="padding-left:30px">Payment Voucher</td>
+							<td><input type="checkbox" ng-model="permission.accounts.paymentVoucher.view" ng-init="permission.accounts.paymentVoucher.view = permission.accounts.paymentVoucher.view" ng-click="viewClicked('accounts','view')"></td>
+							<td><input type="checkbox" ng-model="permission.accounts.paymentVoucher.new" ng-init="permission.accounts.paymentVoucher.new = permission.accounts.paymentVoucher.new" ng-click="viewClicked('accounts','new')"></td>
+							<td><input type="checkbox" ng-model="permission.accounts.paymentVoucher.edit" ng-init="permission.accounts.paymentVoucher.edit = permission.accounts.paymentVoucher.edit" ng-click="viewClicked('accounts','edit')"></td>
+							<td><input type="checkbox" ng-model="permission.accounts.paymentVoucher.delete" ng-init="permission.accounts.paymentVoucher.delete = permission.accounts.paymentVoucher.delete" ng-click="viewClicked('accounts','delete')"></td>
+						</tr>
+						<tr>
+							<td style="padding-left:30px">Journal</td>
+							<td><input type="checkbox" ng-model="permission.accounts.journal.view" ng-init="permission.accounts.journal.view = permission.accounts.journal.view" ng-click="viewClicked('accounts','view')"></td>
+							<td><input type="checkbox" ng-model="permission.accounts.journal.new" ng-init="permission.accounts.journal.new = permission.accounts.journal.new" ng-click="viewClicked('accounts','new')"></td>
+							<td><input type="checkbox" ng-model="permission.accounts.journal.edit" ng-init="permission.accounts.journal.edit = permission.accounts.journal.edit" ng-click="viewClicked('accounts','edit')"></td>
+							<td><input type="checkbox" ng-model="permission.accounts.journal.delete" ng-init="permission.accounts.journal.delete = permission.accounts.journal.delete" ng-click="viewClicked('accounts','delete')"></td>
+						</tr>
+						<tr>
+							<td style="padding-left:30px">Contra</td>
+							<td><input type="checkbox" ng-model="permission.accounts.contra.view" ng-init="permission.accounts.contra.view = permission.accounts.contra.view" ng-click="viewClicked('accounts','view')"></td>
+							<td><input type="checkbox" ng-model="permission.accounts.contra.new" ng-init="permission.accounts.contra.new = permission.accounts.contra.new" ng-click="viewClicked('accounts','new')"></td>
+							<td><input type="checkbox" ng-model="permission.accounts.contra.edit" ng-init="permission.accounts.contra.edit = permission.accounts.contra.edit" ng-click="viewClicked('accounts','edit')"></td>
+							<td><input type="checkbox" ng-model="permission.accounts.contra.delete" ng-init="permission.accounts.contra.delete = permission.accounts.contra.delete" ng-click="viewClicked('accounts','delete')"></td>
+						</tr>
+						<tr>
+							<td style="padding-left:30px">Debit Note</td>
+							<td><input type="checkbox" ng-model="permission.accounts.debitNote.view" ng-init="permission.accounts.debitNote.view = permission.accounts.debitNote.view" ng-click="viewClicked('accounts','view')"></td>
+							<td><input type="checkbox" ng-model="permission.accounts.debitNote.new" ng-init="permission.accounts.debitNote.new = permission.accounts.debitNote.new" ng-click="viewClicked('accounts','new')"></td>
+							<td><input type="checkbox" ng-model="permission.accounts.debitNote.edit" ng-init="permission.accounts.debitNote.edit = permission.accounts.debitNote.edit" ng-click="viewClicked('accounts','edit')"></td>
+							<td><input type="checkbox" ng-model="permission.accounts.debitNote.delete" ng-init="permission.accounts.debitNote.delete = permission.accounts.debitNote.delete" ng-click="viewClicked('accounts','delete')"></td>
+						</tr>
+						<tr>
+							<td style="padding-left:30px">Credit Note</td>
+							<td><input type="checkbox" ng-model="permission.accounts.creditNote.view" ng-init="permission.accounts.creditNote.view = permission.accounts.creditNote.view" ng-click="viewClicked('accounts','view')"></td>
+							<td><input type="checkbox" ng-model="permission.accounts.creditNote.new" ng-init="permission.accounts.creditNote.new = permission.accounts.creditNote.new" ng-click="viewClicked('accounts','new')"></td>
+							<td><input type="checkbox" ng-model="permission.accounts.creditNote.edit" ng-init="permission.accounts.creditNote.edit = permission.accounts.creditNote.edit" ng-click="viewClicked('accounts','edit')"></td>
+							<td><input type="checkbox" ng-model="permission.accounts.creditNote.delete" ng-init="permission.accounts.creditNote.delete = permission.accounts.creditNote.delete" ng-click="viewClicked('accounts','delete')"></td>
+						</tr>
+					</tbody>
+				</tbody>
+			</table>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="text-center">
+                        <button ng-click="this[HRbuttons.method]()" class="btn btn-success btn-fill">{{HRbuttons.title}}</button>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>  
+    </div>
+</script>

@@ -1,0 +1,565 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-lg-12 col-md-12">
+		    <div class="card">
+		        <div class="card-content">
+					<div class="nav-tabs-navigation" style="margin-bottom: 10px;">
+						<div class="nav-tabs-wrapper" style="margin-left: -12px;">
+							<ul id="tabs" class="nav nav-tabs" style="font-size: 17px;" data-tabs="tabs">
+				                <li class="active"><a href="#view" data-toggle="tab" style="padding-bottom: 10px;">View Expense</a></li>
+				                <li><a href="#add" data-toggle="tab" style="padding-bottom: 10px;">New Expense</a></li>
+				                <li><a href="#approve" data-toggle="tab" style="padding-bottom: 10px;">Approve Expense</a></li>
+				            </ul>
+				        </div>
+					</div>
+					<div class="tab-content">
+						<div class="tab-pane" id="add">
+							<div class="row">
+								<div class="col-lg-12 col-md-12">
+					                <div class="card">
+										<div class="card-content" style="padding:5px 5px 0px 5px;">
+					                        <div class="row">
+					                            <div class="col-md-12">
+					                                <div class="pull-left">
+					                                    <h5><b>Expense Number</b>&nbsp;:&nbsp;<u>{{exp.invoiceNumber}}</u></h5>
+					                                </div>
+					                                <div class="pull-right">
+					                                    <h5><b>Date</b>&nbsp;:&nbsp;<u>{{exp.invoiceDate}}</u>&nbsp;&nbsp;</h5>
+					                                </div>
+					                            </div>
+					                        </div>
+					                        <div class="row">
+					                            <div class="col-sm-6">
+					                                <div class="form-group">
+					                                    <label class="col-sm-3 control-label">Employee</label>
+					                                    <div class="col-sm-9">
+					                                        <select class="selectpicker" ng-model="exp.employee" data-size="5" data-live-search="true" ng-change="employeeChange()" ng-disabled="disableEmployee">
+					                                            <option value selected disabled>--select employee--</option>
+					                                            <option ng-repeat="emp in employees | orderBy:'name'" value="{{emp._id}}">{{emp.name}}</option>
+					                                        </select>
+					                                    </div>
+					                                </div>
+					                            </div>
+					                            <div class="col-sm-6">
+					                                <div class="form-group">
+					                                    <label class="col-sm-3 control-label">JP</label>
+					                                    <div class="col-sm-9">
+					                                        <select class="selectpicker" ng-model="exp.jp" data-size="5">
+																<option value selected disabled>--choose jp--</option>
+																<option ng-repeat="jp in jps | orderBy:'title'" ng-value="jp.id">{{jp.title}}</option>
+					                                        </select>
+					                                    </div>
+					                                </div>
+					                            </div>
+					                        </div><br>
+					                        <div class="row">
+					                            <div class="col-sm-6">
+					                                <div class="form-group">
+					                                    <label class="col-sm-3 control-label">Expense Type</label>
+					                                    <div class="col-sm-9">
+					                                        <select class="selectpicker" ng-model="expense.type" data-size="5" ng-change="expenseTypeChange()">
+					                                            <option value>--select expense type--</option>
+					                                            <option ng-repeat="exptyp in expenseTypes  | orderBy:'exptyp'">{{exptyp}}</option>
+					                                        </select>
+					                                    </div>
+					                                </div><br><br>
+					                                <div class="form-group">
+					                                    <label class="col-sm-3 control-label">Rate</label>
+					                                    <div class="col-sm-9">
+					                                        <input type="text" class="form-control" ng-model="expense.cost" placeholder="Enter Cost" awnum>
+					                                    </div>
+					                                </div>
+					                            </div>
+					                            <div class="col-sm-6">
+					                                <div class="form-group">
+					                                    <label class="col-sm-3 control-label">Remark</label>
+					                                    <div class="col-sm-9">
+					                                        <textarea ng-model="expense.remark" rows="4" class="form-control" placeholder="Enter Remark"></textarea>
+					                                    </div>
+					                                </div>
+					                            </div>
+					                        </div><br>
+					                        <div class="row">
+					                            <div class="col-sm-6">
+					                                <div class="form-group">
+					                                    <label class="col-sm-3 control-label">Date</label>
+					                                    <div class="col-sm-9">
+					                                        <input type="text" class="form-control datepicker" id="expenseDate" placeholder="select date" ng-model="expense.date">
+					                                    </div>
+					                                </div>
+					                            </div>
+					                            <div class="col-sm-6">
+					                                <div class="form-group">
+					                                    <label class="col-sm-3 control-label">File</label>
+					                                    <div class="col-sm-9">
+					                                        <input type="file" class="form-control" file-model="expense.file">
+					                                    </div>
+					                                </div>
+					                            </div>
+					                        </div><br>
+					                        <div class="row">
+												<div class="col-md-12">
+													<button class="btn btn-default btn-fill btn-wd pull-right" ng-click="addExpense()">Add Expense</button>
+												</div>
+					                        </div><br>	
+					                    </div>
+					                </div>
+					            </div>
+					        </div>
+					        <div ng-show="showTable" class="row">
+					            <div class="col-md-12">
+									<table class="table">
+										<thead>
+											<th>#</th>
+											<th>Type</th>
+											<th>Date</th>
+											<th>Remark</th>
+											<th>Cost</th>
+											<th>Action</th>
+										</thead>
+										<tbody>
+											<tr ng-repeat="exps in expenses">
+												<td>{{$index + 1}}</td>
+												<td>{{exps.type}}</td>
+												<td>{{exps.date}}</td>
+												<td>{{exps.remark}}</td>
+												<td>{{exps.cost}}</td>
+												<td>
+													<button class="btn btn-simple btn-danger btn-icon remove" ng-click="deleteExpense($index)">
+														<i class="fa fa-trash-o"></i>
+													</button>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+									<button class="btn btn-info btn-fill btn-wd pull-right" ng-click="saveExpense()">Save Expense</button>
+					            </div>
+					        </div>
+					    </div>
+						<div class="tab-pane" id="approve">
+							<div class="row">
+								<div class="col-lg-12 col-md-12">
+					                <div class="card">
+					                    <div class="card-content">
+					                        <div class="row">
+					                            <div class="col-sm-4">
+					                                <div class="form-group">
+					                                    <label class="control-label">Employee Name</label>
+					                                    <select class="selectpicker" multiple  data-actions-box="true" ng-model="app.employee" title="--select employee--" data-selected-text-format="count" data-size="5" data-live-search="true" ng-disabled="disableEmployee">
+					                                        <option ng-repeat="emp in employees" value="{{emp._id}}">{{emp.name}}</option>
+					                                    </select>
+					                                </div>
+					                            </div>
+					                            <div class="col-sm-4">
+					                                <div class="form-group">
+					                                    <label>Start</label>
+					                                    <input class="form-control datepicker" type="text" id="start" placeholder="select from date">
+					                                </div>
+					                            </div>
+					                            <div class="col-sm-4">
+					                                <div class="form-group">
+					                                    <label>End</label>
+					                                    <input class="form-control datepicker" type="text" id="end" placeholder="select to date">
+					                                </div>
+					                            </div>
+					                        </div>
+					                        <div class="text-right">
+					                            <button class="btn btn-info btn-fill btn-wd" ng-click="readExpense()">Show Expenses</button>
+					                        </div>
+					                    </div>
+					                </div>
+					            </div>
+					        </div>
+					     	<div class="row">
+					            <div class="col-md-12">
+					                <div class="card">
+					                    <div class="card-content">
+											<table class="table table-bordered table-stripped dataTable dtr-inline" datatable="ng" dt-options="vm.dtOptions" dt-instance="vm.dtInstance"  width="100%" dt-column-defs="vm.dtColumnDefs">
+												<thead>
+													<th><b>#</b></th>
+													<th><b>Expense Number</b></th>
+													<th><b>Expense Date</b></th>
+													<th><b>Employee</b></th>
+													<th><b>Total</b></th>
+													<th><b>Approved</b></th>
+													<th><b>Pending</b></th>
+													<th><b>Status</b></th>
+												</thead>
+												<tbody>
+													<tr ng-repeat="aexp in vm.approveExpenses">
+														<td>{{$index + 1}}</td>
+														<td ng-click="openExpenses($index)">{{aexp.invoiceNumber}}</td>
+														<td>{{aexp.invoiceDate}}</td>
+														<td>{{aexp.employee.name}}</td>
+														<td><center>{{aexp.approved + aexp.pending}}</center></td>
+														<td><center>{{aexp.approved}}</center></td>
+														<td><center>{{aexp.pending}}</center></td>
+														<td>
+															<input type="checkbox" ng-checked="aexp.approve" ng-click="toggleExpense($event,$index)">
+														</td>
+													</tr>
+												</tbody>
+											</table>
+					                    </div>
+					                </div>
+					            </div>
+							</div>
+							<div ng-show="showButton" class="row">
+								<div class="col-md-12">
+									<button class="btn btn-info btn-fill btn-wd pull-right" ng-click="approveExpense()">Approve Expenses</button>
+								</div>
+							</div>
+					    </div>
+					    <div class="tab-pane active" id="view">
+					    	<div class="row">
+						    	<div class="col-lg-12 col-md-12">
+					                <div class="card">
+					                    <div class="card-content">
+											<div class="row">
+												<div class="col-sm-6 col-lg-3">
+													<div class="form-group">
+														<label>Employee</label>
+														<select class="selectpicker" multiple title="--Select Employee--" ng-model="view.employee" data-actions-box="true" data-live-search="true" data-selected-text-format="count" ng-disabled="disableEmployee">
+															<option ng-repeat="emp in employees | orderBy:'name'" value="{{emp._id}}">{{emp.name}}</option>
+														</select>
+													</div>
+												</div>
+												<div class="col-sm-6 col-lg-3">
+													<div class="form-group">
+														<label>Status</label>
+														<select class="selectpicker" multiple ng-model="view.approve" title="--select status--">
+															<option value="true">Approved</option>
+															<option value="false">Pending</option>
+														</select>
+													</div>
+												</div>
+												<div class="col-sm-6 col-lg-3">
+													<div class="form-group">
+														<label>From</label>
+														<input type="text" class="form-control datepicker" id="startDate" placeholder="select start date">
+													</div>
+												</div>
+												<div class="col-sm-6 col-lg-3">
+													<div class="form-group">
+														<label>To</label>
+														<input type="text" class="form-control datepicker" id="endDate" placeholder="select end date">
+													</div>
+												</div>
+											</div>
+					                        <div class="text-right">
+					                            <button class="btn btn-info btn-fill btn-wd" ng-click="viewExpense()">View Expense</button>
+					                        </div>
+					                    </div>
+					                </div>
+					            </div>
+    						</div>
+					        <div class="row">
+					            <div class="col-md-12">
+					                <div class="card">
+					                    <div class="card-content">
+											<table class="table table-bordered table-stripped dataTable dtr-inline" datatable="ng" dt-options="vm.dtOptions" dt-instance="vm.dtInstance"  width="100%" dt-column-defs="vm.dtColumnDefs">
+												<thead>
+													<th><b>#</b></th>
+													<th><b>Expense Number</b></th>
+													<th><b>Expense Date</b></th>
+													<th><b>Employee</b></th>
+													<th><b>Journey Plan</b></th>
+													<th><b>Total</b></th>
+													<th><b>Approved</b></th>
+													<th><b>Pending</b></th>
+													<th><b>Status</b></th>
+												</thead>
+												<tbody>
+													<tr ng-repeat="vexp in vm.viewExpenses">
+														<td>{{$index + 1}}</td>
+														<td ng-click="openExpensesDialog($index)">{{vexp.invoiceNumber}}</td>
+														<td>{{vexp.invoiceDate}}</td>
+														<td>{{vexp.employee.name}}</td>
+														<td>{{vexp.jp.plan.name}}</td>
+														<td class="text-center">{{vexp.approved + vexp.pending}}</td>
+														<td class="text-center">{{vexp.approved}}</td>
+														<td class="text-center">{{vexp.pending}}</td>
+														<td>
+															<input type="checkbox" ng-checked="vexp.approve" ng-disabled="true">
+														</td>
+													</tr>
+												</tbody>
+											</table>
+					                    </div>
+					                </div>
+					            </div>
+					        </div>
+					    </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/ng-template" id="expenseInfoModal.html">
+	<!-- <style>
+        @media (min-width: 992px){
+            .modal-lg{
+                width: 800px;
+            }
+        }
+    </style> -->
+	<!-- <div class="modal-content modal-lg"> -->
+	<div class="modal-content">
+		<div class="modal-header" style="padding: 10px;">
+			<span class="modal-title" style="font-size: 20px;"><b>Expense Info</b></span>
+			<button type="button" class="close" data-dismiss="modal" ng-click="close()">Close</button>
+		</div>
+		<div class="modal-body">
+			<div ng-show="exptyp == 'Travel'">
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label>Vehicle Type</label>
+							<select class="selectpicker"  ng-model="expenseInfo.mode">
+								<option value disabled>--select vehicle type--</option>
+								<option>Bike</option>
+								<option>Bus</option>
+								<option>Car</option>
+								<option>Taxi</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label>KM</label>
+							<input type="text" class="form-control" ng-model="expenseInfo.km" placeholder="Enter kilometer" awnum>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label>From</label>
+							<input type="text" class="form-control" ng-model="expenseInfo.from" placeholder="Enter from place">
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label>To</label>
+							<input type="text" class="form-control" ng-model="expenseInfo.to" placeholder="Enter to place">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div ng-show="exptyp == 'Stay'">
+				<div class="row">
+					<div class="col-md-6 col-md-offset-3">
+						<label>Area Of Stay</label>
+						<input type="text" class="form-control" ng-model="expenseInfo.area" placeholder="Enter area name">
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6">
+						<label>From</label>
+						<input type="text" class="form-control datepicker" id="from" ng-model="expenseInfo.fromDate" placeholder="select from date">
+					</div>
+					<div class="col-sm-6">
+						<label>To</label>
+						<input type="text" class="form-control datepicker" id="to" ng-model="expenseInfo.toDate" placeholder="select to date">
+					</div>
+				</div>
+			</div><br>
+			<div class="text-center">
+				<button class="btn btn-info btn-fill btn-wd" ng-click="save()">save</button>
+			</div>
+		</div>  
+	</div>
+</script>
+<script type="text/ng-template" id="expenseInfo.html">
+	<style>
+		@media (min-width: 992px) {
+			.modal-lg {
+				width: 800px;
+			}
+		}
+	</style>
+	<div class="modal-content modal-lg">
+		<div class="modal-header" style="padding: 10px;">
+			<span class="modal-title" style="font-size: 20px;"><b>Expens Info</b></span>
+			<button type="button" class="close" data-dismiss="modal" ng-click="ok()">Close</button>
+		</div>
+		<div class="modal-body">
+			<div class="table-responsive table-full-width">
+				<table class="table">
+					<thead> 
+						<th>#</th>
+						<th>Type</th>
+						<th>Date</th>
+						<th>Cost</th>
+						<th>Details</th>
+						<th>Status</th>
+					</thead>
+					<tbody>
+						<tr ng-repeat="de in expense">
+							<td>{{$index +1}}</td>
+							<td>{{de.type}}</td>
+							<td>{{de.date}}</td>
+							<td>{{de.cost}}</td>
+							<td ng-click="showDetails(de)">show</td>
+							<td>
+								<input type="checkbox" ng-checked="de.approve" ng-disabled="de.check" ng-click="toggleExp($event,$index)">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div ng-show="showDetailContent" class="row">
+				<div class="col-md-12">
+					<a ng-show="showImageContent" href="{{'../upload_files/expenses/' + detailInfo.file}}" target="_blank">Show Proof</a><br>
+					<label>Remarks : {{detailInfo.remark}}</label>
+					<div ng-show="detailInfo.type === 'Travel'">
+						<h6>Travel Info</h6>
+						<table>
+							<tbody>
+								<tr>
+									<td>Vehicle Type</td>
+									<td>&nbsp;:&nbsp;</td>
+									<td>{{detailInfo.expenseInfo.mode}}</td>
+								</tr>
+								<tr>
+									<td>From</td>
+									<td>&nbsp;:&nbsp;</td>
+									<td>{{detailInfo.expenseInfo.from}}</td>
+								</tr>
+								<tr>
+									<td>To</td>
+									<td>&nbsp;:&nbsp;</td>
+									<td>{{detailInfo.expenseInfo.to}}</td>
+								</tr>
+								<tr>
+									<td>Km</td>
+									<td>&nbsp;:&nbsp;</td>
+									<td>{{detailInfo.expenseInfo.km}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div ng-show="detailInfo.type === 'Stay'">
+						<h6>Stay Info</h6>
+						<table>
+							<tbody>
+								<tr>
+									<td>Area</td>
+									<td>&nbsp;:&nbsp;</td>
+									<td>{{detailInfo.expenseInfo.area}}</td>
+								</tr>
+								<tr>
+									<td>From</td>
+									<td>&nbsp;:&nbsp;</td>
+									<td>{{detailInfo.expenseInfo.fromDate}}</td>
+								</tr>
+								<tr>
+									<td>To</td>
+									<td>&nbsp;:&nbsp;</td>
+									<td>{{detailInfo.expenseInfo.toDate}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>  
+	</div>
+</script>
+<script type="text/ng-template" id="viewExpenseInfo.html">
+	<style>
+		@media (min-width: 992px) {
+			.modal-lg {
+				width: 800px;
+			}
+		}
+	</style>
+	<div class="modal-content modal-lg">
+		<div class="modal-header" style="padding: 10px;">
+			<span class="modal-title" style="font-size: 20px;"><b>Expens Info</span>
+			<button type="button" class="close" data-dismiss="modal" ng-click="ok()">Close</button>
+		</div>
+		<div class="modal-body">
+			<div class="table-responsive table-full-width">
+				<table class="table">
+					<thead> 
+						<th>#</th>
+						<th>Type</th>
+						<th>Date</th>
+						<th>Cost</th>
+						<th>Details</th>
+						<th>Status</th>
+					</thead>
+					<tbody>
+						<tr ng-repeat="de in expense">
+							<td>{{$index +1}}</td>
+							<td>{{de.type}}</td>
+							<td>{{de.date}}</td>
+							<td>{{de.cost}}</td>
+							<td ng-click="showDetails(de)">show</td>
+							<td>
+								<input type="checkbox" ng-checked="de.approve" ng-disabled="true" ng-click="toggleExp($event,$index)">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div ng-show="showDetailContent" class="row">
+				<div class="col-md-12">
+					<a ng-show="showImageContent" href="{{'../upload_files/expenses/' + detailInfo.file}}" target="_blank">Show Proof</a><br>
+					<label>Remarks : {{detailInfo.remark}}</label>
+					<div ng-show="detailInfo.type === 'Travel'">
+						<h6>Travel Info</h6>
+						<table>
+							<tbody>
+								<tr>
+									<td>Vehicle Type</td>
+									<td>&nbsp;:&nbsp;</td>
+									<td>{{detailInfo.expenseInfo.mode}}</td>
+								</tr>
+								<tr>
+									<td>From</td>
+									<td>&nbsp;:&nbsp;</td>
+									<td>{{detailInfo.expenseInfo.from}}</td>
+								</tr>
+								<tr>
+									<td>To</td>
+									<td>&nbsp;:&nbsp;</td>
+									<td>{{detailInfo.expenseInfo.to}}</td>
+								</tr>
+								<tr>
+									<td>Km</td>
+									<td>&nbsp;:&nbsp;</td>
+									<td>{{detailInfo.expenseInfo.km}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div ng-show="detailInfo.type === 'Stay'">
+						<h6>Stay Info</h6>
+						<table>
+							<tbody>
+								<tr>
+									<td>Area</td>
+									<td>&nbsp;:&nbsp;</td>
+									<td>{{detailInfo.expenseInfo.area}}</td>
+								</tr>
+								<tr>
+									<td>From</td>
+									<td>&nbsp;:&nbsp;</td>
+									<td>{{detailInfo.expenseInfo.fromDate}}</td>
+								</tr>
+								<tr>
+									<td>To</td>
+									<td>&nbsp;:&nbsp;</td>
+									<td>{{detailInfo.expenseInfo.toDate}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>  
+	</div>
+</script>

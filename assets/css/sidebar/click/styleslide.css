@@ -1,0 +1,286 @@
+/*body,td,th {
+	font-family: Verdana, Geneva, sans-serif;
+}*/
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+
+/* floating box style */
+.floating-form {
+    max-width: 300px;
+    /*padding: 30px 30px 10px 30px;*/
+    top: 90px;
+    font: 13px ;
+    /*background: #f4f3ef;
+    border: 1px solid rgb(189,189,189);*/
+    right: 10px;
+    position: fixed;
+  
+    /*box-shadow: -2px -0px 8px rgba(43, 33, 33, 0.06);
+    -moz-box-shadow: -2px -0px 8px rgba(43, 33, 33, 0.06);
+    -webkit-box-shadow:  -2px -0px 8px rgba(43, 33, 33, 0.06);*/
+	}
+.contact-opener {
+     
+    position: absolute;
+    z-index: -1;
+    left: -111px;
+    transform: rotate(-90deg);
+    top: 100px;
+    background-color: #484541;
+    padding: 9px;
+    color: #fff;
+	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.43);
+    cursor: pointer;
+    border-radius: 5px 5px 0px 0px;
+    -webkit-border-radius: 5px 5px 0px 0px;
+    -moz-border-radius: 5px 5px 0px 0px;
+    box-shadow: -2px -0px 8px rgba(43, 33, 33, 0.06);
+    -moz-box-shadow: -2px -0px 8px rgba(43, 33, 33, 0.06);
+    -webkit-box-shadow:  -2px -0px 8px rgba(43, 33, 33, 0.06);
+
+}
+.floating-form-heading{
+    font-weight: bold;
+    font-style: italic;
+    border-bottom: 2px solid #ddd;
+    margin-bottom: 10px;
+    font-size: 15px;
+    padding-bottom: 3px;
+}
+.floating-form label{
+    display: block;
+    margin: 0px 0px 15px 0px;
+}
+.floating-form label > span{
+    width: 70px;
+    font-weight: bold;
+    float: left;
+    padding-top: 8px;
+    padding-right: 5px;
+}
+.floating-form span.required{
+    color:red;
+}
+.floating-form .tel-number-field{
+    width: 40px;
+    text-align: center;
+}
+.floating-form  .long{
+    width: 120px;
+}
+.floating-form input.input-field{
+    width: 68%;
+   
+}
+
+.floating-form input.input-field,
+.floating-form .tel-number-field,
+.floating-form .textarea-field,
+ .floating-form .select-field{
+    -webkit-transition: all 0.30s ease-in-out;
+    -moz-transition: all 0.30s ease-in-out;
+    -ms-transition: all 0.30s ease-in-out;
+    -o-transition: all 0.30s ease-in-out; 
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    border: 1px solid #C2C2C2;
+    box-shadow: 1px 1px 4px #EBEBEB;
+    -moz-box-shadow: 1px 1px 4px #EBEBEB;
+    -webkit-box-shadow: 1px 1px 4px #EBEBEB;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    padding: 7px;
+    outline: none;
+}
+.floating-form .input-field:focus,
+.floating-form .tel-number-field:focus,
+.floating-form .textarea-field:focus,  
+.floating-form .select-field:focus{
+    border: 1px solid #0C0;
+}
+.floating-form .textarea-field{
+    height:100px;
+    width: 68%;
+}
+.floating-form input[type="button"],
+.floating-form input[type="submit"], .contact-opener {
+    -moz-box-shadow: inset 0px 1px 0px 0px #3985B1;
+    -webkit-box-shadow: inset 0px 1px 0px 0px #3985B1;
+    box-shadow: inset 0px 1px 0px 0px #3985B1;
+    background-color: #216288;
+    border: 1px solid #e3eef5;
+    display: inline-block;
+    cursor: pointer;
+    color: #FFFFFF;
+    padding: 8px 18px;
+    text-decoration: none;
+    font: 12px Arial, Helvetica, sans-serif;
+}
+.floating-form input[type="button"]:hover,
+.floating-form input[type="submit"]:hover, .contact-opener {
+    background: linear-gradient(to bottom, #66615b 5%, #66615b 100%);
+    background-color: #28739E;
+}
+.floating-form .success{
+    background: #D8FFC0;
+    padding: 5px 10px 5px 10px;
+    margin: 0px 0px 5px 0px;
+    border: none;
+    font-weight: bold;
+    color: #2E6800;
+    border-left: 3px solid #2E6800;
+}
+.floating-form .error {
+    background: #FFE8E8;
+    padding: 5px 10px 5px 10px;
+    margin: 0px 0px 5px 0px;
+    border: none;
+    font-weight: bold;
+    color: #FF0000;
+    border-left: 3px solid #FF0000;
+}
+
+
+
+
+.floating-form1 {
+    bottom: 30px;
+    max-width: 300px;
+    /*padding: 30px 30px 10px 30px;*/
+    font: 13px ;
+    /*background: #f4f3ef;*/
+    /*border: 1px solid rgb(189,189,189);*/
+    right: 10px;
+    position: fixed;
+    /*box-shadow: -2px -0px 8px rgba(43, 33, 33, 0.06);
+    -moz-box-shadow: -2px -0px 8px rgba(43, 33, 33, 0.06);
+    -webkit-box-shadow:  -2px -0px 8px rgba(43, 33, 33, 0.06);*/
+    }
+.contact-opener1 {
+   
+    position: absolute;
+    z-index: 1;
+    left: -101px;
+    transform: rotate(-90deg);
+    bottom: 100px;
+    background-color: #484541;
+    padding: 9px;
+    color: #fff;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.43);
+    cursor: pointer;
+    border-radius: 5px 5px 0px 0px;
+    -webkit-border-radius: 5px 5px 0px 0px;
+    -moz-border-radius: 5px 5px 0px 0px;
+    box-shadow: -2px -0px 8px rgba(43, 33, 33, 0.06);
+    -moz-box-shadow: -2px -0px 8px rgba(43, 33, 33, 0.06);
+    -webkit-box-shadow:  -2px -0px 8px rgba(43, 33, 33, 0.06);
+
+}
+.floating-form-heading1{
+    font-weight: bold;
+    font-style: italic;
+    border-bottom: 2px solid #ddd;
+    margin-bottom: 10px;
+    font-size: 15px;
+    padding-bottom: 3px;
+}
+.floating-form1 label{
+    display: block;
+    margin: 0px 0px 15px 0px;
+}
+.floating-form1 label > span{
+    width: 70px;
+    font-weight: bold;
+    float: left;
+    padding-top: 8px;
+    padding-right: 5px;
+}
+.floating-form1 span.required{
+    color:red;
+}
+.floating-form1 .tel-number-field{
+    width: 40px;
+    text-align: center;
+}
+.floating-form1  .long{
+    width: 120px;
+}
+.floating-form1 input.input-field{
+    width: 68%;
+   
+}
+
+.floating-form1 input.input-field,
+.floating-form1 .tel-number-field,
+.floating-form1 .textarea-field,
+ .floating-form1 .select-field{
+    -webkit-transition: all 0.30s ease-in-out;
+    -moz-transition: all 0.30s ease-in-out;
+    -ms-transition: all 0.30s ease-in-out;
+    -o-transition: all 0.30s ease-in-out; 
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    border: 1px solid #C2C2C2;
+    box-shadow: 1px 1px 4px #EBEBEB;
+    -moz-box-shadow: 1px 1px 4px #EBEBEB;
+    -webkit-box-shadow: 1px 1px 4px #EBEBEB;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    padding: 7px;
+    outline: none;
+}
+.floating-form1 .input-field:focus,
+.floating-form1 .tel-number-field:focus,
+.floating-form1 .textarea-field:focus,  
+.floating-form1 .select-field:focus{
+    border: 1px solid #0C0;
+}
+.floating-form1 .textarea-field{
+    height:100px;
+    width: 68%;
+}
+.floating-form1 input[type="button"],
+.floating-form1 input[type="submit"], .contact-opener1 {
+    -moz-box-shadow: inset 0px 1px 0px 0px #3985B1;
+    -webkit-box-shadow: inset 0px 1px 0px 0px #3985B1;
+    box-shadow: inset 0px 1px 0px 0px #3985B1;
+    background-color: #216288;
+    border: 1px solid #e3eef5;
+    display: inline-block;
+    cursor: pointer;
+    color: #FFFFFF;
+    padding: 8px 18px;
+    text-decoration: none;
+    font: 12px Arial, Helvetica, sans-serif;
+}
+.floating-form1 input[type="button"]:hover,
+.floating-form1 input[type="submit"]:hover, .contact-opener1 {
+    background: linear-gradient(to bottom, #66615b 5%, #66615b 100%);
+    background-color: #28739E;
+}
+.floating-form1 .success{
+    background: #D8FFC0;
+    padding: 5px 10px 5px 10px;
+    margin: 0px 0px 5px 0px;
+    border: none;
+    font-weight: bold;
+    color: #2E6800;
+    border-left: 3px solid #2E6800;
+}
+.floating-form1 .error {
+    background: #FFE8E8;
+    padding: 5px 10px 5px 10px;
+    margin: 0px 0px 5px 0px;
+    border: none;
+    font-weight: bold;
+    color: #FF0000;
+    border-left: 3px solid #FF0000;
+}

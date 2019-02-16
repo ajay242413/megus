@@ -1,0 +1,117 @@
+<link rel="stylesheet" type="text/css" href="../custom/customCheckBox.css">
+<div class="container-fluid">
+    <div class="text-right" style="margin-bottom: 5px;">
+        <button class="btn btn-primary btn-fill" ng-click="back()">Back</button>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <label>Department</label>
+                            <select class="selectpicker" ng-model="scheDepatment" data-live-search="true" data-size="5" ng-change="departmentChange()">
+                                <option value selected>--Choose Department--</option>
+                                <option ng-repeat="hd in hrDepart | orderBy:'name'" value="{{hd._id}}">{{hd.name}}</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-3">
+                            <label>HR</label>
+                            <select class="selectpicker" ng-model="scheEmp" data-live-search="true" data-size="5">
+                                <option value selected>--Choose HR--</option>
+                                <option ng-repeat="emp in schehrs | orderBy:'name'" value="{{emp._id}}">{{emp.name}}</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label>Visit Type</label>
+                                <select class="selectpicker" ng-model="visitType">
+                                    <option value selected disabled>--choose visit type--</option>
+                                    <option ng-repeat="vt in visitTypes | orderBy:'name'" value="{{vt._id}}">{{vt.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label>Plan Name</label>
+                                <select class="selectpicker" ng-model="planName" data-live-search="true" data-size="5">
+                                    <option value selected disabled>--select plan--</option>
+                                    <option ng-repeat="pn in vm.plans" ng-value="pn._id">{{pn.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <label>Select Year</label>
+                            <!-- <div class="pull-right" style="padding-right: 30%;"></div> -->
+                            <!-- <div style="padding-left: 10%;"> -->
+                            <div class="form-group">
+                                <div class="multiselect" id="scroller">
+                                    <div class="selectBox">
+                                        <div class="overSelect"></div>
+                                    </div>
+                                    <div id="checkboxes" style="display: block;">
+                                        <div class="checkbox">
+                                            <input id="yearAll" type="checkbox" ng-model="yearAll" ng-click="changeYearAll()">
+                                            <label for="yearAll">Select All</label>
+                                        </div>
+                                        <div class="checkbox" ng-repeat="yr in years">
+                                            <input id="{{yr}}" type="checkbox" ng-model="year[$index]" ng-click="changeYear(year[$index])">
+                                            <label for="{{yr}}">{{yr}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- </div> -->
+                        </div>
+                        <div class="col-sm-3">
+                            <label>Select Month</label>
+                            <div class="form-group">
+                                <div class="multiselect" id="scroller">
+                                    <div class="selectBox">
+                                        <div class="overSelect"></div>
+                                    </div>
+                                    <div id="checkboxes" style="display: block;">
+                                        <div class="checkbox">
+                                            <input id="monthAll" type="checkbox" ng-model="monthAll" ng-click="changeMonthAll()">
+                                            <label for="monthAll">Select All</label>
+                                        </div>
+                                        <div class="checkbox" ng-repeat="mon in months">
+                                            <input id="{{mon}}" type="checkbox" ng-model="month[$index]" ng-click="changeMonth(month[$index])">
+                                            <label for="{{mon}}">{{mon}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <label>Select Day</label>
+                            <div class="form-group">
+                                <div class="multiselect" id="scroller">
+                                    <div class="selectBox">
+                                        <div class="overSelect"></div>
+                                    </div>
+                                    <div id="checkboxes" style="display: block;">
+                                        <div class="checkbox">
+                                            <input id="dayAll" type="checkbox" ng-model="dayAll" ng-click="changeDayAll()">
+                                            <label for="dayAll">Select All</label>
+                                        </div>
+                                        <div class="checkbox" ng-repeat="ds in days">
+                                            <input id="{{ds}}" type="checkbox" ng-model="day[$index]" ng-click="changeDay(day[$index])">
+                                            <label for="{{ds}}">{{ds}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3"></div>
+                    </div>
+                    <div class="text-right">
+                        <button class="btn btn-default btn-wd btn-fill" ng-click="assignPlan()">Assign</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
