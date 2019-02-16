@@ -102,7 +102,7 @@ var masterLedgerModel = mongoose.model('master_ledger', masterLedgerSchema, 'mas
 var permissionModel = mongoose.model('permission_map', permissionMappingSchema, 'permission_map');
 
 var brandAdmin = {
-	"email": "ushaelectronics@gmail.com",
+	"email": "ajay@gmail.com",
 	"password": "a",
 	"userType": "b",
 	"active": true,
