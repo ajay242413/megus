@@ -103,7 +103,7 @@ var permissionModel = mongoose.model('permission_map', permissionMappingSchema, 
 
 var brandAdmin = {
 	"email": "ushaelectronics@gmail.com",
-	"password": "Aba123$",
+	"password": "a",
 	"userType": "b",
 	"active": true,
 	"refName": "employee"
